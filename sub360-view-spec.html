@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sub360 — View Specification & Data Dictionary</title>
+<style>
+  :root{
+    --bg-page:#f4f3ef; --bg-card:#ffffff; --bg-sec:#f1efe8; --bg-tert:#faf9f6;
+    --text:#2c2c2a; --text-sec:#5f5e5a; --text-tert:#888780;
+    --border:rgba(0,0,0,.12); --border-2:rgba(0,0,0,.22);
+    --info-bg:#e6f1fb; --info-tx:#0c447c; --info-bd:#378add;
+    --warn-bg:#faeeda; --warn-tx:#854f0b;
+    --ok-bg:#e1f5ee; --ok-tx:#0f6e56;
+    --danger-bg:#fcebeb; --danger-tx:#a32d2d;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg-page); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; padding:2rem 1rem;
+  }
+  .wrap{max-width:920px; margin:0 auto;}
+  h1{font-size:24px; font-weight:600; margin:0 0 4px;}
+  h2.lead{font-size:14px; font-weight:400; color:var(--text-sec); margin:0 0 1.5rem;}
+  h3{font-size:18px; font-weight:600; margin:0;}
+  /* tabs */
+  #tabs{display:flex; gap:8px; margin-bottom:1.25rem; flex-wrap:wrap;}
+  .tb{font-size:13px; padding:8px 16px; border-radius:8px; border:.5px solid var(--border-2);
+      background:transparent; cursor:pointer; color:var(--text-sec); font:inherit;}
+  .tb.active{background:var(--text); color:#fff; border-color:var(--text);}
+  .panel{display:none;} .panel.active{display:block;}
+  /* cards */
+  .vc{background:var(--bg-sec); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1rem;}
+  .vt{display:inline-block; background:var(--info-bg); color:var(--info-tx); font-size:12px;
+      padding:3px 10px; border-radius:8px; font-family:var(--mono);}
+  .wn{display:inline-block; font-size:12px; color:var(--warn-tx); background:var(--warn-bg);
+      padding:3px 10px; border-radius:8px; margin-left:6px;}
+  .vh{font-weight:600;}
+  .vd{font-size:13px; color:var(--text-sec); margin:6px 0 12px;}
+  .in{background:var(--bg-card); border:.5px solid var(--border); border-radius:var(--radius); padding:12px;}
+  .mc{border:.5px solid var(--border); border-radius:var(--radius-sm); padding:10px;}
+  .ph{height:56px; border:1px dashed var(--border-2); border-radius:4px; display:flex;
+      align-items:center; justify-content:center; font-size:11px; color:var(--text-tert); margin-bottom:8px;}
+  .mn{font-weight:600; font-size:14px;}
+  .mf{font-size:12px;} .mf span{color:var(--text-sec);} .mf strong{font-weight:600;}
+  .nw,.mf.nw span{color:var(--info-tx)!important;}
+  .sec{margin:14px 0 6px;}
+  .ts{font-size:11px; color:var(--text-tert);}
+  .fl{font-size:12px; color:var(--text-sec); display:block;}
+  .g3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; font-size:12px;}
+  .g3 span{color:var(--text-sec);} .g3 strong{font-weight:600;}
+  .grid-auto{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;}
+  .note{font-size:12px; color:var(--text-sec); margin:10px 0 0; padding-top:8px; border-top:.5px solid var(--border);}
+  .note strong{font-weight:600; color:var(--text);}
+  .tag-locked{font-size:10px; background:var(--danger-bg); color:var(--danger-tx); padding:1px 6px; border-radius:6px;}
+  .blur{filter:blur(4px); user-select:none; background:var(--bg-sec); color:var(--text-tert);
+        padding:2px 12px; border-radius:6px; font-size:12px;}
+  .ib{width:32px; height:30px; padding:0; background:var(--text); color:#fff; border:none;
+      border-radius:8px; cursor:pointer; font-size:13px;}
+  .ib.lite{background:transparent; color:var(--text); border:.5px solid var(--border-2);}
+  .doc{display:block; font-size:12px; border:.5px solid var(--border); border-radius:8px; padding:6px 8px;}
+  .kd{border:.5px solid var(--border); border-radius:8px; padding:8px; font-size:12px;}
+  .kd span{color:var(--text-sec); font-size:11px;} .kd strong{font-weight:600;}
+  .sb{font-size:11px; padding:2px 8px; border-radius:12px;}
+  .sb-a{background:#e1f5ee; color:#0f6e56;} .sb-d{background:#f1efe8; color:#5f5e5a;} .sb-c{background:#fcebeb; color:#a32d2d;}
+  button.act{font-size:12px; padding:6px 12px; border-radius:8px; border:.5px solid var(--border-2); background:transparent; cursor:pointer; font:inherit;}
+  button.dark{background:var(--text); color:#fff; border-color:var(--text);}
+  input,select{font:inherit; font-size:13px; padding:7px 10px; border:.5px solid var(--border-2);
+    border-radius:8px; background:var(--bg-card); width:100%;}
+  /* tables */
+  .dt{width:100%; font-size:12px; border-collapse:collapse;}
+  .dt th{text-align:left; padding:6px; border-bottom:.5px solid var(--border-2); font-weight:600;}
+  .dt td{padding:6px; border-bottom:.5px solid var(--border); vertical-align:top;}
+  .dt td:first-child{font-family:var(--mono); font-size:11px;}
+  .nwr td{color:var(--info-tx);}
+  /* enum grid */
+  .eg{background:var(--bg-card); border:.5px solid var(--border); border-radius:8px; padding:10px;}
+  .eh{font-size:12px; font-weight:600; margin-bottom:6px; padding-bottom:6px; border-bottom:.5px solid var(--border);}
+  .ei{font-size:12px; color:var(--text-sec); padding:2px 0;}
+  hr.soft{border:0; border-top:.5px solid var(--border); margin:8px 0;}
+  .scroll{overflow-x:auto;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>sub360 — View Specification &amp; Data Dictionary</h1>
+  <h2 class="lead">Framework-neutral spec for the Django rebuild. Views, data model, and all enum values.</h2>
+
+  <div id="tabs">
+    <button class="tb active" data-r="sub">Subcontractor views</button>
+    <button class="tb" data-r="client">Client views</button>
+    <button class="tb" data-r="model">Data model</button>
+    <button class="tb" data-r="enum">Enums / values</button>
+  </div>
+
+  <!-- ===== SUB ===== -->
+  <div class="panel active" data-p="sub">
+
+    <div class="vc">
+      <span class="vt">V1 · GET /companies</span>
+      <h3 class="vh" style="margin-top:6px;">Company List</h3>
+      <p class="vd">Public directory of client companies. Read-only card grid, no contact data, no detail click-through. No auth gate.</p>
+      <div class="in">
+        <div class="grid-auto">
+          <div class="mc">
+            <div class="ph">logo · nullable</div>
+            <p class="mn">company_name</p>
+            <p class="mf"><span>City:</span> city</p>
+            <p class="mf"><span>Region:</span> order_region[]</p>
+            <p class="mf"><span>Trade:</span> trade[]</p>
+          </div>
+          <div class="mc" style="opacity:.5;"><div class="ph"></div><p class="mf">repeats · ~3/row · paginated</p></div>
+        </div>
+      </div>
+      <p class="note"><strong>Fields:</strong> company_name, city, order_region[], trade[], logo? · <strong>Sort:</strong> name A–Z · <strong>Paginate:</strong> yes</p>
+    </div>
+
+    <div class="vc">
+      <span class="vt">V2 · GET/POST /messages</span>
+      <h3 class="vh" style="margin-top:6px;">Message Center</h3>
+      <p class="vd">Two-pane inbox: conversation list + thread. Search over conversations.</p>
+      <div class="in" style="display:grid; grid-template-columns:190px 1fr; min-height:160px; padding:0; overflow:hidden;">
+        <div style="border-right:.5px solid var(--border); padding:10px;">
+          <input type="text" placeholder="Search…" style="margin-bottom:8px;">
+          <div style="border-bottom:.5px solid var(--border); padding:8px 4px;">
+            <p class="mn" style="margin:0;">counterparty_name</p>
+            <p class="mf" style="margin:2px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">last_message_preview</p>
+            <span class="ts">timestamp · ●unread</span>
+          </div>
+        </div>
+        <div style="padding:12px; display:flex; flex-direction:column;">
+          <p class="ts" style="margin:0 0 8px;">thread header: counterparty · subject (e.g. "Projekt {name}")</p>
+          <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+            <div style="align-self:flex-start; background:var(--bg-sec); border-radius:8px; padding:6px 10px; font-size:12px;">received</div>
+            <div style="align-self:flex-end; background:var(--info-bg); color:var(--info-tx); border-radius:8px; padding:6px 10px; font-size:12px;">sent</div>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:8px;"><input type="text" placeholder="Message…"><button class="act">Send</button></div>
+        </div>
+      </div>
+      <p class="note"><strong>Entities:</strong> Conversation (participants, subject, project?), Message (sender, body, sent_at, read_at)</p>
+    </div>
+
+    <div class="vc">
+      <span class="vt">V3 · GET /projects</span>
+      <span class="wn">access gate (Django): locked vs unlocked per active subscription</span>
+      <h3 class="vh" style="margin-top:6px;">Tendered Projects</h3>
+      <p class="vd">Filter sidebar + project cards. Two render states driven by the subscription gate.</p>
+      <div style="display:grid; grid-template-columns:160px 1fr; gap:12px;">
+        <div class="in">
+          <p class="mn" style="margin:0 0 8px;">Filter</p>
+          <label class="fl">Execution type</label><select style="margin:4px 0 8px;"><option>Select…</option></select>
+          <label class="fl">Order regions</label><select style="margin:4px 0 8px;"><option>Select…</option></select>
+          <label class="fl">Branch</label><select style="margin:4px 0 8px;"><option>Select…</option></select>
+          <label class="fl">Status</label><select style="margin:4px 0 0;"><option>Select…</option></select>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="in" style="padding:0; overflow:hidden; border:1px solid #f0d0c5;">
+            <div style="text-align:center; padding:10px 12px;">
+              <p style="font-weight:600; margin:0 0 4px;">🔒 project_title <span class="tag-locked">LOCKED</span></p>
+              <p class="ts" style="margin:0 0 8px;">Company &amp; contact visible with active subscription</p>
+              <div style="display:flex; gap:10px; justify-content:center; margin-bottom:10px; flex-wrap:wrap;">
+                <span class="blur">company_name</span><span class="blur">+41 XX XXX XX XX</span>
+              </div>
+              <button class="act dark">Activate subscription</button>
+            </div>
+          </div>
+          <div class="in" style="padding:0; overflow:hidden; border:2px solid var(--info-bd);">
+            <div style="background:var(--ok-bg); color:var(--ok-tx); text-align:center; font-size:12px; padding:6px;">UNLOCKED adds: title + company block + view/contact actions</div>
+            <div style="padding:10px 12px;">
+              <p class="mn" style="margin:0 0 6px;">project_title</p>
+              <div class="g3">
+                <div><span>Start date</span><br><strong>MM.YYYY</strong></div>
+                <div><span>Canton</span><br><strong>canton</strong></div>
+                <div><span>Material offer</span><br><strong>Yes/No</strong></div>
+              </div>
+              <p class="mf" style="margin:8px 0 0;"><span>Branch:</span> branch[]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Card fields:</strong> execution_type[], start_date, canton, material_offered, branch[], status · <strong>Unlocked also:</strong> title, company_name, company_logo, view + contact actions</p>
+    </div>
+  </div>
+
+  <!-- ===== CLIENT ===== -->
+  <div class="panel" data-p="client">
+
+    <div class="vc">
+      <span class="vt">V4 · GET /subcontractors</span>
+      <span class="wn">listed: only subcontractors with active subscription · select/contact: client + admin only</span>
+      <h3 class="vh" style="margin-top:6px;">Subcontractor List</h3>
+      <div style="display:grid; grid-template-columns:150px 1fr; gap:12px;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="in">
+            <p class="mn" style="margin:0 0 8px;">Filter</p>
+            <label class="fl">Branch</label><select style="margin:4px 0 8px;"><option>Choose…</option></select>
+            <label class="fl">Worker count</label><select style="margin:4px 0 8px;"><option>Choose…</option></select>
+            <label class="fl">Order regions</label><select style="margin:4px 0 8px;"><option>Choose…</option></select>
+            <label class="fl">Execution activity</label><select style="margin:4px 0 0;"><option>Choose…</option></select>
+          </div>
+          <div class="in">
+            <p class="mn" style="margin:0 0 8px;">Quick search</p>
+            <input type="text" placeholder="All fields…" style="margin-bottom:8px;">
+            <button class="act dark" style="width:100%;">Search</button>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <label class="fl" style="display:flex; gap:6px; align-items:center;"><input type="checkbox" style="width:auto;"> Select all</label>
+            <span class="mf">Total: <strong>243</strong></span>
+          </div>
+          <div class="in">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div style="display:flex; gap:8px;"><input type="checkbox" style="width:auto; margin-top:3px;"><p class="mn" style="margin:0;">company_name</p></div>
+              <div style="display:flex; gap:6px;"><button class="ib">👁</button><button class="ib">✉</button></div>
+            </div>
+            <hr class="soft">
+            <p class="mf" style="margin:0 0 3px;"><span>Order region:</span> order_region[]</p>
+            <p class="mf" style="margin:0 0 3px;"><span>Execution activity:</span> execution_activity[]</p>
+            <p class="mf" style="margin:0;"><span>Trade:</span> trade[]</p>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Recommended additions:</strong> active filter chips, bulk "contact selected" action bar</p>
+    </div>
+
+    <div class="vc">
+      <span class="vt">V4b · GET /subcontractors/{slug}</span>
+      <h3 class="vh" style="margin-top:6px;">Subcontractor Detail (dossier)</h3>
+      <p class="vd">Opened via view icon. Sharable URL. Sections render only when they hold data.</p>
+      <div class="in">
+        <div style="display:flex; gap:6px; align-items:center; margin-bottom:10px; flex-wrap:wrap;">
+          <button class="act dark">✉ Contact</button>
+          <button class="act">⧉ Share dossier</button>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <h3 class="vh" style="margin:0;">company_name</h3>
+          <div class="ph" style="width:80px; height:40px; margin:0;">logo?</div>
+        </div>
+        <p class="mn sec">Details</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 24px;">
+          <p class="mf" style="margin:0;"><span>Order region:</span> order_region[]</p>
+          <p class="mf" style="margin:0;"><span>Execution activity:</span> execution_activity[]</p>
+          <p class="mf" style="margin:0;"><span>Trade:</span> trade[]</p>
+          <p class="mf" style="margin:0;"><span>Branch:</span> branch[]</p>
+          <p class="mf nw" style="margin:0;"><span>Employees:</span> worker_count</p>
+          <p class="mf nw" style="margin:0;"><span>Company age:</span> company_age</p>
+          <p class="mf nw" style="margin:0;"><span>Accepts WIR:</span> Yes/No</p>
+        </div>
+        <p class="mn sec">Company profile <span class="ts">(docs — client/admin only)</span></p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:6px;">
+          <span class="doc">✓ Accident insured · file?</span>
+          <span class="doc">✓ VAT registered · vat_no?</span>
+          <span class="doc">✓ License · file?</span>
+        </div>
+        <p class="ts" style="margin:4px 0 0;">↳ entire section hidden if no docs present</p>
+        <p class="mn sec">Contact</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+          <div class="kd"><span>Phone</span><br><strong>phone?</strong></div>
+          <div class="kd"><span>E-mail</span><br><strong>email?</strong></div>
+          <div class="kd"><span>Address</span><br><strong>street, zip city?</strong></div>
+        </div>
+        <p class="mn sec">References <span class="ts">(hidden if empty)</span></p>
+        <p class="mf" style="margin:0; color:var(--text-tert);">references[]</p>
+      </div>
+    </div>
+
+    <div class="vc">
+      <span class="vt">V5 · GET /my-projects</span>
+      <h3 class="vh" style="margin-top:6px;">My Projects (owner)</h3>
+      <p class="vd">Client's own tenders. Full detail always visible. Status set manually by the project lead.</p>
+      <div class="in">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+          <span class="mf">{count} projects</span>
+          <button class="act">＋ New project</button>
+        </div>
+        <div style="border:.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div><p class="mn" style="margin:0;">project_title</p>
+              <span class="sb sb-a">active</span> <span class="sb sb-d">draft</span> <span class="sb sb-c">closed</span>
+            </div>
+            <div style="display:flex; gap:6px;"><button class="ib lite">✎</button><button class="ib lite">👥</button></div>
+          </div>
+          <div class="g3" style="grid-template-columns:repeat(4,1fr); margin-top:8px;">
+            <div><span>Execution</span><br><strong>execution_type</strong></div>
+            <div><span>Start</span><br><strong>MM.YYYY</strong></div>
+            <div><span>Canton</span><br><strong>canton</strong></div>
+            <div><span>Material</span><br><strong>Yes/No</strong></div>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Owner actions:</strong> create, edit, set status, view applicants</p>
+    </div>
+  </div>
+
+  <!-- ===== MODEL ===== -->
+  <div class="panel" data-p="model">
+    <div class="vc">
+      <h3 class="vh" style="margin:0 0 6px;">Project</h3>
+      <div class="scroll"><table class="dt">
+        <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+        <tr><td>title</td><td>char</td><td>project_title</td></tr>
+        <tr><td>execution_type</td><td>M2M → ExecutionType</td><td>demolition/new build/planning/renovation/conversion</td></tr>
+        <tr><td>canton</td><td>char(2) enum</td><td>CH or 26 canton codes</td></tr>
+        <tr><td>start_date</td><td>DateField</td><td>real date; display MM.YYYY (★ was free-text string)</td></tr>
+        <tr><td>material_offered</td><td>bool</td><td>Yes/No</td></tr>
+        <tr><td>branch</td><td>M2M → Branch</td><td>label everywhere: "Branch" (★ was Branche/Spezialisierung/Gewerbe)</td></tr>
+        <tr class="nwr"><td>status</td><td>char enum</td><td>active/draft/closed — set manually by project lead ★new</td></tr>
+        <tr><td>owner</td><td>FK → Client</td><td>company that posted it</td></tr>
+        <tr><td>description</td><td>text</td><td>unlocked only</td></tr>
+      </table></div>
+    </div>
+    <div class="vc">
+      <h3 class="vh" style="margin:0 0 6px;">Subcontractor</h3>
+      <div class="scroll"><table class="dt">
+        <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+        <tr><td>company_name</td><td>char</td><td></td></tr>
+        <tr><td>logo</td><td>image</td><td>nullable</td></tr>
+        <tr><td>order_region</td><td>M2M → Canton</td><td>CH = entire Switzerland</td></tr>
+        <tr><td>execution_activity</td><td>M2M → Activity</td><td>new build/conversion/renovation/planning (no demolition)</td></tr>
+        <tr><td>trade</td><td>char/M2M</td><td>trade descriptor</td></tr>
+        <tr><td>branch</td><td>M2M → Branch</td><td>flat (★ was 3 separate fields)</td></tr>
+        <tr class="nwr"><td>worker_count</td><td>char enum</td><td>1–5 … 100+ ★new</td></tr>
+        <tr class="nwr"><td>company_age</td><td>char enum</td><td>&lt;3 / 3–10 / &gt;10 yrs ★new</td></tr>
+        <tr class="nwr"><td>accepts_wir</td><td>bool</td><td>Yes/No ★new</td></tr>
+        <tr><td>phone, email</td><td>char</td><td>nullable</td></tr>
+        <tr><td>street, zip, city</td><td>char</td><td>address</td></tr>
+        <tr><td>vat_no</td><td>char</td><td>nullable</td></tr>
+        <tr><td>license_file, insurance_file</td><td>file</td><td>client/admin only</td></tr>
+        <tr><td>references</td><td>text/M2M</td><td>nullable</td></tr>
+        <tr><td>has_active_subscription</td><td>bool/derived</td><td>gates listing + contact</td></tr>
+      </table></div>
+    </div>
+    <div class="vc">
+      <h3 class="vh" style="margin:0 0 6px;">Supporting</h3>
+      <p class="mf" style="margin:0 0 4px;"><strong>Client:</strong> company_name, city, order_region[], trade[], logo?</p>
+      <p class="mf" style="margin:0 0 4px;"><strong>Conversation:</strong> participants[], subject, project?(FK)</p>
+      <p class="mf" style="margin:0;"><strong>Message:</strong> conversation(FK), sender, body, sent_at, read_at</p>
+      <p class="note">★ = changed from old model · ★new = field to add</p>
+    </div>
+  </div>
+
+  <!-- ===== ENUM ===== -->
+  <div class="panel" data-p="enum">
+    <div class="vc">
+      <h3 class="vh" style="margin:0 0 8px;">Branch (grouped) — subcontractors &amp; projects</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px;">
+        <div class="eg"><div class="eh">Main construction</div><div class="ei">Asbestos remediation</div><div class="ei">Waterproofing / sealing</div><div class="ei">Track construction</div><div class="ei">Structural construction (Hochbau)</div><div class="ei">Road construction</div><div class="ei">Civil engineering (Tiefbau)</div><div class="ei">Tunnel construction</div></div>
+        <div class="eg"><div class="eh">Ancillary construction</div><div class="ei">Construction cleaning</div><div class="ei">Floor coverings</div><div class="ei">Fire protection</div><div class="ei">Electrical installation</div><div class="ei">Joint sealing</div><div class="ei">Garden &amp; landscaping</div><div class="ei">Building insulation</div><div class="ei">Building envelope</div><div class="ei">Scaffolding</div><div class="ei">HVAC + plumbing (HLKKS)</div><div class="ei">Timber construction</div><div class="ei">Insulation trade</div><div class="ei">Painting &amp; glazing</div><div class="ei">Tiling &amp; open construction</div><div class="ei">Joinery</div><div class="ei">Plastering &amp; gypsum</div></div>
+        <div class="eg"><div class="eh">Planning &amp; construction</div><div class="ei">Architecture planning</div><div class="ei">Building design</div><div class="ei">Electrical engineering</div><div class="ei">Building technology</div><div class="ei">Geomatics</div></div>
+        <div class="eg"><div class="eh">Technology &amp; industry</div><div class="ei">Plant construction</div><div class="ei">Elevator assembly</div><div class="ei">Mechanical engineering</div><div class="ei">Metal construction</div><div class="ei">Pipeline construction</div><div class="ei">Switchgear construction</div><div class="ei">Sprinkler systems</div><div class="ei">Steel construction</div></div>
+      </div>
+    </div>
+    <div class="vc">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px;">
+        <div class="eg"><div class="eh">Execution type (projects)</div><div class="ei">Demolition</div><div class="ei">New build</div><div class="ei">Planning</div><div class="ei">Renovation</div><div class="ei">Conversion</div></div>
+        <div class="eg"><div class="eh">Execution activity (subs)</div><div class="ei">New build</div><div class="ei">Conversion</div><div class="ei">Renovation</div><div class="ei">Planning</div><div class="ei" style="color:var(--text-tert);">(no demolition)</div></div>
+        <div class="eg"><div class="eh">Project status ★new</div><div class="ei">active</div><div class="ei">draft</div><div class="ei">closed</div></div>
+        <div class="eg"><div class="eh">Worker count ★new</div><div class="ei">1–5</div><div class="ei">6–10</div><div class="ei">11–25</div><div class="ei">26–50</div><div class="ei">51–100</div><div class="ei">100+</div></div>
+        <div class="eg"><div class="eh">Company age ★new</div><div class="ei">Under 3 years</div><div class="ei">3–10 years</div><div class="ei">Over 10 years</div></div>
+        <div class="eg"><div class="eh">Booleans</div><div class="ei">material_offered: Yes/No</div><div class="ei">accepts_wir: Yes/No</div></div>
+        <div class="eg"><div class="eh">Canton / region (27)</div><div class="ei">CH = Entire Switzerland</div><div class="ei">ZH, BE, LU, UR, SZ, OW, NW, GL, ZG, FR, SO, BS, BL, SH, AR, AI, SG, GR, AG, TG, TI, VD, VS, NE, GE, JU</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var tabs=document.querySelectorAll('.tb'), panels=document.querySelectorAll('.panel');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.toggle('active',x===t);});
+      panels.forEach(function(p){p.classList.toggle('active',p.dataset.p===t.dataset.r);});
+    });
+  });
+</script>
+</body>
+</html>
