@@ -1,0 +1,93 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+    {% include 'snippets/_breadcrumb.html' %}
+	<div class="d-flex align-items-end gap-2">
+		{% if perms.users.add_user %}
+			<button 
+				class="btn btn-primary d-flex align-items-end gap-2 shadow"
+				data-bs-toggle="modal"
+				data-bs-target="#kt_modal"
+				hx-get="{% url 'users:create_user' %}"
+				hx-target="#kt_modal_content"
+				hx-swap="innerHTML"
+			>
+				<i class="ki-duotone ki-plus fs-4"></i>
+				<span class="fw-semibold">{% trans 'Utilisateur' %}</span>
+			</button>
+		{% endif %}
+	</div>
+</div>
+<ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x text-uppercase border-transparent fs-5 fw-bold">
+    <li class="nav-item mt-2" role="presentation">
+        <a class="nav-link pb-4 active d-flex align-items-center gap-2"
+            data-bs-toggle="tab"
+            role="tab"
+            href="#kt_tab_list_user"
+            hx-get="{% url 'users:list_user' %}"
+			hx-trigger="refresh_table from:body, click"
+			hx-swap="innerHTML"
+			hx-target="#kt_tab_list_user div.table-responsive"
+        >
+            <i class="ki-outline ki-bank fs-2"></i>
+            {% trans 'Liste des utilisateurs' %}
+        </a>
+    </li>
+    <li class="nav-item mt-2" role="presentation">
+        <a class="nav-link pb-4 d-flex align-items-center gap-2"
+            data-bs-toggle="tab"
+            role="tab"
+            href="#kt_tab_performance_b2b"
+            hx-get="{% url 'users:performance_b2b_user' %}"
+			hx-swap="innerHTML"
+            hx-trigger="refresh_table from:body, click"
+            hx-target="#kt_tab_performance_b2b div.table-responsive" 
+        >
+            <i class="ki-outline ki-profile-user fs-2"></i>
+            {% trans 'Performance B2B' %}
+        </a>
+    </li>
+	<li class="nav-item mt-2" role="presentation">
+        <a class="nav-link pb-4 d-flex align-items-center gap-2"
+            data-bs-toggle="tab"
+            role="tab"
+            href="#kt_tab_performance_b2c"
+            hx-get="{% url 'users:performance_b2c_user' %}"
+			hx-swap="innerHTML"
+            hx-trigger="refresh_table from:body, click"
+            hx-target="#kt_tab_performance_b2c div.table-responsive" 
+        >
+            <i class="ki-outline ki-profile-user fs-2"></i>
+            {% trans 'Performance B2C' %}
+        </a>
+    </li>
+</ul>
+
+
+
+{% include "snippets/toolbar.html" %}
+<div class="d-flex flex-column flex-lg-row">
+    <div class="flex-lg-row-fluid ">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade active show" id="kt_tab_list_user" role="tabpanel">
+                <div class="card-body pt-0 table-responsive table-container" id="tableContainer">
+                    {% render_table table %}
+                </div>
+            </div>	
+            <div class="tab-pane fade" id="kt_tab_performance_b2b" role="tabpanel">
+                <div class="card-body pt-0 table-responsive table-container" id="tableContainer">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_performance_b2c" role="tabpanel">
+                <div class="card-body pt-0 table-responsive table-container" id="tableContainer">
+                </div>
+            </div>						
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

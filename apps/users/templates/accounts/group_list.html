@@ -1,0 +1,37 @@
+{% extends "layout/base.html" %}
+
+{% load render_table from django_tables2 %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+    {% include 'snippets/_breadcrumb.html' %}
+        <div class="d-flex align-items-end gap-2">
+			{% if perms.auth.add_group  %}
+				<button 
+					class="btn btn-primary d-flex align-items-end gap-2 shadow"
+					data-bs-toggle="modal"
+					data-bs-target="#kt_modal"
+					hx-get="{% url 'users:create_group' %}"
+					hx-target="#kt_modal_content"
+					hx-swap="innerHTML"
+				>
+					<i class="ki-duotone ki-plus fs-4"></i>
+					<span class="fw-semibold">{% trans 'Role' %}</span>
+				</button>
+			{% endif %}
+        </div>
+</div>
+{% include "snippets/toolbar.html" %}
+
+<div id="contactTable" 
+    class="table-responsive table-container"
+    hx-get="{% url 'users:grouplist' %}"
+    hx-trigger="refresh_table from:body"
+    hx-swap="innerHTML"
+    hx-target="closest .table-responsive"
+>
+	{% render_table table %}
+</div>
+{% endblock content %}

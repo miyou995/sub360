@@ -1,0 +1,91 @@
+
+{% load i18n %}
+{% load widget_tweaks %}
+{% csrf_token %}
+
+<div class="modal-body scroll-y mx-5 mx-xl-15 mb-7">
+    <form 
+        id="sg_create_store_form"  
+        class="form"    
+        {% if form.instance.id %}
+             hx-post= "{% url 'users:update_group' form.instance.id %}"
+        {% else %}
+             hx-post= "{% url 'users:create_group' %}"
+        {% endif %}       
+        hx-target="#kt_modal_content"
+        novalidate
+    >
+        {% csrf_token %}
+        <div class="mb-13 text-center">
+            <h1 class="mb-3">{% trans "Create Role" %}</h1>
+        </div>
+        {% with WIDGET_ERROR_CLASS='is-invalid' %}         
+            {% for field in form %}
+                {% if field.name == "permissions" %}
+                    <div class="table-responsive">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5">
+                            <tbody class="text-gray-600 fw-semibold">
+                                {% for model, perms in permissions.items %}
+                                <tr>  
+                                    <td class="text-gray-800">
+                                        {{ model }}
+                                    </td>
+                                    <td>
+                                        <!-- Container for the "Select All" checkbox -->
+                                        <div class="select-all-container mb-2">
+                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-8">
+                                                <input class="form-check-input select-all" type="checkbox" onclick="toggleSelectAll(this, '{{ model }}')">
+                                                <span class="form-check-label">Select All</span>
+                                            </label>
+                                        </div>
+                            
+                                        <!-- Container for individual permission checkboxes -->
+                                        <div class="permissions-container">
+                                            {% for perm in perms %}
+                                                <label class="form-check form-check-sm form-check-custom form-check-solid me-5 me-lg-8">
+                                                    <input class="form-check-input perm-checkbox-{{ model }}" type="checkbox" value="{{ perm.id }}" name="permissions" {% if perm in form.initial.permissions %}checked{% endif %}>
+                                                    <span class="form-check-label">{{ perm.name }}</span>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span {%  if field.field.required %}class="required"{% endif %}>{{ field.label }}</span>
+                        </label>
+                        {% render_field field class='form-control' %}
+                        {% if field.errors %}
+                            <span class="form-check-label fw-semibold text-danger">{{ field.errors }}</span>
+                        {% else %}
+                            {{ field.help_text }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                    
+            {% endfor %} 
+        {% endwith %}       
+        <div class="text-center">   
+            <button type="reset"  class="btn btn-light me-3" data-bs-dismiss="modal">{% trans "Annulé" %}</button>
+            {% include 'snippets/_submit_button.html' %}
+        </div>
+    </form>
+</div>
+
+
+<script>
+    function toggleSelectAll(selectAllCheckbox, model) {
+        // Get all checkboxes related to the current model
+        const checkboxes = document.querySelectorAll('.perm-checkbox-' + model);
+        
+        // Set the checked state of each checkbox to match the "Select All" checkbox
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
+</script>
