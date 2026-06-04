@@ -1,0 +1,368 @@
+{% extends "layout/base.html" %}
+{% load custom_filters %}
+ 
+{% load static %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+    {% include 'snippets/_breadcrumb.html' %}
+    <div class="d-flex align-items-end gap-2">
+
+        {% if perms.users.change_user %}
+            <a  
+                href="#" 
+                class="btn btn-primary btn-sm"
+                data-bs-toggle="modal" 
+                data-bs-target="#kt_modal"
+                data-bs-placement="right" 
+                data-bs-toggle="tooltip" 
+				hx-get="{% url 'users:update_user' user.pk %}"
+                hx-target="#kt_modal_content" 
+                hx-swap="innerHTML">
+                <i class="ki-solid ki-notepad-edit fs-2"></i> 
+                {% translate "Modifier" %}
+            </a>
+        {% endif %}
+		{% if perms.users.delete_user %}
+			<a  class="btn btn-sm btn-danger"
+				hx-get="{% url 'users:delete_user' user.pk %}"
+				hx-target="#delete_modal_body"
+				hx-swap="innerHTML"
+				data-bs-toggle="modal"
+				data-bs-target="#delete_modal"
+			>
+				<i class="ki-solid ki-trash fs-2"></i> 
+				{% translate "Supprimer" %}
+			</a>
+		{% endif %}
+        
+    </div>
+</div>
+<div class="d-flex flex-column flex-lg-row gap-6">
+    {# ── Sticky sidebar ── #}
+    <div class="flex-column flex-lg-row-auto w-lg-250px w-xl-280px">
+        <div class="card" style="position: sticky; top: 20px;">
+            <div class="card-body p-6">
+
+                {# Avatar + name + status #}
+                <div class="d-flex flex-column align-items-center text-center mb-5">
+                    {% if user.picture %}
+                        <div class="symbol symbol-65px symbol-circle mb-3">
+                            <img src="{{ user.picture.url }}" alt="{{ user.full_name }}" />
+                        </div>
+                    {% else %}
+                        <div class="symbol symbol-65px symbol-circle mb-3">
+                            <div class="symbol-label fs-2 fw-semibold text-danger text-uppercase">{{ user.full_name|slice:2 }}</div>
+                        </div>
+                    {% endif %}
+                    <a href="{{ user.get_absolute_url }}" class="fs-5 text-gray-800 text-hover-primary fw-bold">{{ user.full_name }}</a>
+                    <div class="mt-1">
+                        <span class="badge badge-{{ user.is_active|yesno:'success,danger' }}">{{ user.is_active|yesno:"Actif,Non Actif" }}</span>
+                    </div>
+                </div>
+
+                {# Compact stats row #}
+                <div class="d-flex justify-content-around border border-gray-200 border-dashed rounded p-3 mb-5">
+                    <div class="text-center" data-bs-toggle="tooltip" title="{% translate 'Catégorie de segment' %}">
+                        <div class="fs-5 fw-bold text-gray-700">{{ user.potentiel|default:'-' }}</div>
+                        <div class="fs-8 text-muted">{% translate "CAT" %}</div>
+                    </div>
+                    <div class="text-center border-start border-gray-200" data-bs-toggle="tooltip" title="{% translate 'CA réalisé cette année' %}">
+                        <div class="fs-5 fw-bold text-gray-700 ps-3">{{ user.projects_count|default:'0' }}</div>
+                        <div class="fs-8 text-muted ps-3">{% translate "Réalisé" %}</div>
+                    </div>
+                    <div class="text-center border-start border-gray-200">
+                        <div class="fs-5 fw-bold text-gray-700 ps-3">{{ user.annual_goal|default:'0' }}</div>
+                        <div class="fs-8 text-muted ps-3">{% translate "Objectif" %}</div>
+                    </div>
+                </div>
+
+                {# Tags #}
+                <div class="mb-4">
+                    <span class="text-muted fs-8 fw-semibold text-uppercase ls-1">{% translate "Tags" %}</span>
+                    <div class="mt-1">
+                        {% for tag in user.tags.all %}
+                            <span class="badge badge-light-info me-1 mb-1">{{ tag }}</span>
+                        {% empty %}
+                            <span class="text-muted fs-7">—</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="separator mb-4"></div>
+
+                {# Compact info list #}
+                <div class="fs-7">
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Superviseur" %}</span>
+                        <span class="text-gray-700"><a href="{{ user.supervisor.get_absolute_url|default_if_none:'#' }}">{{ user.supervisor|default_if_none:'—' }}</a></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Tél." %}</span>
+                        <span class="text-gray-700"><a href="tel:{{ user.phone }}">{{ user.phone|default_if_none:'—' }}</a></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Email" %}</span>
+                        <span class="text-gray-700 text-truncate ms-2" style="max-width:160px;"><a href="mailto:{{ user.email }}">{{ user.email }}</a></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-start py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold flex-shrink-0">{% translate "Adresse" %}</span>
+                        <span class="text-gray-700 text-end ms-2">{{ user.address|default_if_none:'—' }}</span>
+                    </div>
+
+                    {# Boolean flags — inline badges #}
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Commercial" %}</span>
+                        <span class="badge badge-{{ user.is_commercial|yesno:'success,danger' }}">{{ user.is_commercial|yesno:"Oui,Non" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Équipe" %}</span>
+                        <span class="badge badge-{{ user.is_staff|yesno:'success,danger' }}">{{ user.is_staff|yesno:"Oui,Non" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-gray-100">
+                        <span class="text-muted fw-semibold">{% translate "Super User" %}</span>
+                        <span class="badge badge-{{ user.is_superuser|yesno:'success,danger' }}">{{ user.is_superuser|yesno:"Oui,Non" }}</span>
+                    </div>
+
+                    {# Roles #}
+                    <div class="d-flex justify-content-between align-items-start py-2">
+                        <span class="text-muted fw-semibold flex-shrink-0">{% translate "Rôles" %}</span>
+                        <div class="text-end ms-2">
+                            {% for groupe in user.groups.all %}
+                                <span class="badge badge-light-info me-1 mb-1">{{ groupe }}</span>
+                            {% empty %}
+                                <span class="text-muted">—</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator my-4"></div>
+
+                {# Password row #}
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fs-7 fw-bold text-gray-700">{% translate "Mot de passe" %}</span>
+                    {% if perms.users.change_user %}
+                        <a href="#"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kt_modal"
+                            hx-get="{% url 'users:change_password' user.pk %}"
+                            hx-target="#kt_modal_content"
+                            hx-swap="innerHTML"
+                            class="btn btn-sm btn-light-primary py-1 px-3">
+                            <i class="fas fa-key fs-7 me-1"></i>{% translate "Modifier" %}
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="flex-fill">
+		<div id="kt_app_content" class="card">
+			<div id="kt_app_content_container" class="app-container container-fluid">
+                <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
+					{% if perms.appointment.view_appointment %}
+						<li class="nav-item">
+							<a class="nav-link text-active-primary pb-4 active" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#kt_view_appointment_tab">
+								{% translate "Rendez-vous" %} 											
+							</a>
+                    	</li>
+					{% endif %}
+					{% if perms.leads.view_b2blead %}
+						<li class="nav-item">
+							<a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#kt_view_b2b_leads_tab">
+
+								{% translate "B2B Historique" %} 											
+								<span class="badge badge-secondary">{{ b2b_leads_count }}</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if perms.leads.view_b2clead %}
+						<li class="nav-item">
+							<a class="nav-link text-active-primary pb-4 " data-bs-toggle="tab" href="#kt_view_b2c_leads_tab">
+								{% translate "B2C Historique" %} 											
+								<span class="badge badge-secondary">{{ contacts_count }}</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if perms.auth.view_permission %}
+						<li class="nav-item">
+							<a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#kt_view_permissions_tab">
+								{% translate "Permissions" %} 											
+								{% comment %} <span class="badge badge-secondary"> 4 </span> {% endcomment %}
+							</a>
+						</li>
+					{% endif %}
+					{% if perms.finance.view_salaryconfig %}
+						<li class="nav-item">
+							<a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#kt_view_salary_tab">
+								{% translate "Salaire" %}
+								{% if salary_config %}
+									<span class="badge badge-light-success">{% translate "Actif" %}</span>
+								{% endif %}
+							</a>
+						</li>
+					{% endif %}
+                </ul>
+                <!-- Tab Content Placeholder -->
+                <div class="tab-content">
+					{% if perms.appointment.view_appointment %}
+						<div class="tab-pane fade show active" id="kt_view_appointment_tab">
+							<div class="h-100">
+								<div
+									hx-get="{% url 'appointment:user_appointment_calendar' user.pk %}"
+									hx-trigger="refresh_table from:body, load"
+									hx-swap="innerHTML"
+									>
+								{% include "snippets/appointment_calender.html" %}
+								</div>
+							</div>
+						</div>
+					{% endif %}
+					<div class="tab-pane fade" id="kt_view_b2b_leads_tab">
+						{% if user.is_commercial %}
+							<div class="ps-5 mb-xl-3">
+								<div class="d-flex flex-wrap gap-5">
+									<div class="border border-gray-300 border-dashed rounded min-w-125px  py-3 px-4 me-6 mb-3">
+										<div class="d-flex align-items-center">
+											<div class="fs-4 fw-bold counted"> {{ b2b_perfs.annual_goal|floatformat:0 }} {% translate "DZD" %}</div>
+										</div>
+										<div class="fw-semibold fs-6 text-gray-500">{% translate "Objectif" %} {% now "Y" %}</div>
+									</div>
+									<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+										<div class="d-flex align-items-center">
+											<span class="badge badge-light-info fs-base">
+												{% comment %} <i class="ki-outline ki-arrow-up fs-5 text-success ms-n1"></i> {% endcomment %}
+												{{ b2b_perfs.annual_progress|floatformat:0 }}%
+											</span>											
+											<div class="fs-4 fw-bold counted"> {{ b2b_perfs.annual_realisation|floatformat:0 }} {% translate "DZD" %}</div>
+										</div>
+										<div class="fw-semibold fs-6 text-gray-500">{% translate "Réalisation" %} {% now "Y" %}</div>
+									</div>
+									<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+										<div class="d-flex align-items-center">
+											<div class="fs-4 fw-bold counted">{{ b2b_perfs.monthly_goal|floatformat:0 }} {% translate "DZD" %}</div>
+										</div>
+										<div class="fw-semibold fs-6 text-gray-500">{% translate "Objectif" %} {% now "F" %}</div>
+									</div>
+									<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+										<div class="d-flex align-items-center">
+											<span class="badge badge-light-info fs-base">
+												{% comment %} <i class="ki-outline ki-arrow-up fs-5 text-success ms-n1"></i>  {% endcomment %}
+												{{ b2b_perfs.monthly_progress|floatformat:0 }}%
+											</span>
+											<div class="fs-4 fw-bold counted">{{ b2b_perfs.monthly_realisation|floatformat:0 }} {% translate "DZD" %}</div>
+										</div>
+										<div class="fw-semibold fs-6 text-gray-500">{% translate "Réalisation" %} {% now "F" %}</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+						{% if perms.leads.view_b2blead %}
+							<div class="table-responsive table-container"
+								hx-get="{% url 'leads:user_b2blead_state' user.pk %}"
+								hx-trigger="revealed"
+								hx-swap="innerHTML"
+								hx-target="this"
+							>
+							</div>
+						{% endif %}
+                    </div>
+					{% if perms.leads.view_b2clead %}
+						<div class="tab-pane fade" id="kt_view_b2c_leads_tab">
+							<div class="table-responsive table-container"
+								hx-get="{% url 'leads:user_b2clead_state' user.pk %}"
+								hx-trigger="revealed"
+								hx-swap="innerHTML"
+								hx-target="this"
+							>
+							</div>
+						</div>
+					{% endif %}
+					{% if perms.auth.view_permission %}
+						<div class="tab-pane fade" id="kt_view_permissions_tab">
+							<form class="form" action="{% url 'users:detail_user' user.pk %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="my_user" value="{{ user.pk }}">
+								<div class="card shadow-sm pt-4 mb-6 mb-xl-9">
+									<div class="card-header mt-6">
+										<div class="card-title flex-column">
+											<h2 class="mb-1">{% translate 'Permission' %}</h2>
+										</div>
+										<div class="card-toolbar">
+											{% include 'snippets/_submit_button.html' %}
+										</div>
+									</div>
+									<div class="card-body pt-0 pb-5">
+										<div class="table-responsive">
+											<table class="table align-middle table-row-dashed fs-6 gy-5">
+												<tbody class="text-gray-600 fw-semibold">
+													{% for model, perms in permissions.items %}
+														<tr>
+															<td class="text-gray-800 align-top pt-5" style="width: 200px;">
+																{{ model }}
+																<div class="form-check mt-2">
+																	<label class="form-check-label small">{% translate "Select" %} {{ model }}
+																		<input type="checkbox" class="form-check-input select-all" data-target="group-{{ forloop.counter }}">
+																	</label>
+																</div>
+															</td>
+															<td>
+																<div class="d-flex flex-wrap gap-3 group-{{ forloop.counter }}">
+																	{% for perm in perms %}
+																		<label class="form-check form-check-sm form-check-custom form-check-solid me-4">
+																			<input class="form-check-input" type="checkbox" value="{{ perm.id|unlocalize }}" name="perms"
+																				{% if perm in user_permissions %}checked{% endif %}>
+																			<span class="form-check-label">{{ perm.name }}</span>
+																		</label>
+																	{% endfor %}
+																</div>
+															</td>
+														</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+			
+											<div class="text-center pt-15">
+												<div class="card-toolbar">
+													{% include 'snippets/_submit_button.html' %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					{% endif %}
+
+					{# ── Salary Tab ── #}
+					{% if perms.finance.view_salaryconfig %}
+						<div class="tab-pane fade" id="kt_view_salary_tab">
+							{% include "accounts/user_salary.html" %}
+						</div>
+					{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="reload_page" value="true">
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		document.querySelectorAll(".select-all").forEach(function (checkbox) {
+			checkbox.addEventListener("change", function () {
+				const groupClass = this.dataset.target;
+				const checkboxes = document.querySelectorAll("." + groupClass + " input[type='checkbox']");
+				checkboxes.forEach(cb => cb.checked = this.checked);
+			});
+		});
+	});
+</script>
+{% endblock content %}

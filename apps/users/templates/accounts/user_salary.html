@@ -1,0 +1,580 @@
+{# ── Billing Overview Stats ── #}
+<div class="row g-4 mb-6">
+    <div class="col-md-3">
+        <div class="card shadow-sm bg-light-primary border-0 h-100">
+            <div class="card-body py-4 text-center d-flex flex-column justify-content-center">
+                <div class="fs-2 fw-bolder text-gray-800">{{ user_total_billed|floatformat:0 }} DZD</div>
+                <div class="fw-semibold text-muted fs-7">{% translate "Total Billed (projects)" %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm bg-light-success border-0 h-100">
+            <div class="card-body py-4 text-center d-flex flex-column justify-content-center">
+                <div class="fs-2 fw-bolder text-success">{{ user_total_paid|floatformat:0 }} DZD</div>
+                <div class="fw-semibold text-muted fs-7">{% translate "Total Paid (projects)" %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm bg-light-warning border-0 h-100">
+            <div class="card-body py-4 text-center d-flex flex-column justify-content-center">
+                <div class="fs-2 fw-bolder text-warning">{{ user_total_rest|floatformat:0 }} DZD</div>
+                <div class="fw-semibold text-muted fs-7">{% translate "Remaining to Collect (projects)" %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm bg-light-info border-0 h-100">
+            <div class="card-body py-4 text-center d-flex flex-column justify-content-center">
+                <div class="fs-2 fw-bolder text-info">{{ total_staff_payments|floatformat:0 }} DZD</div>
+                <div class="fw-semibold text-muted fs-7">{% translate "Total Payments (all)" %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── Commission Summary ── #}
+<div class="row g-4 mb-6">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-success border-3 h-100">
+            <div class="card-body py-4 d-flex align-items-center gap-3">
+                <div class="symbol symbol-50px symbol-circle bg-light-success">
+                    <span class="symbol-label"><i class="fa fa-check-circle fs-2x text-success"></i></span>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bolder text-success">{{ total_commission_earned|floatformat:0 }} {% translate "DZD" %}</div>
+                    <div class="fw-semibold text-muted fs-7">{% translate "Commission Earned" %}</div>
+                    <span class="text-muted fs-9">{% translate "On payments already received" %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-warning border-3 h-100">
+            <div class="card-body py-4 d-flex align-items-center gap-3">
+                <div class="symbol symbol-50px symbol-circle bg-light-warning">
+                    <span class="symbol-label"><i class="fa fa-hourglass-half fs-2x text-warning"></i></span>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bolder text-warning">{{ total_commission_remaining|floatformat:0 }} {% translate "DZD" %}</div>
+                    <div class="fw-semibold text-muted fs-7">{% translate "Commission Pending" %}</div>
+                    <span class="text-muted fs-9">{% translate "Will be paid as collections are received" %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-info border-3 h-100">
+            <div class="card-body py-4 d-flex align-items-center gap-3">
+                <div class="symbol symbol-50px symbol-circle bg-light-info">
+                    <span class="symbol-label"><i class="fa fa-money-bill-wave fs-2x text-info"></i></span>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bolder text-info">{{ staff_commission_payments|floatformat:0 }} {% translate "DZD" %}</div>
+                    <div class="fw-semibold text-muted fs-7">{% translate "Commission Paid" %}</div>
+                    <span class="text-muted fs-9">{% translate "Payments related to commissions" %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-{% if commission_balance > 0 %}danger{% else %}success{% endif %} border-3 h-100">
+            <div class="card-body py-4 d-flex align-items-center gap-3">
+                <div class="symbol symbol-50px symbol-circle bg-light-{% if commission_balance > 0 %}danger{% else %}success{% endif %}">
+                    <span class="symbol-label"><i class="fa fa-balance-scale fs-2x text-{% if commission_balance > 0 %}danger{% else %}success{% endif %}"></i></span>
+                </div>
+                <div>
+                    <div class="fs-2 fw-bolder text-{% if commission_balance > 0 %}danger{% else %}success{% endif %}">{{ commission_balance|floatformat:0 }} {% translate "DZD" %}</div>
+                    <div class="fw-semibold text-muted fs-7">{% translate "Commission Balance" %}</div>
+                    <span class="text-muted fs-9">{% translate "Earned − should be Paid" %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── Salary Configuration Card ── #}
+<div class="card shadow-sm mb-6">
+    <div class="card-header d-flex align-items-center">
+        <h4 class="card-title mb-0">{% translate "Configuration Salariale" %}</h4>
+        <div class="ms-auto">
+            {% if salary_config %}
+                {% if perms.finance.change_salaryconfig %}
+                    <a  hx-get="{% url 'finance:update_salaryconfig' salary_config.pk %}" class="btn btn-sm btn-light-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#kt_modal"
+                        hx-target="#kt_modal_content"
+                        hx-swap="innerHTML">
+                        <i class="ki-solid ki-notepad-edit fs-5"></i> {% translate "Modifier" %}
+                    </a>
+                {% endif %}
+            {% else %}
+                    {% if perms.finance.add_salaryconfig %}
+                        <a  hx-get="{% url 'finance:create_salaryconfig' %}?staff={{ user.pk }}" class="btn btn-sm btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kt_modal"
+                            hx-target="#kt_modal_content"   
+                            hx-swap="innerHTML">
+                            <i class="ki-duotone ki-plus fs-5"></i> {% translate "Créer une configuration" %}
+                        </a>
+                    {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body">
+        {% if salary_config %}
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-3 px-4">
+                        <div class="fs-3 fw-bold text-gray-800">{{ salary_config.fixed_salary|floatformat:0 }} {% translate "DZD" %}</div>
+                        <div class="fw-semibold text-muted fs-7">{% translate "Salaire Fixe" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-3 px-4">
+                        <div class="fs-3 fw-bold text-gray-800">{{ salary_config.tiers.count }}</div>
+                        <div class="fw-semibold text-muted fs-7">{% translate "Paliers de commission" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-3 px-4">
+                        <div class="fs-3 fw-bold">
+                            <span class="badge badge-lg badge-{{ salary_config.is_active|yesno:'success,danger' }}">
+                                {{ salary_config.is_active|yesno:"Actif,Inactif" }}
+                            </span>
+                        </div>
+                        <div class="fw-semibold text-muted fs-7">{% translate "Statut" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-3 px-4">
+                        <div class="fs-5 fw-bold text-gray-800">
+                            {% if salary_config.effective_from %}{{ salary_config.effective_from|date:"d/m/Y" }}{% else %}—{% endif %}
+                            →
+                            {% if salary_config.effective_to %}{{ salary_config.effective_to|date:"d/m/Y" }}{% else %}{% translate "Indéfini" %}{% endif %}
+                        </div>
+                        <div class="fw-semibold text-muted fs-7">{% translate "Période" %}</div>
+                    </div>
+                </div>
+            </div>
+
+            {# Tier table #}
+            {% if salary_tiers %}
+                <h6 class="fw-bold text-muted mb-3">{% translate "Paliers de Commission" %}</h6>
+                <div class="table-responsive">
+                    <table class="table table-row-dashed table-row-gray-300 gy-4">
+                        <thead>
+                            <tr class="fw-semibold text-muted">
+                                <th>{% translate "Objectif Minimum" %}</th>
+                                <th>{% translate "Taux Commission" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tier in salary_tiers %}
+                                <tr>
+                                    <td class="fw-bold">{{ tier.min_revenue|floatformat:0 }} {% translate "DZD" %}</td>
+                                    <td><span class="badge badge-light-primary fs-7">{{ tier.commission_rate }}%</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-10">
+                <i class="ki-duotone ki-setting-2 fs-3x text-muted mb-4"></i>
+                <p class="text-muted fs-6">{% translate "Aucune configuration salariale pour ce membre." %}</p>
+                
+                {% if perms.finance.add_salaryconfig %}
+                    <a  href="{% url 'finance:create_salaryconfig' %}" class="btn btn-sm btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#kt_modal"
+                        hx-get="{% url 'finance:create_salaryconfig' %}"
+                        hx-target="#kt_modal_content"
+                        hx-swap="innerHTML">
+                        <i class="ki-duotone ki-plus fs-5"></i> {% translate "Créer une configuration" %}
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{# ── Salary Payments (no commission) ── #}
+{% if staff_payment_salary %}
+<div class="card shadow-sm mb-6">
+    <div class="card-header d-flex align-items-center">
+        <div class="d-flex align-items-center gap-3">
+            <div class="symbol symbol-40px symbol-circle bg-light-info">
+                <span class="symbol-label"><i class="fa fa-money-bill-wave fs-4 text-info"></i></span>
+            </div>
+            <div>
+                <h4 class="card-title mb-0">{% translate "Versements salariaux sans commission" %}</h4>
+                <span class="text-muted fs-7">{{ staff_payment_salary|length }} {% translate "versement(s)" %}</span>
+            </div>
+        </div>
+        <div class="ms-auto">
+            {% if perms.finance.add_staffpayment %}
+            <a hx-get="{% url 'finance:create_staffpayment'  %}"
+               data-bs-toggle="modal"
+               data-bs-target="#kt_modal"
+               hx-target="#kt_modal_content"
+               hx-swap="innerHTML"
+               class="btn btn-sm btn-light-info">
+                <i class="ki-duotone ki-plus fs-5"></i> {% translate "Ajouter" %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle gy-3 gs-6 mb-0">
+                <thead class="table-light">
+                    <tr class="fw-semibold text-muted fs-7 text-uppercase">
+                        <th>{% translate "Date" %}</th>
+                        <th class="text-end">{% translate "Montant" %}</th>
+                        <th>{% translate "Type" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in staff_payment_salary %}
+                    <tr>
+                        <td class="text-muted fs-7 text-nowrap">{{ payment.date|date:"d/m/Y" }}</td>
+                        <td class="text-end fw-bold text-info">{{ payment.amount|floatformat:0 }} DZD</td>
+                        <td>
+                            <span class="badge badge-light-secondary fs-8">{{ payment.get_type_display }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="border-top border-gray-200">
+                    <tr class="fw-bold fs-7 bg-light">
+                        <td class="text-end text-muted py-3">{% translate "Total" %}</td>
+                        <td class="text-end text-info py-3">{{ staff_salary_total|floatformat:0 }} DZD</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+{# ── Per-Config Period Commission History ── #}
+{% if config_periods %}
+    {% for period in config_periods %}
+    {% if period.monthly_history %}
+    <div class="card shadow-sm mb-6">
+        <div class="card-header">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="me-3">
+                    <h4 class="card-title mb-0 d-flex align-items-center gap-2">
+                        <i class="fa fa-calendar-alt text-primary"></i>
+                        {% translate "Historique des Commissions" %}
+                        <span class="text-muted fs-7 ms-2">
+                            {% if period.effective_from %}{{ period.effective_from|date:"d/m/Y" }}{% else %}—{% endif %}
+                            →
+                            {% if period.effective_to %}{{ period.effective_to|date:"d/m/Y" }}{% else %}{% translate "Indéfini" %}{% endif %}
+                        </span>
+                    </h4>
+                    <p class="text-muted small mb-0 mt-1">
+                        {% translate "Taux" %}: <span class="badge badge-light-primary">{{ period.commission_rate }}%</span>
+                        · {{ period.bills_count }} {% translate "factures" %}
+                        · {% translate "CA" %}: {{ period.total_billed|floatformat:0 }} DZD
+                        · {% translate "Encaissé" %}: {{ period.total_paid|floatformat:0 }} DZD
+                        · {% translate "Commission" %}: {{ period.total_commission|floatformat:0 }} DZD
+                    </p>
+                </div>
+                <div class="d-flex gap-2 ">
+                    {% if perms.finance.change_salaryconfig %}
+                        <a  hx-get="{% url 'finance:update_salaryconfig' period.config.pk %}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kt_modal"
+                            hx-target="#kt_modal_content"
+                            hx-swap="innerHTML"
+                            class="btn btn-sm btn-primary">
+                            <i class="ki-solid ki-notepad-edit fs-5"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if perms.finance.add_staffpayment and period.commission_balance > 0 %}
+                    <a  hx-get="{% url 'finance:create_staffpayment' %}?salary_config={{ period.config.pk }}&staff_member={{ user.pk }}&amount={{ period.commission_balance }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#kt_modal"
+                        hx-target="#kt_modal_content"
+                        hx-swap="innerHTML"
+                        class="btn btn-sm btn-success">
+                        <i class="fa fa-money-bill-wave me-1 fs-7"></i> {% translate "Verser commission" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {# ── Period commission balance strip ── #}
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-2 px-3 text-center">
+                        <div class="fs-5 fw-bold text-success">{{ period.total_commission|floatformat:0 }} DZD</div>
+                        <div class="text-muted fs-8">{% translate "Commission acquise" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-2 px-3 text-center">
+                        <div class="fs-5 fw-bold text-info">{{ period.staff_payments_total|floatformat:0 }} DZD</div>
+                        <div class="text-muted fs-8">{% translate "Déjà versé" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-2 px-3 text-center">
+                        <div class="fs-5 fw-bold text-{% if period.commission_balance > 0 %}danger{% else %}success{% endif %}">
+                            {{ period.commission_balance|floatformat:0 }} DZD
+                        </div>
+                        <div class="text-muted fs-8">{% translate "Reste à verser" %}</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="border border-gray-300 border-dashed rounded py-2 px-3 text-center">
+                        {% widthratio period.staff_payments_total period.total_commission 100 as paid_pct %}
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <div class="progress w-75" style="height: 8px;">
+                                <div class="progress-bar {% if paid_pct >= 100 %}bg-success{% elif paid_pct >= 50 %}bg-primary{% else %}bg-warning{% endif %}"
+                                     role="progressbar" style="width: {% if period.total_commission > 0 %}{{ paid_pct }}{% else %}0{% endif %}%"></div>
+                            </div>
+                            <span class="fs-7 fw-bold">{% if period.total_commission > 0 %}{{ paid_pct }}{% else %}0{% endif %}%</span>
+                        </div>
+                        <div class="text-muted fs-8">{% translate "Avancement versement" %}</div>
+                    </div>
+                </div>
+            </div>
+            {# ── List of staff payments for this period ── #}
+            {% if period.staff_payments %}
+            <div class="mt-3">
+                <h6 class="fw-semibold  fs-7 mb-2">{% translate "Versements effectués pour cette période" %}</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-row-dashed gy-2 gs-4 mb-0">
+                        <thead>
+                            <tr class="fw-semibold  fs-8 text-uppercase">
+                                <th>{% translate "Date" %}</th>
+                                <th class="text-end">{% translate "Montant" %}</th>
+                                <th>{% translate "Compte" %}</th>
+                                <th>{% translate "Notes" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sp in period.staff_payments %}
+                            <tr>
+                                <td class="fs-7">{{ sp.date|date:"d/m/Y" }}</td>
+                                <td class="text-end fw-bold text-info">{{ sp.amount|floatformat:0 }} DZD</td>
+                                <td class="fs-7">{{ sp.account|default:"—" }}</td>
+                                <td class="fs-8">{{ sp.notes|default:"—"|truncatewords:10 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-body pt-2">
+            <div class="accordion" id="periodAccordion_{{ forloop.parentloop.counter }}">
+                {% for month in period.monthly_history %}
+                <div class="accordion-item border rounded mb-3 overflow-hidden">
+                    <h2 class="accordion-header" id="pHeading_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
+                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} py-4 px-5"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#pCollapse_{{ forloop.parentloop.counter }}_{{ forloop.counter }}"
+                                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                                aria-controls="pCollapse_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
+                            <div class="d-flex w-100 justify-content-between align-items-center pe-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa fa-calendar-day text-muted"></i>
+                                    <span class="fw-bold fs-5 text-capitalize">{{ month.month_label|date:"F Y" }}</span>
+                                </div>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <span class="badge badge-light-primary px-3 py-2 fs-8">
+                                        <i class="fa fa-coins me-1 fs-9"></i>{{ month.total_amount|floatformat:0 }} DZD
+                                    </span>
+                                    <span class="badge badge-light-success px-3 py-2 fs-8">
+                                        <i class="fa fa-percentage me-1 fs-9"></i>{{ month.total_commission|floatformat:0 }} DZD
+                                    </span>
+                                    <span class="badge badge-circle badge-sm badge-light-secondary" title="{% translate 'paiements' %}">
+                                        {{ month.payments|length }}
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="pCollapse_{{ forloop.parentloop.counter }}_{{ forloop.counter }}"
+                            class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                            aria-labelledby="pHeading_{{ forloop.parentloop.counter }}_{{ forloop.counter }}"
+                            data-bs-parent="#periodAccordion_{{ forloop.parentloop.counter }}">
+                        <div class="accordion-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle gy-3 gs-6 mb-0">
+                                    <thead class="table-light">
+                                        <tr class="fw-semibold text-muted fs-7 text-uppercase">
+                                            <th>{% translate "Dernier paiement" %}</th>
+                                            <th>{% translate "Facture" %}</th>
+                                            <th>{% translate "Client" %}</th>
+                                            <th class="text-end">{% translate "Total Facture" %}</th>
+                                            <th class="text-end">{% translate "Payé ce mois" %}</th>
+                                            <th class="text-end">{% translate "Total Payé" %}</th>
+                                            <th class="text-end">{% translate "Reste" %}</th>
+                                            <th class="text-center">{% translate "Taux" %}</th>
+                                            <th class="text-end">{% translate "Commission" %}</th>
+                                            <th style="width:130px">{% translate "Avancement" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for p in month.payments %}
+                                            {% widthratio p.bill_paid_amount p.bill.cached_total_to_pay 100 as bill_pct %}
+                                            <tr {% if p.rate == 0 %}class="text-muted"{% endif %}>
+                                                <td class="text-muted fs-7 text-nowrap">{{ p.last_date|date:"d/m/Y" }}</td>
+                                                <td class="fw-semibold">
+                                                    <a href="{{ p.bill.get_absolute_url }}" class="text-gray-800 text-hover-primary">{{ p.bill }}</a>
+                                                </td>
+                                                <td>{{ p.company|default:"—" }}</td>
+                                                <td class="text-end fw-bold">{{ p.bill.cached_total_to_pay|floatformat:0 }} DZD</td>
+                                                <td class="text-end {% if p.rate > 0 %}text-success fw-bold{% endif %}">{{ p.amount|floatformat:0 }} DZD</td>
+                                                <td class="text-end text-success">{{ p.bill_paid_amount|floatformat:0 }} DZD</td>
+                                                <td class="text-end text-danger">{{ p.bill_rest_amount|floatformat:0 }} DZD</td>
+                                                <td class="text-center">
+                                                    {% if p.rate > 0 %}
+                                                        <span class="badge badge-light-success fs-8">{{ p.rate }}%</span>
+                                                    {% else %}
+                                                        <span class="badge badge-light-secondary fs-8">0%</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-end">
+                                                    {% if p.rate > 0 %}
+                                                        <span class="fw-bold text-success">{{ p.commission|floatformat:0 }} DZD</span>
+                                                        <div class="text-muted fs-9">{{ p.amount|floatformat:0 }} × {{ p.rate }}%</div>
+                                                    {% else %}
+                                                        <span class="text-muted">—</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="progress w-100" style="height: 8px;">
+                                                            <div class="progress-bar {% if bill_pct >= 100 %}bg-success{% elif bill_pct >= 50 %}bg-primary{% else %}bg-warning{% endif %}"
+                                                                    role="progressbar" style="width: {{ bill_pct }}%"></div>
+                                                        </div>
+                                                        <span class="fs-8 fw-semibold text-nowrap">{{ bill_pct }}%</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot class="border-top border-gray-200">
+                                        <tr class="fw-bold fs-7 bg-light">
+                                            <td colspan="4" class="text-end text-muted py-3">{% translate "Total du mois" %}</td>
+                                            <td class="text-end py-3 text-success">{{ month.total_amount|floatformat:0 }} DZD</td>
+                                            <td colspan="3"></td>
+                                            <td class="text-end text-success py-3">{{ month.total_commission|floatformat:0 }} DZD</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+{# ── Pending Bills Card ── #}
+{% if user_pending_bills %}
+<div class="card shadow-sm mb-6">
+    <div class="card-header d-flex align-items-center">
+        <div>
+            <h4 class="card-title mb-0 d-flex align-items-center gap-2">
+                <i class="fa fa-hourglass-half text-warning"></i>
+                {% translate "Factures en Attente de Paiement Client" %}
+                <span class="badge badge-light-warning ms-1">{{ user_pending_bills|length }}</span>
+            </h4>
+            <p class="text-muted small mb-0 mt-1">
+                {% translate "La commission restante sera versée quand le client paie." %}
+            </p>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle gy-3 gs-6 mb-0">
+                <thead class="table-light">
+                    <tr class="fw-semibold text-muted fs-7 text-uppercase">
+                        <th>{% translate "Facture" %}</th>
+                        <th>{% translate "Client" %}</th>
+                        <th class="text-end">{% translate "Total" %}</th>
+                        <th class="text-end">{% translate "Payé" %}</th>
+                        <th class="text-end">{% translate "Reste" %}</th>
+                        <th class="text-center">{% translate "Taux" %}</th>
+                        <th class="text-end">{% translate "Commission acquise" %}</th>
+                        <th class="text-end">{% translate "Commission restante" %}</th>
+                        <th style="width:140px">{% translate "Avancement" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pb in user_pending_bills %}
+                    {% widthratio pb.paid pb.bill_total 100 as pct %}
+                    <tr {% if pb.commission_rate == 0 %}class="text-muted"{% endif %}>
+                        <td class="fw-semibold">
+                            <a href="{{ pb.bill.get_absolute_url }}" class="text-gray-800 text-hover-primary">{{ pb.bill }}</a>
+                        </td>
+                        <td>{{ pb.company|default:"—" }}</td>
+                        <td class="text-end fw-bold">{{ pb.bill_total|floatformat:0 }} DZD</td>
+                        <td class="text-end {% if pb.commission_rate > 0 %}text-success{% endif %}">{{ pb.paid|floatformat:0 }} DZD</td>
+                        <td class="text-end text-danger">{{ pb.rest|floatformat:0 }} DZD</td>
+                        <td class="text-center">
+                            {% if pb.commission_rate > 0 %}
+                                <span class="badge badge-light-success fs-8 fw-bold">{{ pb.commission_rate }}%</span>
+                            {% else %}
+                                <span class="badge badge-light-secondary fs-8">0%</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if pb.commission_rate > 0 %}
+                                <span class="fw-bold text-success">{{ pb.commission_earned|floatformat:0 }} DZD</span>
+                                <div class="text-muted fs-9">{{ pb.paid|floatformat:0 }} × {{ pb.commission_rate }}%</div>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if pb.commission_rate > 0 %}
+                                <span class="fw-bold text-warning">{{ pb.commission_remaining|floatformat:0 }} DZD</span>
+                                <div class="text-muted fs-9">{{ pb.rest|floatformat:0 }} × {{ pb.commission_rate }}%</div>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress w-100" style="height: 8px;">
+                                    <div class="progress-bar {% if pct >= 100 %}bg-success{% elif pct >= 50 %}bg-primary{% else %}bg-warning{% endif %}"
+                                            role="progressbar" style="width: {{ pct }}%"></div>
+                                </div>
+                                <span class="fs-8 fw-semibold text-nowrap">{{ pct }}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="border-top border-gray-200">
+                    <tr class="fw-bold fs-7 bg-light">
+                        <td colspan="6" class="text-end text-muted py-3">{% translate "Totaux" %}</td>
+                        <td class="text-end text-success py-3">{{ total_commission_earned|floatformat:0 }} DZD</td>
+                        <td class="text-end text-warning py-3">{{ total_commission_remaining|floatformat:0 }} DZD</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}

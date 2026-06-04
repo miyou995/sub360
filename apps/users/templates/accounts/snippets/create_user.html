@@ -1,0 +1,93 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% csrf_token %}
+
+<div class="modal-body scroll-y mx-5 mx-xl-15 mb-7">
+    <form 
+          id="sg_create_store_form"  
+          class="form"  
+          {% if form.instance.id %}
+          hx-post="{% url 'users:update_user' form.instance.id %}" 
+          {% else %} hx-post="{% url 'users:create_user' %}"
+          {% endif %}
+          hx-target="#kt_modal_content"
+          novalidate 
+      >
+      {% if form.instance.id %}  
+            <div class="mb-13 text-center">
+              <h1 class="mb-4">{% trans "Modifier User" %}</h1>
+          </div>
+      {% else %}
+            <div class="mb-13 text-center">
+              <h1 class="mb-3">{% trans "Create Nouvel Utilisateur" %}</h1>
+            </div>          
+      {% endif %}
+        
+        {% with WIDGET_ERROR_CLASS='is-invalid' %}         
+          {% for field in form %}
+            {% if field.name == "is_active" %}
+              <div class="d-flex flex-stack mb-8">
+                <div class="me-5">
+                    <label class="fs-6 fw-semibold">{% trans "Actif" %}</label>
+                    <div class="fs-7 fw-semibold text-muted">{% trans "Précise si l’utilisateur doit être considéré comme actif. Décochez ceci plutôt que de supprimer le compte." %}</div>
+                </div>
+                <label class="form-check form-switch form-check-custom form-check-solid">
+                      {% render_field form.is_active class='form-check-input' %}
+                    <span class="form-check-label fw-semibold text-muted">{% trans "Default" %}</span>
+                </label>
+              </div>
+            {% elif field.name == "is_staff" %}
+              <div class="d-flex flex-stack mb-8">
+                <div class="me-5">
+                  <label class="fs-6 fw-semibold">{% trans "Statut Équipe" %}</label>
+                  <div class="fs-7 fw-semibold text-muted">{% trans "Précise si l’utilisateur peut se connecter à ce site d'administration." %}</div>
+                </div>
+                <label class="form-check form-switch form-check-custom form-check-solid">
+                  {% render_field form.is_staff class='form-check-input' %}
+                  <span class="form-check-label fw-semibold text-muted">{% trans "Default" %}</span>
+                </label>
+              </div>
+            {% elif field.name == "is_staff" %}
+              <div class="d-flex flex-stack mb-8">
+                <div class="me-5">
+                  <label class="fs-6 fw-semibold">{% trans "Statut Super-Utilisateur" %}</label>
+                  <div class="fs-7 fw-semibold text-muted">{% trans "Précise que l’utilisateur possède toutes les permissions sans les assigner explicitement." %}</div>
+                </div>
+                <label class="form-check form-switch form-check-custom form-check-solid">
+                  {% render_field form.is_staff class='form-check-input' %}
+                  <span class="form-check-label fw-semibold text-muted">{% trans "Default" %}</span>
+                </label>
+              </div>
+            {% elif field.name == "groups" %}
+              <div class="d-flex flex-stack mb-8 ">
+                <div class="me-5">
+                <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                  <span {% if field.field.required %}class="required"{% endif %}>{{ field.label }}</span>
+                </label>
+                </div>
+                {% render_field form.groups class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="Select one or more" data-allow-clear="true" multiple="multiple" %}
+                {% if field.errors %}
+                  <span class="form-check-label fw-semibold text-danger">{{ field.errors }}</span>
+                {% endif %}
+              </div>
+            {% else %}
+              <div class="d-flex flex-column mb-8 fv-row">
+                <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                  <span {% if field.field.required %}class="required"{% endif %}>{{ field.label }}</span>
+                </label>
+                {% render_field field class='form-control' %}
+                {% if field.errors %}
+                  <span class="form-check-label fw-semibold text-danger">{{ field.errors }}</span>
+                {% else %}
+                  {{ field.help_text }}
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %} 
+        {% endwith %}       
+        <div class="text-center">   
+          <button type="reset"  class="btn btn-light me-3" data-bs-dismiss="modal">{% trans "Annulé" %}</button>
+          {% include 'snippets/_submit_button.html' %}
+        </div>
+    </form>
+</div>
