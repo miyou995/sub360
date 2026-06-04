@@ -1,0 +1,29 @@
+ <div class="card-body pt-3"
+    hx-get="{% url 'finance:update_account_transfer' %}"  hx-trigger="update_transaction_accounts from:body" hx-swap="outerHTML">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                <thead>
+                    <tr class="fw-bold text-muted">
+                        <th class="min-w-200px">{% translate "Compte" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Entrées" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Sorties" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Solde" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for acct in account_breakdown %}
+                    <tr>
+                        <td>
+                            <span class="fw-bold text-gray-800">{{ acct.name }}</span>
+                        </td>
+                        <td class="text-end fw-semibold text-success">{{ acct.income|floatformat:2 }} DZD</td>
+                        <td class="text-end fw-semibold text-danger">{{ acct.expense|floatformat:2 }} DZD</td>
+                        <td class="text-end fw-bold {% if acct.balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            {{ acct.balance|floatformat:2 }} DZD
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>

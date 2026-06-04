@@ -1,0 +1,285 @@
+{% extends "layout/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+<!-- ══════════════════════ GLOBAL DATE FILTER ══════════════════════ -->
+<div class="card shadow-sm mb-5">
+    <div class="card-body py-4">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold text-gray-600">
+                    <i class="ki-duotone ki-calendar fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Date début" %}
+                </label>
+                <input type="date" name="date_from" value="{{ date_from }}" class="form-control form-control-solid" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold text-gray-600">
+                    <i class="ki-duotone ki-calendar fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Date fin" %}
+                </label>
+                <input type="date" name="date_to" value="{{ date_to }}" class="form-control form-control-solid" />
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ki-duotone ki-filter fs-4"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Filtrer" %}
+                </button>
+                <a href="{% url 'core:statistics' %}" class="btn btn-light-danger">
+                    <i class="ki-duotone ki-cross fs-4"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Réinitialiser" %}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════ TOP SUMMARY CARDS ══════════════════════ -->
+<div class="row g-4 mb-5" id="table_board"> 
+    <!-- Total Income -->
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                        <i class="ki-solid ki-arrow-up fs-1 text-dark"></i>
+                    </div>
+                    <span class="fs-5 fw-semibold text-gray-600">{% translate "Total revenus" %}</span>
+                </div>
+                <span class="fs-1 fw-bolder text-gray-800">{{ total_income|floatformat:2 }} DZD</span>
+                <div class="mt-2 d-flex flex-column gap-1">
+                    <span class="fs-7 text-gray-500">
+                        <i class="ki-solid ki-file fs-4 text-success"></i>
+                        {% translate "Paiements clients" %}: <strong>{{ client_bill_payments|floatformat:2 }} DZD</strong>
+                    </span>
+                    <span class="fs-7 text-gray-500">
+                        <i class="ki-solid ki-wallet fs-4 text-success"></i>
+                        {% translate "Autres entrées" %}: <strong>{{ misc_income|floatformat:2 }} DZD</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Expenses -->
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3">
+                        <i class="ki-duotone ki-arrow-down fs-1 text-dark">
+                            <span class="path1"></span><span class="path2"></span>
+                        </i>
+                    </div>
+                    <span class="fs-5 fw-semibold text-gray-600">{% translate "Total dépenses" %}</span>
+                </div>
+                <span class="fs-1 fw-bolder text-gray-800">{{ total_expence|floatformat:2 }} DZD</span>
+                <div class="mt-2 d-flex flex-column gap-1">
+                    <span class="fs-7 text-gray-500">
+                        <i class="ki-solid ki-truck fs-4 text-danger"></i>
+                        {% translate "Fournisseurs" %}: <strong>{{ supplier_bill_payments|floatformat:2 }} DZD</strong>
+                    </span>
+                    <span class="fs-7 text-gray-500">
+                        <i class="ki-solid ki-people fs-4 text-danger"></i>
+                        {% translate "Personnel" %}: <strong>{{ staff_payments|floatformat:2 }} DZD</strong>
+                    </span>
+                    <span class="fs-7 text-gray-500">
+                        <i class="ki-solid ki-wallet fs-4 text-danger"></i>
+                        {% translate "Autres sorties" %}: <strong>{{ misc_expense|floatformat:2 }} DZD</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Net Balance -->
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                        <i class="ki-solid ki-chart-simple fs-1 text-primary"></i>
+                    </div>
+                    <span class="fs-5 fw-semibold text-gray-600">{% translate "Solde net" %}</span>
+                </div>
+                <span class="fs-1 fw-bolder {% if net_balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ net_balance|floatformat:2 }} DZD
+                </span>
+                <div class="mt-3">
+                    {% if net_balance >= 0 %}
+                        <span class="badge badge-light-success fs-7">
+                            <i class="ki-solid ki-arrow-up fs-4"></i>
+                            {% translate "Bénéfice" %}
+                        </span>
+                    {% else %}
+                        <span class="badge badge-light-danger fs-7">
+                            <i class="ki-solid ki-arrow-down fs-4"></i>
+                            {% translate "Déficit" %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════ OUTSTANDING AMOUNTS ══════════════════════ -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 bg-warning bg-opacity-75 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <span class="fs-5 fw-bold text-white d-block mb-2">{% translate "Restant factures clients" %}</span>
+                <span class="fs-2 fw-bolder text-white">{{ client_bill_reste|floatformat:2 }} DZD</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 bg-danger bg-opacity-50 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <span class="fs-5 fw-bold text-white d-block mb-2">{% translate "Restant factures fournisseurs" %}</span>
+                <span class="fs-2 fw-bolder text-white">{{ supplier_bill_reste|floatformat:2 }} DZD</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-flush border-0 h-100 bg-info bg-opacity-75 shadow-sm hover-elevate-up">
+            <div class="card-body py-5">
+                <span class="fs-5 fw-bold text-white d-block mb-2">{% translate "Restant abonnements" %}</span>
+                <span class="fs-2 fw-bolder text-white">{{ recurrent_remaining_amount|floatformat:2 }} DZD</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════════════════════ ACCOUNT BREAKDOWN ══════════════════════ -->
+{% if account_breakdown %}
+<div class="card shadow-sm mb-5">
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold text-gray-800">{% translate "Solde par compte" %}</span>
+            <span class="text-gray-400 mt-1 fw-semibold fs-7">{% translate "Entrées et sorties par compte comptable" %}</span>
+        </h3>
+        <div class="card-toolbar">
+            {% if perms.finance.can_transfer_money %}
+                <button  class="btn btn-sm btn-primary"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#kt_modal"
+                        hx-get="{% url 'finance:create_accounttransfer' %}"
+                        hx-target="#kt_modal_content"
+                        hx-swap="innerHTML">
+                    <i class="ki-solid ki-arrow-right-left fs-2 me-1"></i>
+                    {% translate "Transfert" %}
+                </button>
+            {% endif %}
+        </div>
+    </div>
+    {% comment %} <div class="card-body pt-3">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                <thead>
+                    <tr class="fw-bold text-muted">
+                        <th class="min-w-200px">{% translate "Compte" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Entrées" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Sorties" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Solde" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for acct in account_breakdown %}
+                    <tr>
+                        <td>
+                            <span class="fw-bold text-gray-800">{{ acct.name }}</span>
+                        </td>
+                        <td class="text-end fw-semibold text-success">{{ acct.income|floatformat:2 }} DZD</td>
+                        <td class="text-end fw-semibold text-danger">{{ acct.expense|floatformat:2 }} DZD</td>
+                        <td class="text-end fw-bold {% if acct.balance >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            {{ acct.balance|floatformat:2 }} DZD
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div> {% endcomment %}
+    {% include "configuration/render_account_trans.html" %}
+</div>
+{% endif %}
+
+<!-- ══════════════════════ BILL TYPE BREAKDOWN ══════════════════════ -->
+{% if bill_type_breakdown %}
+<div class="card shadow-sm mb-5">
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold text-gray-800">{% translate "Détail par type de document" %}</span>
+            <span class="text-gray-400 mt-1 fw-semibold fs-7">{% translate "Paiements reçus et restants par type" %}</span>
+        </h3>
+    </div>
+    <div class="card-body pt-3">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                <thead>
+                    <tr class="fw-bold text-muted">
+                        <th class="min-w-150px">{% translate "Type" %}</th>
+                        <th class="text-center">{% translate "Direction" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Total facturé" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Total payé" %}</th>
+                        <th class="text-end min-w-120px">{% translate "Restant" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bt in bill_type_breakdown %}
+                    <tr>
+                        <td>
+                            <span class="fw-bold text-gray-800">{{ bt.label }}</span>
+                        </td>
+                        <td class="text-center">
+                            {% if bt.is_supplier %}
+                                <span class="badge badge-light-danger">
+                                    <i class="ki-duotone ki-arrow-down fs-7"><span class="path1"></span><span class="path2"></span></i>
+                                    {% translate "Dépense" %}
+                                </span>
+                            {% else %}
+                                <span class="badge badge-light-success">
+                                    <i class="ki-duotone ki-arrow-up fs-7"><span class="path1"></span><span class="path2"></span></i>
+                                    {% translate "Revenu" %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end fw-semibold text-gray-700">{{ bt.total_billed|floatformat:2 }} DZD</td>
+                        <td class="text-end fw-semibold {% if bt.is_supplier %}text-danger{% else %}text-success{% endif %}">
+                            {{ bt.total_paid|floatformat:2 }} DZD
+                        </td>
+                        <td class="text-end fw-semibold text-warning">{{ bt.total_unpaid|floatformat:2 }} DZD</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+<!-- ══════════════════════ CHART SECTION ══════════════════════ -->
+{% if perms.finance.view_billpayment %}
+<div class="row gy-4">
+    <div class="col-12">
+        <div 
+            class="chart-container p-4 rounded shadow-sm bg-white"
+            hx-get="{% url 'finance:statistic_client_payment_per_month' %}"
+            hx-trigger="load once"
+            hx-swap="innerHTML"
+            style="min-height: 400px;"
+        >
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <span class="spinner-border text-primary"></span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock content %}

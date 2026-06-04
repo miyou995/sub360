@@ -1,0 +1,438 @@
+{% extends "layout/base.html" %}
+{% block content %}
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+	{% include 'snippets/_breadcrumb.html' %}
+</div>
+
+<div class="row">
+	<div class="col-12 col-md-3 mb-4 mb-md-0">
+		<div class="card h-100 shadow-sm">
+			<div class="card-header py-3 align-items-center">
+				<h5 class="mb-0 fw-semibold">{% translate "Configuration" %}</h5>
+			</div>
+				<div class="list-group list-group-flush small" id="config-nav" role="tablist" style="max-height:70vh;overflow:auto">
+
+
+				{% if perms.core.view_leadsource %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center = fs-5 active" 
+						data-bs-toggle="tab" href="#source-pane" role="tab">
+						<i class="ki-outline ki-filter-search fs-2x me-2"></i> {% translate "Source de l'opportunité" %}
+					</a>
+				{% endif %}
+				{% if perms.core.view_tax %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center = fs-5"
+						data-bs-toggle="tab" href="#tax-pane" role="tab">
+						<i class="ki-outline ki-discount fs-2x me-2"></i> {% translate "Taxe" %}
+					</a>
+				{% endif %}
+				{% if perms.core.view_potential %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center = fs-5"
+						data-bs-toggle="tab" href="#potential-pane" role="tab">
+						<i class="ki-outline ki-graph-up fs-2x me-2"></i> {% translate "Potentiel" %}
+					</a>
+				{% endif %}
+				{% if perms.crm.view_activitysector %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center = fs-5"
+						data-bs-toggle="tab" href="#activitysector-pane" role="tab">
+						<i class="ki-outline ki-data fs-2x me-2"></i> {% translate "Secteur d'activité" %}
+					</a>
+				{% endif %}
+				{% if perms.tags.view_tags %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center = fs-5"
+						data-bs-toggle="tab" href="#tags-pane" role="tab">
+						<i class="ki-outline ki-flag fs-2x me-2"></i> {% translate "Tags" %}
+					</a>
+				{% endif %}
+				{% if perms.core.view_leadsheet %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#integrations-pane" role="tab">
+						<i class="ki-outline ki-add-files fs-2x me-2"></i> {% translate "Google sheet Integrations" %}
+					</a>
+				{% endif %}
+				{% if perms.leads.view_state %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#state-pane" role="tab">
+						<i class="ki-outline ki-focus fs-2x me-2"></i> {% translate "Lead States" %}
+					</a>
+				{% endif %}
+				{% if perms.billing.view_billtypeconfig %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#billtypeconfig-pane" role="tab">
+						<i class="ki-outline ki-bill fs-2x me-2"></i> {% translate "Bill Type Config" %}
+					</a>
+				{% endif %}
+
+				{% if perms.finance.view_account %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#account-pane" role="tab">
+						<i class="ki-outline ki-arrows-circle fs-2x me-2"></i> {% translate "Transaction Account" %}
+					</a>
+				{% endif %}
+				{% if perms.business.change_configuration %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#billing-config-pane" role="tab">
+						<i class="ki-outline ki-setting-2 fs-2x me-2"></i> {% translate "Facturation" %}
+					</a>
+				{% endif %}
+				{% if perms.business.view_legalentity %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#legalentity-pane" role="tab">
+						<i class="ki-outline ki-shield-tick fs-2x me-2"></i> {% translate "Entités légales" %}
+					</a>
+				{% endif %}
+				{% if perms.business.view_store %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#store-pane" role="tab">
+						<i class="ki-outline ki-shop fs-2x me-2"></i> {% translate "Magasins" %}
+					</a>
+				{% endif %}
+				{% if perms.notification.view_notificationconfig %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#notification-config-pane" role="tab">
+						<i class="ki-outline ki-notification-bing fs-2x me-2"></i> {% translate "Notifications" %}
+					</a>
+				{% endif %}
+				{% if request.user.is_staff %}
+					<a class="list-group-item list-group-item-action d-flex align-items-center fs-5"
+						data-bs-toggle="tab" href="#api-keys-pane" role="tab">
+						<i class="ki-outline ki-key fs-2x me-2"></i> {% translate "Clés API" %}
+					</a>
+				{% endif %}
+
+				</div>
+		</div>
+	</div>
+	<div class="col-12 col-md-9">
+		<div class="card shadow-sm">
+			<div class="card-body tab-content" id="config-content">
+
+				<div class="tab-pane fade active show" id="source-pane" role="tabpanel">
+					{% if perms.core.view_leadsource %}
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<h3 class="mb-0 fw-bold">{% translate "Source de l'opportunité" %}</h3>
+							{% if perms.core.add_leadsource %}
+								<a href="#" class="btn btn-sm btn-primary"
+								data-bs-toggle="modal"
+								data-bs-target="#kt_modal"
+								hx-get="{% url 'core:create_leadsource' %}"
+								hx-target="#kt_modal_content"
+								hx-swap="innerHTML">
+								<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+								</a>
+							{% endif %}
+						</div>
+						<div id="SourceTable" class="table-responsive bg-white"
+							hx-get="{% url 'core:list_leadsource' %}"
+							hx-trigger="refresh_table from:body, revealed"
+							hx-target="#SourceTable"
+							hx-swap="innerHTML">
+						</div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="tax-pane" role="tabpanel">
+					{% if perms.core.view_tax %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "Taxe" %}</h3>
+						{% if perms.core.add_tax %}
+							<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'core:create_tax' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+						{% endif %}
+					</div>
+					<div id="TaxTable" class="table-responsive bg-white"
+						hx-get="{% url 'core:list_tax' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#TaxTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="potential-pane" role="tabpanel">
+					{% if perms.core.view_potential %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "Potentiel" %}</h3>
+						{% if perms.core.add_potential %}
+							<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'core:create_potential' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+
+						{% endif %}
+					</div>
+					<div id="PotentialTable" class="table-responsive bg-white"
+						hx-get="{% url 'core:list_potential' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#PotentialTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				
+
+				<div class="tab-pane fade" id="activitysector-pane" role="tabpanel">
+					{% if perms.crm.view_activitysector %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "Secteur d'activité" %}</h3>
+						{% if perms.crm.add_activitysector %}
+							<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'crm:create_activitysector' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+						{% endif %}
+					</div>
+					<div id="ActivitySectorTable" class="table-responsive bg-white"
+						hx-get="{% url 'crm:list_activitysector' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#ActivitySectorTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="tags-pane" role="tabpanel">
+					{% if perms.tags.view_tags %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "Tags" %}</h3>
+						{% if perms.tags.add_tags %}
+							<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'tags:create_tags' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+						{% endif %}
+					</div>
+					<div id="TagsTable" class="table-responsive bg-white"
+						hx-get="{% url 'tags:list_tags' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#TagsTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="integrations-pane" role="tabpanel">
+					{% if perms.core.view_leadsheet %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "Integrations" %}</h3>
+						{% if perms.core.add_leadsheet %}
+							<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'core:create_leadsheet' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+								<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+						{% endif %}
+					</div>
+					<div id="IntegrationTable" class="table-responsive bg-white"
+						hx-get="{% url 'core:list_leadsheet' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#IntegrationTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="state-pane" role="tabpanel">
+					{% if perms.leads.view_state %}
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h3 class="mb-0 fw-bold">{% translate "States" %}</h3>
+						{% if perms.leads.add_state %}
+							<a  href="#" class="btn btn-sm btn-primary"
+								data-bs-toggle="modal"
+								data-bs-target="#kt_modal"
+								hx-get="{% url 'leads:create_state' %}"
+								hx-target="#kt_modal_content"
+								hx-swap="innerHTML">
+								<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+							</a>
+						{% endif %}
+					</div>
+					<div id="StateTable" class="table-responsive bg-white"
+						hx-get="{% url 'leads:state_list' %}"
+						hx-trigger="refresh_table from:body, revealed"
+						hx-target="#StateTable"
+						hx-swap="innerHTML"></div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="billtypeconfig-pane" role="tabpanel">
+					{% if perms.billing.view_billtypeconfig %}
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<h3 class="mb-0 fw-bold">{% translate "Bill Type Config" %}</h3>
+							{% if perms.billing.add_billtypeconfig %}
+								<a  href="#" class="btn btn-sm btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#kt_modal"
+									hx-get="{% url 'billing:create_billtypeconfig' %}"
+									hx-target="#kt_modal_content"
+									hx-swap="innerHTML">
+									<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+								</a>
+							{% endif %}
+						</div>
+						<div id="BillTypeConfigTable" class="table-responsive bg-white"
+							hx-get="{% url 'billing:list_billtypeconfig' %}"
+							hx-trigger="refresh_table from:body, revealed"
+							hx-target="#BillTypeConfigTable"
+							hx-swap="innerHTML">
+						</div>
+					{% endif %}
+				</div>
+
+				<div class="tab-pane fade" id="account-pane" role="tabpanel">
+					{% if perms.finance.view_account %}
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<h3 class="mb-0 fw-bold">{% translate "Transaction Account" %}</h3>
+							{% if perms.finance.add_account %}
+								<a  href="#" class="btn btn-sm btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#kt_modal"
+									hx-get="{% url 'finance:create_account' %}"
+									hx-target="#kt_modal_content"
+									hx-swap="innerHTML">
+									<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+								</a>
+							{% endif %}
+						</div>
+						<div id="AccountTable" class="table-responsive bg-white"
+							hx-get="{% url 'finance:account_list' %}"
+							hx-trigger="refresh_table from:body, revealed"
+							hx-target="#AccountTable"
+							hx-swap="innerHTML">
+						</div>
+					{% endif %}
+				</div>
+
+			{% if perms.business.change_configuration %}
+			<div class="tab-pane fade" id="billing-config-pane" role="tabpanel">
+				<div class="d-flex justify-content-between align-items-center mb-6">
+					<h3 class="mb-0 fw-bold">{% translate "Paramètres de facturation" %}</h3>
+				</div>
+				<div id="billing-config-content"
+					 hx-get="{% url 'business:update_configuration' pk=1 %}"
+					 hx-trigger="revealed, refresh_configuration from:body"
+					 hx-target="#billing-config-content"
+					 hx-swap="innerHTML">
+				</div>
+			</div>
+			{% endif %}
+
+			{% if perms.business.view_legalentity %}
+			<div class="tab-pane fade" id="legalentity-pane" role="tabpanel">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3 class="mb-0 fw-bold">{% translate "Entités légales" %}</h3>
+					{% if perms.business.add_legalentity %}
+						<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'business:create_legalentity' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+						</a>
+					{% endif %}
+				</div>
+				<div id="LegalEntityTable" class="table-responsive bg-white"
+					hx-get="{% url 'business:list_legalentity' %}"
+					hx-trigger="refresh_table from:body, revealed"
+					hx-target="#LegalEntityTable"
+					hx-swap="innerHTML">
+				</div>
+			</div>
+			{% endif %}
+
+			{% if perms.business.view_store %}
+			<div class="tab-pane fade" id="store-pane" role="tabpanel">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3 class="mb-0 fw-bold">{% translate "Magasins" %}</h3>
+					{% if perms.business.add_store %}
+						<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'business:create_store' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+						</a>
+					{% endif %}
+				</div>
+				<div id="StoreTable" class="table-responsive bg-white"
+					hx-get="{% url 'business:list_store' %}"
+					hx-trigger="refresh_table from:body, revealed"
+					hx-target="#StoreTable"
+					hx-swap="innerHTML">
+				</div>
+			</div>
+			{% endif %}
+
+			{% if request.user.is_staff %}
+			{% if perms.notification.view_notificationconfig %}
+			<div class="tab-pane fade" id="notification-config-pane" role="tabpanel">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3 class="mb-0 fw-bold">{% translate "Configurations de notifications" %}</h3>
+					{% if perms.notification.add_notificationconfig %}
+						<a href="#" class="btn btn-sm btn-primary"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{% url 'notification:create_notificationconfig' %}"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML">
+							<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Ajouter' %}
+						</a>
+					{% endif %}
+				</div>
+				<div id="NotificationConfigTable" class="table-responsive bg-white"
+					hx-get="{% url 'notification:list_notificationconfig' %}"
+					hx-trigger="refresh_table from:body, revealed"
+					hx-target="#NotificationConfigTable"
+					hx-swap="innerHTML">
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="tab-pane fade" id="api-keys-pane" role="tabpanel">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3 class="mb-0 fw-bold">{% translate "Clés API" %}</h3>
+				<a href="#" class="btn btn-sm btn-primary"
+					data-bs-toggle="modal"
+					data-bs-target="#kt_modal"
+					hx-get="{% url 'api:create_apiclient' %}"
+					hx-target="#kt_modal_content"
+					hx-swap="innerHTML">
+					<i class="ki-duotone ki-plus fs-2"></i> {% trans 'Nouvelle clé' %}
+				</a>
+			</div>
+			<div id="APIKeyTable"
+				hx-get="{% url 'api:list_apiclient_partial' %}"
+				hx-trigger="refresh_apiclient from:body, revealed"
+					hx-target="#APIKeyTable"
+					hx-swap="innerHTML">
+				</div>
+			</div>
+			{% endif %}
+
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+
+
+

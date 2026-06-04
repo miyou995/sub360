@@ -1,0 +1,12 @@
+{% extends 'buttons/action.html' %}
+
+
+	
+{% block extra_actions %}
+
+    <a hx-get="{% url 'core:sync_sheet' object.id %}" 
+       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" title="{% trans 'Sync' %}">
+        <i class="bi bi-arrow-repeat fs-3"></i>
+    </a>
+
+{% endblock extra_actions %}
