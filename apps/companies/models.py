@@ -22,7 +22,9 @@ class Company(CRUDUrlMixin, TimestampedModel):
     uid = models.CharField(
         _("Numéro IDE / UID"),
         max_length=20,
+        unique=True,
         blank=True,
+        null=True,
         help_text=_("Identifiant des entreprises suisse (ex: CHE-123.456.789)."),
     )
     email = models.EmailField(_("Email"), blank=True)

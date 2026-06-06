@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 class CompanyType(models.TextChoices):
     CLIENT = "client", _("Client (entreprise donneuse d'ordre)")
     SUBCONTRACTOR = "subcontractor", _("Sous-traitant")
+    BOTH = "both", _("Client et sous-traitant")
 
 
 class SwissCanton(models.TextChoices):
