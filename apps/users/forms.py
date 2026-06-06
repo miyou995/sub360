@@ -49,7 +49,7 @@ class UserCreationForm(AbstractModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "phone", "language", "role"]
+        fields = ["email", "first_name", "last_name", "phone", "language"]
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -72,7 +72,7 @@ class UserUpdateForm(AbstractModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "phone", "language", "role"]
+        fields = ["email", "first_name", "last_name", "phone", "language"]
 
 
 class ProfileForm(AbstractModelForm):

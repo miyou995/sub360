@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.verification",
     "apps.projects",
     "apps.applications",
+    "apps.ratings",
     "apps.subscriptions",
     "apps.messaging",
     "apps.notifications",

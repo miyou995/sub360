@@ -2,8 +2,22 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from apps.subscriptions.const import SubscriptionPackage, SubscriptionStatus
 from apps.users.models import Subcontractor
+
+
+class SubscriptionPackage(models.TextChoices):
+    # Tiers à confirmer (project.md, Appendix B).
+    BASIC = "basic", _("Basique")
+    PRO = "pro", _("Pro")
+    PREMIUM = "premium", _("Premium")
+
+
+class SubscriptionStatus(models.TextChoices):
+    INCOMPLETE = "incomplete", _("Incomplet")
+    TRIALING = "trialing", _("Période d'essai")
+    ACTIVE = "active", _("Actif")
+    PAST_DUE = "past_due", _("Impayé")
+    CANCELED = "canceled", _("Annulé")
 
 
 class Subscription(CRUDUrlMixin, TimestampedModel):

@@ -14,6 +14,8 @@ class Command(BaseCommand):
         self.create_superuser()
 
         # self.load_demo_fixture("locations.json", "core")
+        self.load_fixture("apps/projects/fixtures/branches.json")
+        self.load_fixture("apps/projects/fixtures/execution_types.json")
         self.stdout.write(self.style.SUCCESS("Project Inited completed successfully!"))
 
     def create_superuser(self):
@@ -29,6 +31,10 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.WARNING("Superuser admin@admin.com already exists.")
             )
+
+    def load_fixture(self, fixture_path):
+        call_command("loaddata", fixture_path)
+        self.stdout.write(self.style.SUCCESS(f"Loaded fixture: {fixture_path}"))
 
     def load_demo_fixture(self, fixture_path, store):
         call_command("loaddata", fixture_path)

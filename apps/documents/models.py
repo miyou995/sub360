@@ -2,8 +2,20 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from apps.documents.const import DocumentKind, DocumentStatus
 from apps.users.models import Subcontractor
+
+
+class DocumentKind(models.TextChoices):
+    INSURANCE = "insurance", _("Assurance (obligatoire)")
+    LICENSE = "license", _("Licence / autorisation")
+    VAT = "vat", _("Attestation TVA")
+    OTHER = "other", _("Autre")
+
+
+class DocumentStatus(models.TextChoices):
+    VALID = "valid", _("Valide")
+    EXPIRED = "expired", _("Expiré")
+    REVIEW = "review", _("À vérifier")
 
 
 class ProofDocument(CRUDUrlMixin, TimestampedModel):

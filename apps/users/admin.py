@@ -11,8 +11,8 @@ class UserAdmin(DjangoUserAdmin):
     add_form = UserCreationForm
     model = User
     ordering = ("-date_joined",)
-    list_display = ("email", "first_name", "last_name", "role", "is_active", "is_staff")
-    list_filter = ("role", "is_active", "is_staff", "language")
+    list_display = ("email", "first_name", "last_name", "is_active", "is_staff")
+    list_filter = ("is_active", "is_staff", "language")
     search_fields = ("email", "first_name", "last_name")
     readonly_fields = ("date_joined", "last_login")
     fieldsets = (
@@ -27,7 +27,6 @@ class UserAdmin(DjangoUserAdmin):
             _("Rôle & permissions"),
             {
                 "fields": (
-                    "role",
                     "is_active",
                     "is_staff",
                     "is_superuser",
@@ -47,7 +46,6 @@ class UserAdmin(DjangoUserAdmin):
                     "email",
                     "first_name",
                     "last_name",
-                    "role",
                     "password1",
                     "password2",
                 ),

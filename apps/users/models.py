@@ -8,26 +8,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.companies.models import Company
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from apps.users.const import CompanyAge, WorkerCount
 
 
 def get_language_choices():
     return settings.LANGUAGES
-
-
-# class WorkerCount(models.TextChoices):
-#     R1_5 = "1-5", _("1 à 5")
-#     R6_10 = "6-10", _("6 à 10")
-#     R11_25 = "11-25", _("11 à 25")
-#     R26_50 = "26-50", _("26 à 50")
-#     R51_100 = "51-100", _("51 à 100")
-#     R100_PLUS = "100+", _("Plus de 100")
-
-
-# class CompanyAge(models.TextChoices):
-#     UNDER_3 = "under_3", _("Moins de 3 ans")
-#     BETWEEN_3_10 = "3_10", _("3 à 10 ans")
-#     OVER_10 = "over_10", _("Plus de 10 ans")
 
 
 class UserManager(BaseUserManager):
@@ -140,6 +124,19 @@ class Subcontractor(CRUDUrlMixin, TimestampedModel):
     through ``SubcontractorProfile`` (one login today, a team later).
     """
 
+    class WorkerCount(models.TextChoices):
+        R1_5 = "1-5", _("1 à 5")
+        R6_10 = "6-10", _("6 à 10")
+        R11_25 = "11-25", _("11 à 25")
+        R26_50 = "26-50", _("26 à 50")
+        R51_100 = "51-100", _("51 à 100")
+        R100_PLUS = "100+", _("Plus de 100")
+
+    class CompanyAge(models.TextChoices):
+        UNDER_3 = "under_3", _("Moins de 3 ans")
+        BETWEEN_3_10 = "3_10", _("3 à 10 ans")
+        OVER_10 = "over_10", _("Plus de 10 ans")
+
     company = models.OneToOneField(
         Company,
         on_delete=models.PROTECT,
@@ -160,6 +157,12 @@ class Subcontractor(CRUDUrlMixin, TimestampedModel):
     )
     accepts_wir = models.BooleanField(_("Accepte le WIR"), default=False)
     references = models.TextField(_("Références"), blank=True)
+    branch = models.ManyToManyField(
+        "projects.Branch",
+        blank=True,
+        related_name="subcontractors",
+        verbose_name=_("Branches"),
+    )
 
     class Meta:
         verbose_name = _("Sous-traitant")
