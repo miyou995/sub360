@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -7,7 +8,10 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.companies.models import Company
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from apps.users.const import Language, UserRole
+
+
+def get_language_choices():
+    return settings.LANGUAGES
 
 
 class UserManager(BaseUserManager):
@@ -28,7 +32,6 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
-        extra_fields.setdefault("role", UserRole.ADMIN)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Un superutilisateur doit avoir is_staff=True."))
@@ -51,15 +54,10 @@ class User(AbstractBaseUser, PermissionsMixin, CRUDUrlMixin, TimestampedModel):
     language = models.CharField(
         _("Langue"),
         max_length=2,
-        choices=Language.choices,
-        default=Language.FR,
+        choices=get_language_choices,
+        default=settings.LANGUAGE_CODE,
     )
-    role = models.CharField(
-        _("Rôle"),
-        max_length=20,
-        choices=UserRole.choices,
-        default=UserRole.CLIENT,
-    )
+
     is_active = models.BooleanField(_("Actif"), default=True)
     is_staff = models.BooleanField(_("Membre du staff"), default=False)
     date_joined = models.DateTimeField(_("Date d'inscription"), default=timezone.now)
@@ -87,24 +85,12 @@ class User(AbstractBaseUser, PermissionsMixin, CRUDUrlMixin, TimestampedModel):
     def full_name(self):
         return self.get_full_name()
 
-    @property
-    def is_client(self):
-        return self.role == UserRole.CLIENT
-
-    @property
-    def is_subcontractor(self):
-        return self.role == UserRole.SUBCONTRACTOR
-
-    @property
-    def is_back_office(self):
-        return self.role == UserRole.ADMIN
-
     def get_absolute_url(self):
         return reverse("users:profile")
 
 
-class Client(TimestampedModel):
-    """A client (contractor) user. Several clients can share one company (team)."""
+class ClientProfile(TimestampedModel):
+    """Links a user to a client company. Several profiles can share one company (team)."""
 
     user = models.OneToOneField(
         User,
@@ -115,7 +101,7 @@ class Client(TimestampedModel):
     company = models.ForeignKey(
         Company,
         on_delete=models.PROTECT,
-        related_name="clients",
+        related_name="client_members",
         verbose_name=_("Entreprise"),
     )
     position = models.CharField(_("Fonction"), max_length=150, blank=True)
@@ -124,27 +110,77 @@ class Client(TimestampedModel):
     )
 
     class Meta:
-        verbose_name = _("Client")
-        verbose_name_plural = _("Clients")
+        verbose_name = _("Profil client")
+        verbose_name_plural = _("Profils clients")
 
     def __str__(self):
         return f"{self.user} — {self.company}"
 
 
-class Subcontractor(TimestampedModel):
-    """A subcontractor user. One subcontractor = one company = one login."""
+class Subcontractor(CRUDUrlMixin, TimestampedModel):
+    """The subcontractor role attached to a company (its dossier).
 
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name="subcontractor_profile",
-        verbose_name=_("Utilisateur"),
-    )
+    One company has at most one subcontractor dossier. Users are linked to it
+    through ``SubcontractorProfile`` (one login today, a team later).
+    """
+
+    class WorkerCount(models.TextChoices):
+        R1_5 = "1-5", _("1 à 5")
+        R6_10 = "6-10", _("6 à 10")
+        R11_25 = "11-25", _("11 à 25")
+        R26_50 = "26-50", _("26 à 50")
+        R51_100 = "51-100", _("51 à 100")
+        R100_PLUS = "100+", _("Plus de 100")
+
+    class CompanyAge(models.TextChoices):
+        UNDER_3 = "under_3", _("Moins de 3 ans")
+        BETWEEN_3_10 = "3_10", _("3 à 10 ans")
+        OVER_10 = "over_10", _("Plus de 10 ans")
+
     company = models.OneToOneField(
         Company,
         on_delete=models.PROTECT,
         related_name="subcontractor",
         verbose_name=_("Entreprise"),
+    )
+    worker_count = models.CharField(
+        _("Nombre d'employés"),
+        max_length=10,
+        choices=WorkerCount.choices,
+        blank=True,
+    )
+    company_age = models.CharField(
+        _("Ancienneté de l'entreprise"),
+        max_length=10,
+        choices=CompanyAge.choices,
+        blank=True,
+    )
+    accepts_wir = models.BooleanField(_("Accepte le WIR"), default=False)
+    introduction = models.TextField(_("Introduction"), blank=True)
+    cover_photo = models.ImageField(
+        _("Photo de couverture"),
+        upload_to="subcontractors/covers/",
+        blank=True,
+        null=True,
+    )
+    profile_photo = models.ImageField(
+        _("Photo de profil"),
+        upload_to="subcontractors/profiles/",
+        blank=True,
+        null=True,
+    )
+    location = models.CharField(_("Localisation"), max_length=255, blank=True)
+    branch = models.ManyToManyField(
+        "projects.Branch",
+        blank=True,
+        related_name="subcontractors",
+        verbose_name=_("Branches"),
+    )
+    references = models.ManyToManyField(
+        "Reference",
+        blank=True,
+        related_name="subcontractors",
+        verbose_name=_("Références"),
     )
 
     class Meta:
@@ -152,4 +188,67 @@ class Subcontractor(TimestampedModel):
         verbose_name_plural = _("Sous-traitants")
 
     def __str__(self):
-        return f"{self.user} — {self.company}"
+        return str(self.company)
+
+
+class SubcontractorProfile(TimestampedModel):
+    """Links a user to a subcontractor dossier (the login).
+
+    One subcontractor = one login today; the FK leaves the door open for teams later.
+    """
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="subcontractor_profile",
+        verbose_name=_("Utilisateur"),
+    )
+    subcontractor = models.ForeignKey(
+        Subcontractor,
+        on_delete=models.PROTECT,
+        related_name="members",
+        verbose_name=_("Sous-traitant"),
+    )
+
+    class Meta:
+        verbose_name = _("Profil sous-traitant")
+        verbose_name_plural = _("Profils sous-traitants")
+
+    def __str__(self):
+        return f"{self.user} — {self.subcontractor}"
+
+
+class Reference(CRUDUrlMixin, TimestampedModel):
+    """A reference/project showcase entry for a subcontractor."""
+
+    title = models.CharField(_("Titre"), max_length=255)
+    description = models.TextField(_("Description"), blank=True)
+    start_date = models.DateField(_("Date de début"), blank=True, null=True)
+    end_date = models.DateField(_("Date de fin"), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Référence")
+        verbose_name_plural = _("Références")
+
+    def __str__(self):
+        return self.title
+
+
+class ReferenceImage(TimestampedModel):
+    """An image attached to a reference."""
+
+    reference = models.ForeignKey(
+        Reference,
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name=_("Référence"),
+    )
+    image = models.ImageField(_("Image"), upload_to="references/images/")
+    description = models.TextField(_("Description"), blank=True)
+
+    class Meta:
+        verbose_name = _("Image de référence")
+        verbose_name_plural = _("Images de référence")
+
+    def __str__(self):
+        return f"{self.reference} — {self.pk}"

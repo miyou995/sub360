@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.verification",
     "apps.projects",
     "apps.applications",
+    "apps.ratings",
     "apps.subscriptions",
     "apps.messaging",
     "apps.notifications",
@@ -122,8 +123,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "fr"
 
 LANGUAGES = [
-    ("de", "Deutsch"),
     ("fr", "Français"),
+    ("de", "Deutsch"),
     ("it", "Italiano"),
     ("en", "English"),
 ]

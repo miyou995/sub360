@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.forms import UserCreationForm
-from apps.users.models import Client, Subcontractor, User
+from apps.users.models import ClientProfile, Subcontractor, SubcontractorProfile, User
 
 
 @admin.register(User)
@@ -11,8 +11,8 @@ class UserAdmin(DjangoUserAdmin):
     add_form = UserCreationForm
     model = User
     ordering = ("-date_joined",)
-    list_display = ("email", "first_name", "last_name", "role", "is_active", "is_staff")
-    list_filter = ("role", "is_active", "is_staff", "language")
+    list_display = ("email", "first_name", "last_name", "is_active", "is_staff")
+    list_filter = ("is_active", "is_staff", "language")
     search_fields = ("email", "first_name", "last_name")
     readonly_fields = ("date_joined", "last_login")
     fieldsets = (
@@ -27,7 +27,6 @@ class UserAdmin(DjangoUserAdmin):
             _("Rôle & permissions"),
             {
                 "fields": (
-                    "role",
                     "is_active",
                     "is_staff",
                     "is_superuser",
@@ -47,7 +46,6 @@ class UserAdmin(DjangoUserAdmin):
                     "email",
                     "first_name",
                     "last_name",
-                    "role",
                     "password1",
                     "password2",
                 ),
@@ -56,8 +54,8 @@ class UserAdmin(DjangoUserAdmin):
     )
 
 
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
+@admin.register(ClientProfile)
+class ClientProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "company", "position", "is_company_admin")
     list_filter = ("is_company_admin",)
     search_fields = ("user__email", "company__name")
@@ -66,6 +64,14 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Subcontractor)
 class SubcontractorAdmin(admin.ModelAdmin):
-    list_display = ("user", "company")
-    search_fields = ("user__email", "company__name")
-    autocomplete_fields = ("user", "company")
+    list_display = ("company", "worker_count", "company_age", "accepts_wir")
+    list_filter = ("worker_count", "company_age", "accepts_wir")
+    search_fields = ("company__name",)
+    autocomplete_fields = ("company",)
+
+
+@admin.register(SubcontractorProfile)
+class SubcontractorProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "subcontractor")
+    search_fields = ("user__email", "subcontractor__company__name")
+    autocomplete_fields = ("user", "subcontractor")
