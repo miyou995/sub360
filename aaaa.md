@@ -8,3 +8,5 @@ project creation
 project application 
 team managment
 invite teammate using a special link or email that send the magic link
+
+
