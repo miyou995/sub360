@@ -17,6 +17,54 @@
 <body id="kt_body" class="app-default">
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <div id="kt_app_header" class="app-header">
+                <div class="app-container container-xxl d-flex align-items-stretch justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'core:index' %}" class="d-flex align-items-center text-dark text-hover-primary">
+                            <span class="fs-2 fw-bold">Sub360</span>
+                        </a>
+                    </div>
+                    <div class="d-flex align-items-stretch">
+                        <nav class="d-flex align-items-stretch" id="kt_header_nav">
+                            <ul class="nav nav-stretch fs-6 fw-semibold gap-4 align-items-center mb-0">
+                                <li class="nav-item">
+                                    <a class="nav-link text-gray-700 text-hover-primary{% if request.resolver_match.app_name == 'core' %} active text-primary{% endif %}" href="{% url 'core:index' %}">
+                                        {% translate "Tableau de bord" %}
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-gray-700 text-hover-primary{% if request.resolver_match.app_name == 'tenders' %} active text-primary{% endif %}" href="{% url 'tenders:list_tender' %}">
+                                        {% translate "Appels d'offres" %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="d-flex align-items-center ms-4">
+                            {% if request.user.is_authenticated %}
+                                <div class="dropdown">
+                                    <a href="#" class="d-flex align-items-center text-gray-700 text-hover-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="symbol symbol-30px symbol-circle me-2">
+                                            <span class="symbol-label bg-light-primary text-primary fw-bold">
+                                                {{ request.user.get_short_name|default:request.user.email|slice:":1"|upper }}
+                                            </span>
+                                        </span>
+                                        <span class="fw-semibold">{{ request.user.get_short_name|default:request.user.email }}</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="{% url 'users:profile' %}">{% translate "Profil" %}</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="{% url 'users:logout' %}">{% translate "Déconnexion" %}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'users:login' %}" class="btn btn-sm btn-primary">{% translate "Connexion" %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <div class="d-flex flex-column flex-column-fluid">
@@ -25,14 +73,6 @@
                                 <h1 class="page-heading text-dark fw-bold fs-3 my-0">
                                     {% block page_title %}{% endblock %}
                                 </h1>
-                                <div class="d-flex align-items-center gap-3">
-                                    {% if request.user.is_authenticated %}
-                                        <span class="text-gray-600">{{ request.user.get_short_name }}</span>
-                                        <a href="{% url 'users:logout' %}" class="btn btn-sm btn-light-danger">
-                                            {% translate "Déconnexion" %}
-                                        </a>
-                                    {% endif %}
-                                </div>
                             </div>
                         </div>
                         <div class="app-content flex-column-fluid">
@@ -48,8 +88,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="app-footer py-4">
+                        <div class="app-container container-xxl d-flex flex-column flex-md-row align-items-center justify-content-between">
+                            <span class="text-gray-600 order-2 order-md-1">
+                                &copy; {% now "Y" %} <span class="text-gray-800 fw-semibold">Sub360</span>. {% translate "Tous droits réservés." %}
+                            </span>
+                            <ul class="nav order-1 order-md-2 mb-3 mb-md-0">
+                                <li class="nav-item">
+                                    <a href="{% url 'core:index' %}" class="nav-link text-gray-600 text-hover-primary px-3">{% translate "Accueil" %}</a>
+                                </li>
+                                {% comment %} <li class="nav-item">
+                                    <a href="{% url 'tenders:list_tender' %}" class="nav-link text-gray-600 text-hover-primary px-3">{% translate "Appels d'offres" %}</a>
+                                </li> {% endcomment %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal fade" id="kt_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content" id="kt_modal_content"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="kt_modal_stacked_2" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content" id="kt_modal_stacked_2_content"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-450px">
+            <div class="modal-content" id="delete_modal_body"></div>
         </div>
     </div>
     <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
