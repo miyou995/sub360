@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     "apps.integrations",
     "apps.statistics",
     "debug_toolbar",
-    "django_tables2",
     "django_lumen",
     "schematic",
 ]
@@ -104,16 +103,16 @@ TEMPLATES = [
     },
 ]
 # Database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "sub360"),
-        "USER": os.getenv("DB_USER", "postgres"),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", "localhost"),
-        "PORT": os.getenv("DB_PORT", "5433"),
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("DB_NAME", "sub360"),
+#         "USER": os.getenv("DB_USER", "postgres"),
+#         "PASSWORD": os.getenv("DB_PASSWORD", ""),
+#         "HOST": os.getenv("DB_HOST", "localhost"),
+#         "PORT": os.getenv("DB_PORT", "5433"),
+#     }
+# }
 
 
 WSGI_APPLICATION = "config.wsgi.application"
@@ -186,4 +185,7 @@ FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
 # django-tables2: project-wide default template (HTMX-aware, Metronic-styled).
 # Every table renders through this unless a Table.Meta overrides it explicitly.
 DJANGO_TABLES2_TEMPLATE = "tables/bootstrap_htmx.html"
-
+try:
+    from .local_settings import *
+except ImportError:
+    pass
