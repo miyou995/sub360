@@ -82,13 +82,13 @@ class Tender(CRUDUrlMixin, TimestampedModel):
     )
     description = models.TextField(_("Description"), blank=True)
     execution_type = models.ManyToManyField(
-        "projects.ExecutionType",
+        "tenders.ExecutionType",
         blank=True,
         related_name="tenders",
         verbose_name=_("Types d'exécution"),
     )
     branch = models.ManyToManyField(
-        "projects.Branch",
+        "tenders.Branch",
         blank=True,
         related_name="tenders",
         verbose_name=_("Branches"),

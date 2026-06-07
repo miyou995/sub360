@@ -10,10 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Load environment variables
+dotenv.load_dotenv(BASE_DIR / ".env")
+
+os.environ["DJANGO_RUNSERVER_HIDE_WARNING"] = "true"
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,9 +51,11 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.users",
     "apps.companies",
+    "apps.clients",
+    "apps.subcontractors",
     "apps.documents",
     "apps.verification",
-    "apps.projects",
+    "apps.tenders",
     "apps.applications",
     "apps.ratings",
     "apps.subscriptions",
@@ -90,6 +99,19 @@ TEMPLATES = [
         },
     },
 ]
+# Database
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME", "sub360"),
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5433"),
+    }
+}
+
+
 
 WSGI_APPLICATION = "config.wsgi.application"
 

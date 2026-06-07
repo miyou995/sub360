@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from apps.users.models import Subcontractor
+from apps.subcontractors.models import Subcontractor
 
 
 class VerificationReview(CRUDUrlMixin, TimestampedModel):
