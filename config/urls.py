@@ -15,15 +15,46 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from datetime import date
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 # admin_url = settings.ADMIN_URL
 
+WIP_MODULES = [
+    {"icon": "🏢", "label": "Clients", "desc": "Gestion des clients"},
+    {"icon": "📋", "label": "Appels d'offres", "desc": "Tenders & soumissions"},
+    {"icon": "📄", "label": "Documents", "desc": "GED & fichiers"},
+    {"icon": "🏭", "label": "Entreprises", "desc": "Annuaire entreprises"},
+    {"icon": "📊", "label": "Statistiques", "desc": "Tableaux de bord"},
+    {"icon": "✅", "label": "Candidatures", "desc": "Suivi des candidatures"},
+    {"icon": "⭐", "label": "Évaluations", "desc": "Notes & avis"},
+    {"icon": "🔔", "label": "Notifications", "desc": "Centre de notifications"},
+    {"icon": "📬", "label": "Messagerie", "desc": "Messagerie interne"},
+    {"icon": "🔌", "label": "Intégrations", "desc": "API & connecteurs"},
+    {"icon": "🎯", "label": "Projets", "desc": "Suivi de projets"},
+    {"icon": "💳", "label": "Abonnements", "desc": "Plans & facturation"},
+    {"icon": "✉️", "label": "Newsletter", "desc": "Campagnes e-mail"},
+    {"icon": "🛡️", "label": "Vérification", "desc": "KYC & conformité"},
+]
+
+
+class DevIndexView(TemplateView):
+    template_name = "dev_index.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["wip_modules"] = WIP_MODULES
+        ctx["today"] = date.today()
+        return ctx
+
+
 urlpatterns = [
-    path("", include("apps.core.urls")),
+    path("", DevIndexView.as_view(), name="dev_index"),
     path("accounts/", include("apps.users.urls")),
     path("tenders/", include("apps.tenders.urls")),
     path("applications/", include("apps.applications.urls")),
