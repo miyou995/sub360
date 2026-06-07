@@ -48,5 +48,127 @@
             "name": "Conversion",
             "is_active": true
         }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "name": "Maintenance",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 7,
+        "fields": {
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "name": "Extension",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 8,
+        "fields": {
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "name": "Refurbishment",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 9,
+        "fields": {
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "name": "Interior fit-out",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 10,
+        "fields": {
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+            "name": "Facade renovation",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-02-01T00:00:00Z",
+            "updated_at": "2026-02-01T00:00:00Z",
+            "title": "Renovation of Old Town Hall",
+            "owner": 1,
+            "created_by": null,
+            "description": "Façade and roof renovation of the historic town hall.",
+            "execution_type": [4, 3],
+            "branch": [8, 14],
+            "canton": "ZH",
+            "city": "Zürich",
+            "zip_code": "8001",
+            "start_date": "2026-07-01",
+            "application_deadline": "2026-06-15",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "500000",
+            "procedure": "public",
+            "status": "published"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-03-01T00:00:00Z",
+            "updated_at": "2026-03-01T00:00:00Z",
+            "title": "New Housing Development - Eastside",
+            "owner": 1,
+            "created_by": null,
+            "description": "Construction of a 24-unit residential building.",
+            "execution_type": [2],
+            "branch": [8, 10],
+            "canton": "VD",
+            "city": "Lausanne",
+            "zip_code": "1003",
+            "start_date": "2026-09-01",
+            "application_deadline": "2026-08-01",
+            "material_offered": true,
+            "material": "Concrete slabs",
+            "project_volume": "3500000",
+            "procedure": "public",
+            "status": "draft"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-04-01T00:00:00Z",
+            "updated_at": "2026-04-01T00:00:00Z",
+            "title": "Office Fit-out - Central Plaza",
+            "owner": 1,
+            "created_by": null,
+            "description": "Interior fit-out works for two floors of office space.",
+            "execution_type": [5, 8],
+            "branch": [24, 25],
+            "canton": "GE",
+            "city": "Genève",
+            "zip_code": "1201",
+            "start_date": "2026-08-15",
+            "application_deadline": "2026-07-15",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "800000",
+            "procedure": "by_invitation",
+            "status": "published"
+        }
     }
 ]

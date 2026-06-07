@@ -19,6 +19,7 @@ from datetime import date
 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
@@ -65,7 +66,6 @@ urlpatterns = [
     path("verification/", include("apps.verification.urls")),
     # NOTE: apps.core.urls is not wired yet — apps/core/views.py still references
     # legacy apps (billing/finance/recurrent) and must be rebuilt first.
-    # path("", include("apps.core.urls")),
     # path(f"{admin_url}/", admin.site.urls),
 ]
 devpatterns = []
@@ -76,6 +76,7 @@ if settings.DEBUG:
     urlpatterns += debug_toolbar_urls()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     devpatterns = [
+        path("admin/", admin.site.urls),
         path("schema/", include("schematic.urls")),
         path("lumen/", include("django_lumen.urls")),
     ]

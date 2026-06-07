@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "apps.integrations",
     "apps.statistics",
     "debug_toolbar",
+    "django_tables2",
     "django_lumen",
     "schematic",
 ]
@@ -186,7 +187,3 @@ FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
 # Every table renders through this unless a Table.Meta overrides it explicitly.
 DJANGO_TABLES2_TEMPLATE = "tables/bootstrap_htmx.html"
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
