@@ -25,7 +25,7 @@ class Rating(CRUDUrlMixin, TimestampedModel):
     """
 
     subcontractor = models.ForeignKey(
-        "users.Subcontractor",
+        "subcontractors.Subcontractor",
         on_delete=models.CASCADE,
         related_name="ratings",
         verbose_name=_("Sous-traitant"),
@@ -45,7 +45,7 @@ class Rating(CRUDUrlMixin, TimestampedModel):
         verbose_name=_("Auteur"),
     )
     tender = models.ForeignKey(
-        "projects.Tender",
+        "tenders.Tender",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

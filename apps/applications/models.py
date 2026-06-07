@@ -19,13 +19,13 @@ class Application(CRUDUrlMixin, TimestampedModel):
     """
 
     tender = models.ForeignKey(
-        "projects.Tender",
+        "tenders.Tender",
         on_delete=models.CASCADE,
         related_name="applications",
         verbose_name=_("Appel d'offres"),
     )
     subcontractor = models.ForeignKey(
-        "users.Subcontractor",
+        "subcontractors.Subcontractor",
         on_delete=models.CASCADE,
         related_name="applications",
         verbose_name=_("Sous-traitant"),
@@ -85,7 +85,7 @@ class FavoriteSubcontractor(TimestampedModel):
         verbose_name=_("Entreprise"),
     )
     subcontractor = models.ForeignKey(
-        "users.Subcontractor",
+        "subcontractors.Subcontractor",
         on_delete=models.CASCADE,
         related_name="favorited_by",
         verbose_name=_("Sous-traitant"),

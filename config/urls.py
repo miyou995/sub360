@@ -20,14 +20,22 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-admin_url = settings.ADMIN_URL
+# admin_url = settings.ADMIN_URL
 
 urlpatterns = [
     path("accounts/", include("apps.users.urls")),
+    path("tenders/", include("apps.tenders.urls")),
+    path("applications/", include("apps.applications.urls")),
+    path("ratings/", include("apps.ratings.urls")),
+    path("companies/", include("apps.companies.urls")),
+    # path("clients/", include("apps.clients.urls")),
+    path("subcontractors/", include("apps.subcontractors.urls")),
+    path("documents/", include("apps.documents.urls")),
+    path("verification/", include("apps.verification.urls")),
     # NOTE: apps.core.urls is not wired yet — apps/core/views.py still references
     # legacy apps (billing/finance/recurrent) and must be rebuilt first.
     # path("", include("apps.core.urls")),
-    path(f"{admin_url}/", admin.site.urls),
+    # path(f"{admin_url}/", admin.site.urls),
 ]
 devpatterns = []
 
