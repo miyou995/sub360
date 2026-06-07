@@ -141,8 +141,6 @@ GitHub.sublime-settings
 config/local_settings.py
 local/*
 
-*.md
-
 ignore/
 ignore/*
 
