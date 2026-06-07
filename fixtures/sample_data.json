@@ -1,0 +1,1226 @@
+[
+    {
+        "model": "users.user",
+        "pk": 10,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "thomas.meier@implenia.ch",
+            "first_name": "Thomas",
+            "last_name": "Meier",
+            "phone": "+41 44 770 11 22",
+            "avatar": "",
+            "language": "fr",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-05T08:00:00Z",
+            "created_at": "2026-01-05T08:00:00Z",
+            "updated_at": "2026-01-05T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 11,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "laura.fischer@implenia.ch",
+            "first_name": "Laura",
+            "last_name": "Fischer",
+            "phone": "+41 44 770 11 23",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-06T08:00:00Z",
+            "created_at": "2026-01-06T08:00:00Z",
+            "updated_at": "2026-01-06T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 12,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "marc.favre@steiner.ch",
+            "first_name": "Marc",
+            "last_name": "Favre",
+            "phone": "+41 22 552 33 44",
+            "avatar": "",
+            "language": "fr",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-07T08:00:00Z",
+            "created_at": "2026-01-07T08:00:00Z",
+            "updated_at": "2026-01-07T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 13,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "anna.keller@marti.ch",
+            "first_name": "Anna",
+            "last_name": "Keller",
+            "phone": "+41 31 326 55 66",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-08T08:00:00Z",
+            "created_at": "2026-01-08T08:00:00Z",
+            "updated_at": "2026-01-08T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 20,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "peter.mueller@gipser-mueller.ch",
+            "first_name": "Peter",
+            "last_name": "Müller",
+            "phone": "+41 41 410 77 88",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-10T08:00:00Z",
+            "created_at": "2026-01-10T08:00:00Z",
+            "updated_at": "2026-01-10T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 21,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "stefan.schneider@elektro-schneider.ch",
+            "first_name": "Stefan",
+            "last_name": "Schneider",
+            "phone": "+41 61 271 99 00",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-11T08:00:00Z",
+            "created_at": "2026-01-11T08:00:00Z",
+            "updated_at": "2026-01-11T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 22,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "julien.rochat@toiture-rochat.ch",
+            "first_name": "Julien",
+            "last_name": "Rochat",
+            "phone": "+41 21 312 44 55",
+            "avatar": "",
+            "language": "fr",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-12T08:00:00Z",
+            "created_at": "2026-01-12T08:00:00Z",
+            "updated_at": "2026-01-12T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 23,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "marco.bianchi@sanitaire-bianchi.ch",
+            "first_name": "Marco",
+            "last_name": "Bianchi",
+            "phone": "+41 91 921 66 77",
+            "avatar": "",
+            "language": "it",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-13T08:00:00Z",
+            "created_at": "2026-01-13T08:00:00Z",
+            "updated_at": "2026-01-13T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 24,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "hans.weber@maler-weber.ch",
+            "first_name": "Hans",
+            "last_name": "Weber",
+            "phone": "+41 71 222 88 99",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-14T08:00:00Z",
+            "created_at": "2026-01-14T08:00:00Z",
+            "updated_at": "2026-01-14T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 25,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "daniel.frei@geruestbau-frei.ch",
+            "first_name": "Daniel",
+            "last_name": "Frei",
+            "phone": "+41 52 202 12 13",
+            "avatar": "",
+            "language": "de",
+            "is_active": true,
+            "is_staff": false,
+            "date_joined": "2026-01-15T08:00:00Z",
+            "created_at": "2026-01-15T08:00:00Z",
+            "updated_at": "2026-01-15T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 30,
+        "fields": {
+            "password": "pbkdf2_sha256$1200000$e49yH08K2vqZ0xqGdTNi9Z$FU22h8lzIfGdJmTIF8vDtKnjpbFVXwqtW5knJ7UXdqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "backoffice@sub360.ch",
+            "first_name": "Sophie",
+            "last_name": "Brunner",
+            "phone": "+41 44 500 00 00",
+            "avatar": "",
+            "language": "fr",
+            "is_active": true,
+            "is_staff": true,
+            "date_joined": "2026-01-02T08:00:00Z",
+            "created_at": "2026-01-02T08:00:00Z",
+            "updated_at": "2026-01-02T08:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-05T08:00:00Z",
+            "updated_at": "2026-01-05T08:00:00Z",
+            "name": "Implenia Bau AG",
+            "company_type": "client",
+            "uid": "CHE-101.234.567",
+            "email": "contact@implenia.ch",
+            "phone": "+41 44 770 11 11",
+            "website": "https://www.implenia.com",
+            "address": "Industriestrasse 24",
+            "zip_code": "8305",
+            "city": "Dietlikon",
+            "canton": "ZH"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-07T08:00:00Z",
+            "updated_at": "2026-01-07T08:00:00Z",
+            "name": "Steiner SA",
+            "company_type": "client",
+            "uid": "CHE-102.345.678",
+            "email": "contact@steiner.ch",
+            "phone": "+41 22 552 33 33",
+            "website": "https://www.steiner.ch",
+            "address": "Rue du Rhône 100",
+            "zip_code": "1204",
+            "city": "Genève",
+            "canton": "GE"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-08T08:00:00Z",
+            "updated_at": "2026-01-08T08:00:00Z",
+            "name": "Marti AG",
+            "company_type": "client",
+            "uid": "CHE-103.456.789",
+            "email": "contact@marti.ch",
+            "phone": "+41 31 326 55 55",
+            "website": "https://www.martiag.ch",
+            "address": "Weissensteinstrasse 15",
+            "zip_code": "3000",
+            "city": "Bern",
+            "canton": "BE"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-10T08:00:00Z",
+            "updated_at": "2026-01-10T08:00:00Z",
+            "name": "Gipser Müller GmbH",
+            "company_type": "subcontractor",
+            "uid": "CHE-201.111.222",
+            "email": "info@gipser-mueller.ch",
+            "phone": "+41 41 410 77 77",
+            "website": "https://www.gipser-mueller.ch",
+            "address": "Tribschenstrasse 8",
+            "zip_code": "6005",
+            "city": "Luzern",
+            "canton": "LU"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-11T08:00:00Z",
+            "updated_at": "2026-01-11T08:00:00Z",
+            "name": "Elektro Schneider AG",
+            "company_type": "subcontractor",
+            "uid": "CHE-202.222.333",
+            "email": "info@elektro-schneider.ch",
+            "phone": "+41 61 271 99 99",
+            "website": "https://www.elektro-schneider.ch",
+            "address": "Gärtnerstrasse 46",
+            "zip_code": "4057",
+            "city": "Basel",
+            "canton": "BS"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-12T08:00:00Z",
+            "updated_at": "2026-01-12T08:00:00Z",
+            "name": "Toiture Rochat Sàrl",
+            "company_type": "subcontractor",
+            "uid": "CHE-203.333.444",
+            "email": "info@toiture-rochat.ch",
+            "phone": "+41 21 312 44 44",
+            "website": "https://www.toiture-rochat.ch",
+            "address": "Avenue de Morges 60",
+            "zip_code": "1004",
+            "city": "Lausanne",
+            "canton": "VD"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 7,
+        "fields": {
+            "created_at": "2026-01-13T08:00:00Z",
+            "updated_at": "2026-01-13T08:00:00Z",
+            "name": "Sanitaire Bianchi SA",
+            "company_type": "subcontractor",
+            "uid": "CHE-204.444.555",
+            "email": "info@sanitaire-bianchi.ch",
+            "phone": "+41 91 921 66 66",
+            "website": "https://www.sanitaire-bianchi.ch",
+            "address": "Via Pretorio 9",
+            "zip_code": "6900",
+            "city": "Lugano",
+            "canton": "TI"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 8,
+        "fields": {
+            "created_at": "2026-01-14T08:00:00Z",
+            "updated_at": "2026-01-14T08:00:00Z",
+            "name": "Maler Weber GmbH",
+            "company_type": "subcontractor",
+            "uid": "CHE-205.555.666",
+            "email": "info@maler-weber.ch",
+            "phone": "+41 71 222 88 88",
+            "website": "https://www.maler-weber.ch",
+            "address": "Davidstrasse 38",
+            "zip_code": "9000",
+            "city": "St. Gallen",
+            "canton": "SG"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 9,
+        "fields": {
+            "created_at": "2026-01-15T08:00:00Z",
+            "updated_at": "2026-01-15T08:00:00Z",
+            "name": "Gerüstbau Frei AG",
+            "company_type": "subcontractor",
+            "uid": "CHE-206.666.777",
+            "email": "info@geruestbau-frei.ch",
+            "phone": "+41 52 202 12 12",
+            "website": "https://www.geruestbau-frei.ch",
+            "address": "Zürcherstrasse 204",
+            "zip_code": "8406",
+            "city": "Winterthur",
+            "canton": "ZH"
+        }
+    },
+    {
+        "model": "clients.clientprofile",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-05T08:00:00Z",
+            "updated_at": "2026-01-05T08:00:00Z",
+            "user": 10,
+            "company": 1,
+            "position": "Directeur des achats",
+            "is_company_admin": true
+        }
+    },
+    {
+        "model": "clients.clientprofile",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-06T08:00:00Z",
+            "updated_at": "2026-01-06T08:00:00Z",
+            "user": 11,
+            "company": 1,
+            "position": "Cheffe de projet",
+            "is_company_admin": false
+        }
+    },
+    {
+        "model": "clients.clientprofile",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-07T08:00:00Z",
+            "updated_at": "2026-01-07T08:00:00Z",
+            "user": 12,
+            "company": 2,
+            "position": "Responsable de chantier",
+            "is_company_admin": true
+        }
+    },
+    {
+        "model": "clients.clientprofile",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-08T08:00:00Z",
+            "updated_at": "2026-01-08T08:00:00Z",
+            "user": 13,
+            "company": 3,
+            "position": "Directrice de projet",
+            "is_company_admin": true
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Rénovation façade Bahnhofstrasse",
+            "description": "Travaux de plâtrerie et crépissage sur un immeuble de bureaux de 6 étages en plein centre de Zürich.",
+            "start_date": "2024-03-01",
+            "end_date": "2024-08-30"
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Installation électrique immeuble résidentiel",
+            "description": "Installation électrique complète d'un immeuble résidentiel de 24 appartements à Bâle.",
+            "start_date": "2024-05-15",
+            "end_date": "2025-01-20"
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Réfection toiture campus EPFL",
+            "description": "Réfection complète de la toiture et de l'étanchéité d'un bâtiment universitaire à Lausanne.",
+            "start_date": "2023-09-01",
+            "end_date": "2024-04-15"
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Chauffage et sanitaire clinique Lugano",
+            "description": "Installation CVC et sanitaire pour une clinique privée de 80 lits au Tessin.",
+            "start_date": "2024-01-10",
+            "end_date": "2024-11-30"
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Peinture école primaire St. Gallen",
+            "description": "Travaux de peinture intérieure et extérieure d'une école primaire pendant les vacances scolaires.",
+            "start_date": "2024-07-01",
+            "end_date": "2024-08-20"
+        }
+    },
+    {
+        "model": "subcontractors.reference",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-16T08:00:00Z",
+            "updated_at": "2026-01-16T08:00:00Z",
+            "title": "Échafaudage tour Prime Tower",
+            "description": "Montage et démontage d'échafaudages de façade pour des travaux de maintenance sur une tour de bureaux.",
+            "start_date": "2024-04-01",
+            "end_date": "2024-06-30"
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-10T08:00:00Z",
+            "updated_at": "2026-01-10T08:00:00Z",
+            "company": 4,
+            "worker_count": "11-25",
+            "company_age": "3_10",
+            "accepts_wir": true,
+            "introduction": "Entreprise de plâtrerie et gypserie spécialisée dans la rénovation et le neuf en Suisse centrale.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "Luzern, LU",
+            "branch": [27],
+            "references": [1]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-11T08:00:00Z",
+            "updated_at": "2026-01-11T08:00:00Z",
+            "company": 5,
+            "worker_count": "26-50",
+            "company_age": "over_10",
+            "accepts_wir": false,
+            "introduction": "Installateur électrique certifié pour bâtiments résidentiels, commerciaux et industriels dans la région bâloise.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "Basel, BS",
+            "branch": [15],
+            "references": [2]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-12T08:00:00Z",
+            "updated_at": "2026-01-12T08:00:00Z",
+            "company": 6,
+            "worker_count": "6-10",
+            "company_age": "over_10",
+            "accepts_wir": true,
+            "introduction": "Spécialiste de la toiture, de l'étanchéité et de l'enveloppe du bâtiment en Suisse romande.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "Lausanne, VD",
+            "branch": [18, 19],
+            "references": [3]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-13T08:00:00Z",
+            "updated_at": "2026-01-13T08:00:00Z",
+            "company": 7,
+            "worker_count": "11-25",
+            "company_age": "3_10",
+            "accepts_wir": false,
+            "introduction": "Entreprise de chauffage, ventilation, climatisation et sanitaire au service du Tessin.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "Lugano, TI",
+            "branch": [21],
+            "references": [4]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-14T08:00:00Z",
+            "updated_at": "2026-01-14T08:00:00Z",
+            "company": 8,
+            "worker_count": "1-5",
+            "company_age": "under_3",
+            "accepts_wir": true,
+            "introduction": "Petite entreprise de peinture et vitrerie offrant un travail soigné en Suisse orientale.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "St. Gallen, SG",
+            "branch": [24],
+            "references": [5]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractor",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-15T08:00:00Z",
+            "updated_at": "2026-01-15T08:00:00Z",
+            "company": 9,
+            "worker_count": "26-50",
+            "company_age": "over_10",
+            "accepts_wir": false,
+            "introduction": "Constructeur d'échafaudages pour chantiers de toutes tailles dans le canton de Zürich.",
+            "cover_photo": "",
+            "profile_photo": "",
+            "location": "Winterthur, ZH",
+            "branch": [20],
+            "references": [6]
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-10T08:00:00Z",
+            "updated_at": "2026-01-10T08:00:00Z",
+            "user": 20,
+            "subcontractor": 1
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-11T08:00:00Z",
+            "updated_at": "2026-01-11T08:00:00Z",
+            "user": 21,
+            "subcontractor": 2
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-12T08:00:00Z",
+            "updated_at": "2026-01-12T08:00:00Z",
+            "user": 22,
+            "subcontractor": 3
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-13T08:00:00Z",
+            "updated_at": "2026-01-13T08:00:00Z",
+            "user": 23,
+            "subcontractor": 4
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-14T08:00:00Z",
+            "updated_at": "2026-01-14T08:00:00Z",
+            "user": 24,
+            "subcontractor": 5
+        }
+    },
+    {
+        "model": "subcontractors.subcontractorprofile",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-15T08:00:00Z",
+            "updated_at": "2026-01-15T08:00:00Z",
+            "user": 25,
+            "subcontractor": 6
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-10T09:00:00Z",
+            "updated_at": "2026-01-10T09:00:00Z",
+            "subcontractor": 1,
+            "package": "pro",
+            "status": "active",
+            "current_period_end": "2026-12-31T23:59:59Z"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-11T09:00:00Z",
+            "updated_at": "2026-01-11T09:00:00Z",
+            "subcontractor": 2,
+            "package": "premium",
+            "status": "active",
+            "current_period_end": "2026-12-31T23:59:59Z"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-12T09:00:00Z",
+            "updated_at": "2026-01-12T09:00:00Z",
+            "subcontractor": 3,
+            "package": "basic",
+            "status": "active",
+            "current_period_end": "2026-12-31T23:59:59Z"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-13T09:00:00Z",
+            "updated_at": "2026-01-13T09:00:00Z",
+            "subcontractor": 4,
+            "package": "pro",
+            "status": "trialing",
+            "current_period_end": "2026-07-13T23:59:59Z"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-14T09:00:00Z",
+            "updated_at": "2026-01-14T09:00:00Z",
+            "subcontractor": 5,
+            "package": "basic",
+            "status": "active",
+            "current_period_end": "2026-12-31T23:59:59Z"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-15T09:00:00Z",
+            "updated_at": "2026-01-15T09:00:00Z",
+            "subcontractor": 6,
+            "package": "pro",
+            "status": "active",
+            "current_period_end": "2026-12-31T23:59:59Z"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 1,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_1.pdf",
+            "valid_until": "2027-01-31",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 2,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_2.pdf",
+            "valid_until": "2027-02-28",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 3,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_3.pdf",
+            "valid_until": "2027-03-31",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 4,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_4.pdf",
+            "valid_until": "2027-04-30",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 5,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_5.pdf",
+            "valid_until": "2027-05-31",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-16T10:00:00Z",
+            "updated_at": "2026-01-16T10:00:00Z",
+            "subcontractor": 6,
+            "kind": "insurance",
+            "file": "proof_documents/sample_insurance_6.pdf",
+            "valid_until": "2027-06-30",
+            "status": "valid"
+        }
+    },
+    {
+        "model": "documents.proofdocument",
+        "pk": 7,
+        "fields": {
+            "created_at": "2026-01-16T10:30:00Z",
+            "updated_at": "2026-01-16T10:30:00Z",
+            "subcontractor": 2,
+            "kind": "vat",
+            "file": "proof_documents/sample_vat_2.pdf",
+            "valid_until": null,
+            "status": "valid"
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-01-17T11:00:00Z",
+            "updated_at": "2026-01-17T11:00:00Z",
+            "subcontractor": 1,
+            "status": "approved",
+            "reason": "Dossier complet, assurance valide.",
+            "reviewed_by": 30,
+            "reviewed_at": "2026-01-17T11:00:00Z"
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-01-17T11:05:00Z",
+            "updated_at": "2026-01-17T11:05:00Z",
+            "subcontractor": 2,
+            "status": "approved",
+            "reason": "Dossier complet, attestation TVA fournie.",
+            "reviewed_by": 30,
+            "reviewed_at": "2026-01-17T11:05:00Z"
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-01-17T11:10:00Z",
+            "updated_at": "2026-01-17T11:10:00Z",
+            "subcontractor": 3,
+            "status": "approved",
+            "reason": "Dossier complet.",
+            "reviewed_by": 30,
+            "reviewed_at": "2026-01-17T11:10:00Z"
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-01-17T11:15:00Z",
+            "updated_at": "2026-01-17T11:15:00Z",
+            "subcontractor": 4,
+            "status": "approved",
+            "reason": "Dossier complet.",
+            "reviewed_by": 30,
+            "reviewed_at": "2026-01-17T11:15:00Z"
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-01-17T11:20:00Z",
+            "updated_at": "2026-01-17T11:20:00Z",
+            "subcontractor": 5,
+            "status": "pending",
+            "reason": "",
+            "reviewed_by": null,
+            "reviewed_at": null
+        }
+    },
+    {
+        "model": "verification.verificationreview",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-01-17T11:25:00Z",
+            "updated_at": "2026-01-17T11:25:00Z",
+            "subcontractor": 6,
+            "status": "approved",
+            "reason": "Dossier complet.",
+            "reviewed_by": 30,
+            "reviewed_at": "2026-01-17T11:25:00Z"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-02-01T08:00:00Z",
+            "updated_at": "2026-02-01T08:00:00Z",
+            "title": "Construction nouveau bâtiment administratif Dietlikon",
+            "owner": 1,
+            "created_by": 10,
+            "description": "Recherche de sous-traitants pour les travaux de plâtrerie et de peinture d'un nouveau bâtiment administratif de 5 étages.",
+            "execution_type": [2],
+            "branch": [24, 27],
+            "canton": "ZH",
+            "city": "Dietlikon",
+            "zip_code": "8305",
+            "start_date": "2026-05-01",
+            "application_deadline": "2026-03-15",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "CHF 1'200'000",
+            "procedure": "public",
+            "status": "published"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-02-03T08:00:00Z",
+            "updated_at": "2026-02-03T08:00:00Z",
+            "title": "Rénovation immeuble résidentiel Genève",
+            "owner": 2,
+            "created_by": 12,
+            "description": "Rénovation complète d'un immeuble résidentiel : installation électrique et sanitaire à reprendre entièrement.",
+            "execution_type": [4],
+            "branch": [15, 21],
+            "canton": "GE",
+            "city": "Genève",
+            "zip_code": "1204",
+            "start_date": "2026-06-01",
+            "application_deadline": "2026-04-01",
+            "material_offered": true,
+            "material": "Matériel électrique fourni par le maître d'ouvrage",
+            "project_volume": "CHF 850'000",
+            "procedure": "public",
+            "status": "published"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-02-05T08:00:00Z",
+            "updated_at": "2026-02-05T08:00:00Z",
+            "title": "Réfection toiture et isolation Bern",
+            "owner": 3,
+            "created_by": 13,
+            "description": "Réfection de la toiture, étanchéité et isolation de l'enveloppe d'un bâtiment public.",
+            "execution_type": [4],
+            "branch": [18, 19],
+            "canton": "BE",
+            "city": "Bern",
+            "zip_code": "3000",
+            "start_date": "2026-07-01",
+            "application_deadline": "2026-04-15",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "CHF 620'000",
+            "procedure": "public",
+            "status": "published"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-02-07T08:00:00Z",
+            "updated_at": "2026-02-07T08:00:00Z",
+            "title": "Échafaudage tour de bureaux Zürich",
+            "owner": 1,
+            "created_by": 10,
+            "description": "Montage d'échafaudages de façade pour des travaux de maintenance sur une tour de bureaux.",
+            "execution_type": [2],
+            "branch": [20],
+            "canton": "ZH",
+            "city": "Zürich",
+            "zip_code": "8005",
+            "start_date": "2026-05-15",
+            "application_deadline": "2026-03-30",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "CHF 240'000",
+            "procedure": "by_invitation",
+            "status": "published"
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-02-09T08:00:00Z",
+            "updated_at": "2026-02-09T08:00:00Z",
+            "title": "Installation sanitaire école Lausanne",
+            "owner": 2,
+            "created_by": 12,
+            "description": "Installation sanitaire complète pour une nouvelle école primaire.",
+            "execution_type": [2],
+            "branch": [21],
+            "canton": "VD",
+            "city": "Lausanne",
+            "zip_code": "1004",
+            "start_date": "2026-08-01",
+            "application_deadline": "2026-05-01",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "CHF 410'000",
+            "procedure": "public",
+            "status": "draft"
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-02-15T09:00:00Z",
+            "updated_at": "2026-02-15T09:00:00Z",
+            "tender": 1,
+            "subcontractor": 1,
+            "cover_letter": "Nous proposons nos services de plâtrerie pour ce projet et sommes disponibles dès mai 2026.",
+            "quote_file": "application_quotes/offre_gipser_mueller_t1.pdf",
+            "quote_amount": "185000.00",
+            "status": "pending",
+            "decided_by": null,
+            "decided_at": null
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-02-16T09:00:00Z",
+            "updated_at": "2026-02-20T14:00:00Z",
+            "tender": 1,
+            "subcontractor": 5,
+            "cover_letter": "Notre équipe de peinture est à votre disposition pour les finitions intérieures et extérieures.",
+            "quote_file": "application_quotes/offre_maler_weber_t1.pdf",
+            "quote_amount": "96000.00",
+            "status": "accepted",
+            "decided_by": 10,
+            "decided_at": "2026-02-20T14:00:00Z"
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-02-17T09:00:00Z",
+            "updated_at": "2026-02-21T10:00:00Z",
+            "tender": 2,
+            "subcontractor": 2,
+            "cover_letter": "Spécialistes de l'installation électrique résidentielle, nous garantissons un travail conforme aux normes NIBT.",
+            "quote_file": "application_quotes/offre_elektro_schneider_t2.pdf",
+            "quote_amount": "142000.00",
+            "status": "accepted",
+            "decided_by": 12,
+            "decided_at": "2026-02-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 4,
+        "fields": {
+            "created_at": "2026-02-18T09:00:00Z",
+            "updated_at": "2026-02-18T09:00:00Z",
+            "tender": 2,
+            "subcontractor": 4,
+            "cover_letter": "Nous proposons la reprise complète de l'installation sanitaire de l'immeuble.",
+            "quote_file": "application_quotes/offre_sanitaire_bianchi_t2.pdf",
+            "quote_amount": "118500.00",
+            "status": "pending",
+            "decided_by": null,
+            "decided_at": null
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 5,
+        "fields": {
+            "created_at": "2026-02-19T09:00:00Z",
+            "updated_at": "2026-02-24T11:00:00Z",
+            "tender": 3,
+            "subcontractor": 3,
+            "cover_letter": "Forts de notre expérience en toiture et étanchéité, nous proposons une solution durable pour l'enveloppe du bâtiment.",
+            "quote_file": "application_quotes/offre_toiture_rochat_t3.pdf",
+            "quote_amount": "205000.00",
+            "status": "accepted",
+            "decided_by": 13,
+            "decided_at": "2026-02-24T11:00:00Z"
+        }
+    },
+    {
+        "model": "applications.application",
+        "pk": 6,
+        "fields": {
+            "created_at": "2026-02-20T09:00:00Z",
+            "updated_at": "2026-02-20T09:00:00Z",
+            "tender": 4,
+            "subcontractor": 6,
+            "cover_letter": "Nous assurons le montage et démontage des échafaudages dans le respect des délais.",
+            "quote_file": "application_quotes/offre_geruestbau_frei_t4.pdf",
+            "quote_amount": "78000.00",
+            "status": "pending",
+            "decided_by": null,
+            "decided_at": null
+        }
+    },
+    {
+        "model": "ratings.rating",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-03-10T15:00:00Z",
+            "updated_at": "2026-03-10T15:00:00Z",
+            "subcontractor": 5,
+            "company": 1,
+            "created_by": 10,
+            "tender": 1,
+            "score": 5,
+            "comment": "Travail de peinture impeccable et délais parfaitement respectés. Nous recommandons vivement.",
+            "status": "published"
+        }
+    },
+    {
+        "model": "ratings.rating",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-03-12T15:00:00Z",
+            "updated_at": "2026-03-12T15:00:00Z",
+            "subcontractor": 2,
+            "company": 2,
+            "created_by": 12,
+            "tender": 2,
+            "score": 4,
+            "comment": "Bonne installation électrique, équipe professionnelle. Quelques jours de retard mineurs.",
+            "status": "published"
+        }
+    },
+    {
+        "model": "ratings.rating",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-03-15T15:00:00Z",
+            "updated_at": "2026-03-15T15:00:00Z",
+            "subcontractor": 3,
+            "company": 3,
+            "created_by": 13,
+            "tender": 3,
+            "score": 5,
+            "comment": "Excellente réfection de toiture, finitions soignées. Collaboration très agréable.",
+            "status": "pending"
+        }
+    },
+    {
+        "model": "applications.favoritesubcontractor",
+        "pk": 1,
+        "fields": {
+            "created_at": "2026-02-25T09:00:00Z",
+            "updated_at": "2026-02-25T09:00:00Z",
+            "company": 1,
+            "subcontractor": 5
+        }
+    },
+    {
+        "model": "applications.favoritesubcontractor",
+        "pk": 2,
+        "fields": {
+            "created_at": "2026-02-25T09:05:00Z",
+            "updated_at": "2026-02-25T09:05:00Z",
+            "company": 1,
+            "subcontractor": 6
+        }
+    },
+    {
+        "model": "applications.favoritesubcontractor",
+        "pk": 3,
+        "fields": {
+            "created_at": "2026-02-26T09:00:00Z",
+            "updated_at": "2026-02-26T09:00:00Z",
+            "company": 2,
+            "subcontractor": 2
+        }
+    }
+]

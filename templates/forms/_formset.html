@@ -1,0 +1,123 @@
+{% load i18n %}
+
+{# ═══════════════════════════════════════════════════════════════════════════
+   _formset.html – Reusable card for an inline formset.
+
+   Context variables (pass with {% include … with … %}):
+     formset        – the InlineFormSet instance
+     title          – card heading
+     add_label      – label shown on the "Add" button
+     add_btn_class  – Bootstrap btn class for the "Add" button (default: btn-light-primary)
+     description    – optional muted text below the heading
+     container_id   – unique HTML id for the formset container div
+     row_class      – CSS class applied to each row wrapper
+     template_id    – unique HTML id for the empty-form <template>
+     empty_text     – text shown when the formset is empty
+     card_class     – optional extra card classes
+     card_id        – optional HTML id for the card element
+     card_visible   – set to False to hide the card initially
+   ═══════════════════════════════════════════════════════════════════════════ #}
+
+{{ formset.media }}
+
+<div class="card card-flush py-4 mb-6 {{ card_class|default:'' }}"
+     {% if card_id %}id="{{ card_id }}"{% endif %}
+     {% if card_visible is not None and not card_visible %}style="display:none"{% endif %}>
+
+    <div class="card-header">
+        <div class="card-title">
+            <h2 class="fw-semibold">{{ title }}</h2>
+        </div>
+        <div class="card-toolbar">
+            <button type="button"
+                    class="btn btn-sm {{ add_btn_class|default:'btn-light-primary' }}"
+                    data-formset-add="{{ container_id }}">
+                <i class="ki-outline ki-plus fs-2"></i>{{ add_label }}
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body pt-2">
+        {% if description %}
+            <p class="text-muted fs-7 mb-4">{{ description }}</p>
+        {% endif %}
+
+        {{ formset.management_form }}
+
+        {% if formset.non_form_errors %}
+        <div class="alert alert-danger d-flex align-items-center p-3 mb-3">
+            <i class="ki-solid ki-shield-cross fs-2x text-danger me-3"></i>
+            <div>
+                {% for error in formset.non_form_errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div id="{{ container_id }}"
+             data-formset
+             data-prefix="{{ formset.prefix }}"
+             data-row-class="{{ row_class }}"
+             data-template="{{ template_id }}">
+
+            {% for row_form in formset %}
+                <div class="{{ row_class }} formset-row d-flex align-items-start gap-2 mb-3">
+                    {% for hidden in row_form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                    <div class="flex-grow-1 border rounded p-3">
+                        <div class="row g-3">
+                            {% for field in row_form.visible_fields %}
+                                {% if field.name != 'DELETE' %}
+                                    <div class="{{ field.field.widget.attrs.field_group_class|default_if_none:'col-12 col-md' }}">
+                                        {{ field.as_field_group }}
+                                    </div>
+                                {% else %}
+                                    <div class="d-none">{{ field }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm btn-icon btn-light-danger flex-shrink-0 mt-1"
+                            data-formset-remove
+                            title="{% translate 'Remove' %}">
+                        <i class="ki-outline ki-trash fs-3"></i>
+                    </button>
+                </div>
+            {% empty %}
+                {% if empty_text %}
+                    <p class="text-muted fs-7 mb-0 formset-empty-text">{{ empty_text }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <template id="{{ template_id }}">
+            <div class="{{ row_class }} formset-row d-flex align-items-start gap-2 mb-3">
+                {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                <div class="flex-grow-1 border rounded p-3">
+                    <div class="row g-3">
+                        {% for field in formset.empty_form.visible_fields %}
+                            {% if field.name != 'DELETE' %}
+                                <div class="{{ field.field.widget.attrs.field_group_class|default_if_none:'col-12 col-md' }}">
+                                    {{ field.as_field_group }}
+                                </div>
+                            {% else %}
+                                <div class="d-none">{{ field }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="btn btn-sm btn-icon btn-light-danger flex-shrink-0 mt-1"
+                        data-formset-remove
+                        title="{% translate 'Remove' %}">
+                    <i class="ki-outline ki-trash fs-3"></i>
+                </button>
+            </div>
+        </template>
+    </div>
+</div>

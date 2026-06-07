@@ -1,0 +1,13 @@
+{{ form.media }}
+
+<div class="row">
+    {% for field in form.visible_fields %}
+        <div class="{{ field.field.widget.attrs.field_group_class|default:'field col-12 col-md-6 mb-4' }}">
+            {{ field.as_field_group }}
+        </div>
+    {% endfor %}
+
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+</div>

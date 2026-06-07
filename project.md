@@ -237,3 +237,100 @@ Listed so nobody pulls these into Phase 1: online bills of quantities (NPK) & **
 | 4 | Newsletter: provider vs in-house (recommendation: provider). |
 | 5 | Exact migration scope (master data only vs. incl. active tenders/applications). |
 | 6 | "Custom domain" per client — exact behaviour & DNS/cert handling. |
+
+---
+
+## 14. Frontend / UI Component Directives
+
+> **Binding rule for all HTML/template work in this project.**
+
+### Theme: Metronic 8 — Bootstrap — Demo21
+
+All UI is built on the **Metronic 8 Bootstrap edition, Demo21 layout**. This is non-negotiable.
+
+### Core directive: use Metronic components exclusively
+
+**Never invent custom HTML structures or CSS classes for UI elements that Metronic already provides.** Always locate and use the equivalent Metronic component. This keeps visual consistency, dark-mode support, and responsive behaviour correct without extra effort.
+
+Specifically:
+
+| Need | Do this |
+|---|---|
+| Cards / panels | Use Metronic `card`, `card-header`, `card-body`, `card-footer` markup |
+| Tables | Use Metronic datatable or `table` variants (`table-rounded`, `table-striped`, etc.) |
+| Modals | Use Metronic modal patterns (not raw Bootstrap `modal`) |
+| Buttons | Use Metronic button classes (`btn btn-primary`, `btn-light-primary`, icon buttons, etc.) |
+| Forms / inputs | Use Metronic `form-control`, `form-select`, `input-group`, floating labels |
+| Badges / labels | Use Metronic `badge`, `badge-light-*` variants |
+| Alerts / toasts | Use Metronic alert/toast components |
+| Navigation | Use Demo21 sidebar/topbar/breadcrumb markup — never build custom nav |
+| Tabs / pills | Use Metronic `nav-tabs` / `nav-pills` patterns |
+| Stats / KPI boxes | Use Metronic stat/summary card widgets |
+| Progress bars | Use Metronic progress component |
+| Dropdowns | Use Metronic menu/dropdown components |
+| Avatars / symbols | Use Metronic `symbol` component |
+| Timeline | Use Metronic timeline component |
+| Wizard / steps | Use Metronic stepper component |
+| Empty states | Use Metronic empty-state illustration pattern |
+| Loading / spinners | Use Metronic `spinner-border` / `indicator` pattern |
+
+### Practical workflow
+
+1. **Before writing any new HTML block**, open the Metronic Demo21 preview or source (`metronic/` folder in this repo) and find the matching component.
+2. Copy the Metronic markup and adapt only the data/content — **do not alter class names or structure** unless strictly required by Django template logic.
+3. For HTMX partial templates (`*_partial.html`), the same rule applies — the fragment must use Metronic classes so it blends seamlessly when injected into the page.
+4. Light/dark mode is handled automatically by Metronic's theme engine — never hard-code colours or use custom CSS variables for theme colours.
+5. If a design requirement genuinely cannot be met by any existing Metronic component, escalate/discuss before inventing something — the default answer is "find the closest Metronic component and adapt it."
+
+### Reference files in this repo
+
+The `metronic/` directory at the project root contains Demo21 HTML reference pages. Use them as the first lookup source before searching externally.
+
+```
+metronic/
+  dashboards.html       # Dashboard layouts & stat widgets
+  apps.html             # App-level page patterns (lists, details)
+  forms.html            # Form component examples
+  widgets.html          # Charts, tables, cards, misc widgets
+  pages.html            # Standard page patterns (empty states, errors, etc.)
+  authentication/       # Login, register, 2FA page layouts
+  account/              # Profile, settings, team pages
+  ...
+```
+
+### Forms — custom field renderer (mandatory)
+
+This project ships a **custom form-field renderer**, wired globally in settings:
+
+```python
+# config/settings.py
+FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
+```
+
+`CustomFormRenderer` (`apps/core/renderer.py`) sets `field_template_name = 'forms/field.html'`, so **every** form field rendered with `{{ field.as_field_group }}` uses the project's Metronic-styled field template (`templates/forms/field.html`) — label, required marker, inline-create `+` button, help text and errors all in one consistent block.
+
+**Rules:**
+
+1. **Always render fields with `{{ field.as_field_group }}`** — never `{{ field }}` alone, never `{{ field.label_tag }}` / manual `<label>` markup. The renderer already produces the correct Metronic structure.
+2. All model/non-model forms must extend the abstract bases in `apps/core/abstract_forms.py` (`AbstractModelForm`, `AbstractForm`, `AbstractFilterForm`). These auto-apply Bootstrap/Metronic classes (`form-control`, `form-select`, `form-check-input`), Select2 config, inline-create URLs and the responsive `field_group_class` column wrapper.
+3. For multi-field layouts use `templates/forms/grid-form.html`, which loops `form.visible_fields` and renders each via `{{ field.as_field_group }}` inside its `field_group_class` column. Do not hand-roll grid markup per form.
+4. Formsets use `templates/forms/_formset.html` / `_nested_formset.html`; filter forms use `templates/forms/filters.html`. Reuse these — do not duplicate.
+5. Never inline custom field HTML in page templates — if a field needs different markup, adjust the widget/attrs on the form, not the template.
+
+### Tables — HTMX renderer (mandatory)
+
+All server-rendered tables use **django-tables2** with the project's HTMX-aware template, set globally:
+
+```python
+# config/settings.py
+DJANGO_TABLES2_TEMPLATE = "tables/bootstrap_htmx.html"
+```
+
+`templates/tables/bootstrap_htmx.html` extends the Bootstrap 5 table template and overrides pagination, per-page selection and sortable headers to drive everything through **HTMX** (`hx-get` / `hx-target="#tableContainer"` / `hx-swap="innerHTML"`) — pagination, page-size changes and column sorting happen without full page reloads.
+
+**Rules:**
+
+1. **Do not set `template_name` on `Table.Meta`** — the global `DJANGO_TABLES2_TEMPLATE` already applies the correct HTMX template to every table. Only override it for a genuine one-off exception.
+2. The table partial must be swapped into an element with `id="tableContainer"` (the template targets it for HTMX pagination/sort). Wrap list views accordingly.
+3. Use the reusable column types in `apps/core/columns.py` (badge, link, HTMX action, checkbox columns, etc.) — never build column HTML inline. New column types go in that file.
+4. Keep table styling on `Table.Meta.attrs` using Metronic table classes (`table align-middle table-row-dashed`, etc.) so the look stays consistent with Demo21.

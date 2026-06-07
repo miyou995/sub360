@@ -44,9 +44,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.forms",
     # Third party
     "django_htmx",
     "widget_tweaks",
+    "django_tables2",
+    "django_filters",
     # Project apps
     "apps.core",
     "apps.users",
@@ -110,7 +113,6 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", "5433"),
     }
 }
-
 
 
 WSGI_APPLICATION = "config.wsgi.application"
@@ -178,6 +180,11 @@ LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "users:profile"
 LOGOUT_REDIRECT_URL = "users:login"
 
+FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
+
+# django-tables2: project-wide default template (HTMX-aware, Metronic-styled).
+# Every table renders through this unless a Table.Meta overrides it explicitly.
+DJANGO_TABLES2_TEMPLATE = "tables/bootstrap_htmx.html"
 
 try:
     from .local_settings import *

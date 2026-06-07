@@ -1,0 +1,57 @@
+{% if field.use_fieldset %}
+	<fieldset>
+	{% if field.label %}{{ field.legend_tag }}{% endif %}
+{% else %}
+	{% if field.label %}
+		<div class="d-flex justify-content-between">
+			<label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">
+				{{ field.label }}
+			</label>
+		{% if field.field.widget.attrs.data_create_url %}
+				<div>
+					{# Modal context is stamped into widget attrs by AbstractModelForm.apply_modal_context(). #}
+					{# data_is_modal_context=True  → inside a modal, use Metronic data-bs-stacked-modal. #}
+					{# data_is_modal_context=False → on a page, use native data-bs-toggle to open kt_modal. #}
+					{% if field.field.widget.attrs.data_is_modal_context %}
+						<a href="{{ field.field.widget.attrs.data_create_url }}?modal_id={{ field.field.widget.attrs.data_next_modal_id }}"
+							data-bs-stacked-modal="#{{ field.field.widget.attrs.data_next_modal_id }}"
+							hx-get="{{ field.field.widget.attrs.data_create_url }}?modal_id={{ field.field.widget.attrs.data_next_modal_id }}"
+							hx-target="#{{ field.field.widget.attrs.data_next_modal_content_id }}"
+							hx-swap="innerHTML"
+						>
+							<i class="ki-solid ki-plus-square text-success fs-2qx"></i>
+						</a>
+					{% else %}
+						<a href="{{ field.field.widget.attrs.data_create_url }}?modal_id=kt_modal"
+							data-bs-toggle="modal"
+							data-bs-target="#kt_modal"
+							hx-get="{{ field.field.widget.attrs.data_create_url }}?modal_id=kt_modal"
+							hx-target="#kt_modal_content"
+							hx-swap="innerHTML"
+						>
+							<i class="ki-solid ki-plus-square text-success fs-2qx"></i>
+						</a>
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endif %}
+
+{{ field }}
+
+{% if field.help_text %}
+	<div class="text-muted fs-7">
+		{{ field.help_text }}
+	</div>
+{% endif %}
+
+{% for error in field.errors %}
+	<div class="text-danger fs-7">
+		{{ error }}
+	</div>
+{% endfor %}
+
+{% if field.use_fieldset %}
+	</fieldset>
+{% endif %}

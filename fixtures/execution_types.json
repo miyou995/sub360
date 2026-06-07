@@ -1,6 +1,6 @@
 [
     {
-        "model": "projects.executiontype",
+        "model": "tenders.executiontype",
         "pk": 1,
         "fields": {
             "created_at": "2026-01-01T00:00:00Z",
@@ -10,7 +10,7 @@
         }
     },
     {
-        "model": "projects.executiontype",
+        "model": "tenders.executiontype",
         "pk": 2,
         "fields": {
             "created_at": "2026-01-01T00:00:00Z",
@@ -20,7 +20,7 @@
         }
     },
     {
-        "model": "projects.executiontype",
+        "model": "tenders.executiontype",
         "pk": 3,
         "fields": {
             "created_at": "2026-01-01T00:00:00Z",
@@ -30,7 +30,7 @@
         }
     },
     {
-        "model": "projects.executiontype",
+        "model": "tenders.executiontype",
         "pk": 4,
         "fields": {
             "created_at": "2026-01-01T00:00:00Z",
@@ -40,7 +40,7 @@
         }
     },
     {
-        "model": "projects.executiontype",
+        "model": "tenders.executiontype",
         "pk": 5,
         "fields": {
             "created_at": "2026-01-01T00:00:00Z",
