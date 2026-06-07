@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "apps.integrations",
     "apps.statistics",
     "debug_toolbar",
+    "django_tables2",
     "django_lumen",
     "schematic",
 ]
@@ -179,7 +180,3 @@ LOGIN_REDIRECT_URL = "users:profile"
 LOGOUT_REDIRECT_URL = "users:login"
 
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass

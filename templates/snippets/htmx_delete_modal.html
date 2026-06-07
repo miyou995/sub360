@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="modal-header">
+    <h2 class="fw-bold">{% translate "Confirmer la suppression" %}</h2>
+    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+        <i class="ki-outline ki-cross fs-1"></i>
+    </div>
+</div>
+<div class="modal-body">
+    <p class="fs-5">
+        {% blocktranslate with object_name=object %}Voulez-vous vraiment supprimer « {{ object_name }} » ? Cette action est irréversible.{% endblocktranslate %}
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal">{% translate "Annuler" %}</button>
+    <button type="button"
+        class="btn btn-danger"
+        hx-post="{{ object.get_delete_url }}"
+        hx-swap="none"
+        hx-disabled-elt="this">
+        {% translate "Supprimer" %}
+    </button>
+</div>

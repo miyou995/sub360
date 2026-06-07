@@ -23,6 +23,7 @@ from django.urls import include, path
 # admin_url = settings.ADMIN_URL
 
 urlpatterns = [
+    path("", include("apps.core.urls")),
     path("accounts/", include("apps.users.urls")),
     path("tenders/", include("apps.tenders.urls")),
     path("applications/", include("apps.applications.urls")),
@@ -34,7 +35,6 @@ urlpatterns = [
     path("verification/", include("apps.verification.urls")),
     # NOTE: apps.core.urls is not wired yet — apps/core/views.py still references
     # legacy apps (billing/finance/recurrent) and must be rebuilt first.
-    # path("", include("apps.core.urls")),
     # path(f"{admin_url}/", admin.site.urls),
 ]
 devpatterns = []
@@ -45,6 +45,7 @@ if settings.DEBUG:
     urlpatterns += debug_toolbar_urls()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     devpatterns = [
+        path("admin/", admin.site.urls),
         path("schema/", include("schematic.urls")),
         path("lumen/", include("django_lumen.urls")),
     ]

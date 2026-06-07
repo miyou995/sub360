@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+    {% include "snippets/_breadcrumb.html" %}
+    <div class="d-flex align-items-end gap-2">
+       
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header border-0 pt-6">
+        <div class="card-title w-100">
+            {% comment %} <form method="get" class="row g-3 w-100 align-items-end">
+                {% for field in filter.form %}
+                    <div class="col-12 col-md-3">
+                        <label class="form-label fs-7 text-muted mb-1">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="col-12 col-md-2">
+                   
+                </div>
+            </form> {% endcomment %}
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <div class="table-responsive">
+            {% for tender in tenders %}
+                <div class="row border-bottom py-3">
+                    <div class="col-md-8">
+                        <h5 class="card-title mb-2">{{ tender.title }}</h5>
+                        <p class="card-text text-muted">{{ tender.description }}</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a href="{% url 'tender_detail' tender.pk %}" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

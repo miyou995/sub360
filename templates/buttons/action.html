@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="d-flex justify-content-end gap-2">
+    {% if perms|default:None and object.get_update_url %}{% endif %}
+    <a href="#"
+        class="btn btn-icon btn-sm btn-light btn-active-light-primary"
+        title="{% translate 'Modifier' %}"
+        data-bs-toggle="modal"
+        data-bs-target="#kt_modal"
+        hx-get="{{ object.get_update_url }}"
+        hx-target="#kt_modal_content"
+        hx-swap="innerHTML">
+        <i class="ki-outline ki-pencil fs-3"></i>
+    </a>
+    <a href="#"
+        class="btn btn-icon btn-sm btn-light btn-active-light-danger"
+        title="{% translate 'Supprimer' %}"
+        data-bs-toggle="modal"
+        data-bs-target="#delete_modal"
+        hx-get="{{ object.get_delete_url }}"
+        hx-target="#delete_modal_body"
+        hx-swap="innerHTML">
+        <i class="ki-outline ki-trash fs-3"></i>
+    </a>
+</div>

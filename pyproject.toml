@@ -13,9 +13,11 @@ dependencies = [
     "django-tables2>=3.0.0",
     "django-tree-queries>=0.24.0",
     "django-widget-tweaks>=1.5.1",
+    "pandas>=3.0.3",
     "pillow>=12.2.0",
     "psycopg>=3.3.4",
     "python-dotenv>=1.2.2",
+    "weasyprint>=69.0",
 ]
 
 [dependency-groups]
