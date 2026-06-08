@@ -3,6 +3,7 @@ from django import forms
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.abstract_forms import AbstractFilterForm
 from apps.tenders.models import Branch
 
 from .models import Subcontractor
@@ -65,6 +66,7 @@ class SubcontractorFilter(django_filters.FilterSet):
             "has_valid_insurance",
             "accepts_wir",
         )
+        form = AbstractFilterForm
 
     def filter_search(self, queryset, name, value):
         if not value:

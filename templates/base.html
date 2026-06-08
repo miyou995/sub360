@@ -1,10 +1,10 @@
 {% load static i18n django_htmx %}
 <!DOCTYPE html>
-<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}" data-bs-theme="light">
+<html lang="{{ request.LANGUAGE_CODE|default:'fr' }}">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}sub360{% endblock %}</title>
+    <title>{% block title %}Sub360{% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'media/logos/favicon.ico' %}" />
     {% block page_head %}
     <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
@@ -42,27 +42,30 @@
                                 {% endif %}
                                 {% block app %}{% block content %}{% endblock %}{% endblock %}
                             </div>
-                        </div>
-                    </div>
-                    <div class="app-footer py-4">
-                        <div class="app-container container-xxl d-flex flex-column flex-md-row align-items-center justify-content-between">
-                            <span class="text-gray-600 order-2 order-md-1">
-                                &copy; {% now "Y" %} <span class="text-gray-800 fw-semibold">Sub360</span>. {% translate "Tous droits réservés." %}
-                            </span>
-                            <ul class="nav order-1 order-md-2 mb-3 mb-md-0">
-                                <li class="nav-item">
-                                    <a href="{% url 'core:index' %}" class="nav-link text-gray-600 text-hover-primary px-3">{% translate "Accueil" %}</a>
-                                </li>
-                                {% comment %} <li class="nav-item">
-                                    <a href="{% url 'tenders:list_tender' %}" class="nav-link text-gray-600 text-hover-primary px-3">{% translate "Appels d'offres" %}</a>
-                                </li> {% endcomment %}
-                            </ul>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags|default:'info' }} d-flex align-items-center p-4 mb-4">
+                                        <span>{{ message }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% block app %}{% block content %}{% endblock %}{% endblock %}
                         </div>
                     </div>
                 </div>
+
+                {% block footer %}
+                    {% include 'footer.html' %}
+                {% endblock footer %}
+
             </div>
         </div>
     </div>
+
+    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+        <i class="ki-outline ki-arrow-up"></i>
+    </div>
+
     <div class="modal fade" id="kt_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <div class="modal-content" id="kt_modal_content"></div>
@@ -78,6 +81,7 @@
             <div class="modal-content" id="delete_modal_body"></div>
         </div>
     </div>
+
     <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'js/scripts.bundle.js' %}"></script>
     <script src="{% static 'js/octopus.js' %}" defer></script>
@@ -85,5 +89,11 @@
     <script src="{% static 'js/formset.js' %}" defer></script>
     
     {% block extra_js %}{% endblock %}
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
 </body>
 </html>

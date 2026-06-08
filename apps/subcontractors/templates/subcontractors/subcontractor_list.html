@@ -19,13 +19,24 @@
                 </div>
             </div>
             <div class="card-body pt-4">
+                {{ field.as_field_group }}
                 <form method="get"
                       hx-get="{% url 'subcontractors:list_subcontractor' %}"
                       hx-target="#sc-results"
                       hx-swap="innerHTML"
                       hx-push-url="true"
                       hx-indicator="#sc-loading">
-                    <div class="mb-5">
+
+
+
+                      {% for field in filter.form %}
+                        <div class="mb-5">
+                            {{ field.as_field_group }}
+                        </div>
+                      {% endfor %}
+                        
+
+                    {% comment %} <div class="mb-5">
                         <label class="form-label fw-semibold">{{ filter.form.search.label }}</label>
                         {{ filter.form.search }}
                     </div>
@@ -48,7 +59,8 @@
                     <div class="mb-8">
                         <label class="form-label fw-semibold">{{ filter.form.accepts_wir.label }}</label>
                         {{ filter.form.accepts_wir }}
-                    </div>
+                    </div> {% endcomment %}
+
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary flex-grow-1">
                             <i class="ki-duotone ki-magnifier fs-5">
