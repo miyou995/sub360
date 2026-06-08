@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-block d-md-flex justify-content-between align-items-end mb-4">
+    {% include "snippets/_breadcrumb.html" %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                {% for field in form %}
+                    {{ field.as_field_group }}
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-end gap-2 mt-6">
+                <a href="{{ parent_url }}" class="btn btn-light">
+                    {% translate "Annuler" %}
+                </a>
+                <button type="submit" name="submit_action" value="save" class="btn btn-primary">
+                    {% translate "Enregistrer" %}
+                </button>
+                <button type="submit" name="submit_action" value="save_add_another" class="btn btn-light-primary">
+                    {% translate "Enregistrer et ajouter un autre" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,978 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": null,
+      "is_superuser": true,
+      "email": "admin@sub360.ch",
+      "first_name": "Alice",
+      "last_name": "Admin",
+      "phone": "+41 79 100 00 01",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": true,
+      "date_joined": "2025-01-10T08:00:00Z",
+      "created_at": "2025-01-10T08:00:00Z",
+      "updated_at": "2025-01-10T08:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-05-20T09:12:00Z",
+      "is_superuser": false,
+      "email": "marc.dupont@batiplus.ch",
+      "first_name": "Marc",
+      "last_name": "Dupont",
+      "phone": "+41 79 200 00 02",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-02-03T10:30:00Z",
+      "created_at": "2025-02-03T10:30:00Z",
+      "updated_at": "2025-02-03T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-06-01T14:45:00Z",
+      "is_superuser": false,
+      "email": "sophie.martin@batiplus.ch",
+      "first_name": "Sophie",
+      "last_name": "Martin",
+      "phone": "+41 79 200 00 03",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-02-10T09:00:00Z",
+      "created_at": "2025-02-10T09:00:00Z",
+      "updated_at": "2025-02-10T09:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-06-05T07:20:00Z",
+      "is_superuser": false,
+      "email": "luigi.rossi@electrorossi.ch",
+      "first_name": "Luigi",
+      "last_name": "Rossi",
+      "phone": "+41 78 300 00 04",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-03-15T11:15:00Z",
+      "created_at": "2025-03-15T11:15:00Z",
+      "updated_at": "2025-03-15T11:15:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-06-06T16:00:00Z",
+      "is_superuser": false,
+      "email": "hans.muller@muller-sanitaire.ch",
+      "first_name": "Hans",
+      "last_name": "Müller",
+      "phone": "+41 76 400 00 05",
+      "avatar": "",
+      "language": "de",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-04-02T08:45:00Z",
+      "created_at": "2025-04-02T08:45:00Z",
+      "updated_at": "2025-04-02T08:45:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-06-07T18:30:00Z",
+      "is_superuser": false,
+      "email": "nadia.fontana@toiture-fontana.ch",
+      "first_name": "Nadia",
+      "last_name": "Fontana",
+      "phone": "+41 79 500 00 06",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-05-20T13:00:00Z",
+      "created_at": "2025-05-20T13:00:00Z",
+      "updated_at": "2025-05-20T13:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "last_login": "2026-06-04T10:00:00Z",
+      "is_superuser": false,
+      "email": "julien.borer@borer-construction.ch",
+      "first_name": "Julien",
+      "last_name": "Borer",
+      "phone": "+41 79 600 00 07",
+      "avatar": "",
+      "language": "fr",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-06-01T09:30:00Z",
+      "created_at": "2025-06-01T09:30:00Z",
+      "updated_at": "2025-06-01T09:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+
+  {
+    "model": "companies.company",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-02-03T10:30:00Z",
+      "updated_at": "2025-02-03T10:30:00Z",
+      "name": "BatiPlus SA",
+      "company_type": "client",
+      "uid": "CHE-101.234.567",
+      "email": "contact@batiplus.ch",
+      "phone": "+41 22 300 10 10",
+      "website": "https://www.batiplus.ch",
+      "address": "Rue du Rhône 12",
+      "zip_code": "1204",
+      "city": "Genève",
+      "canton": "GE"
+    }
+  },
+  {
+    "model": "companies.company",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-06-01T09:30:00Z",
+      "updated_at": "2025-06-01T09:30:00Z",
+      "name": "Borer Construction Sàrl",
+      "company_type": "client",
+      "uid": "CHE-102.345.678",
+      "email": "info@borer-construction.ch",
+      "phone": "+41 31 400 20 20",
+      "website": "https://www.borer-construction.ch",
+      "address": "Bernstrasse 45",
+      "zip_code": "3000",
+      "city": "Bern",
+      "canton": "BE"
+    }
+  },
+  {
+    "model": "companies.company",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-03-15T11:15:00Z",
+      "updated_at": "2025-03-15T11:15:00Z",
+      "name": "ElectroRossi Sàrl",
+      "company_type": "subcontractor",
+      "uid": "CHE-103.456.789",
+      "email": "luigi@electrorossi.ch",
+      "phone": "+41 91 500 30 30",
+      "website": "https://www.electrorossi.ch",
+      "address": "Via Nassa 8",
+      "zip_code": "6900",
+      "city": "Lugano",
+      "canton": "TI"
+    }
+  },
+  {
+    "model": "companies.company",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-04-02T08:45:00Z",
+      "updated_at": "2025-04-02T08:45:00Z",
+      "name": "Müller Sanitaire AG",
+      "company_type": "subcontractor",
+      "uid": "CHE-104.567.890",
+      "email": "info@muller-sanitaire.ch",
+      "phone": "+41 44 600 40 40",
+      "website": "https://www.muller-sanitaire.ch",
+      "address": "Bahnhofstrasse 22",
+      "zip_code": "8001",
+      "city": "Zürich",
+      "canton": "ZH"
+    }
+  },
+  {
+    "model": "companies.company",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-05-20T13:00:00Z",
+      "updated_at": "2025-05-20T13:00:00Z",
+      "name": "Toiture Fontana Sàrl",
+      "company_type": "both",
+      "uid": "CHE-105.678.901",
+      "email": "contact@toiture-fontana.ch",
+      "phone": "+41 21 700 50 50",
+      "website": "https://www.toiture-fontana.ch",
+      "address": "Avenue de la Gare 5",
+      "zip_code": "1003",
+      "city": "Lausanne",
+      "canton": "VD"
+    }
+  },
+
+  {
+    "model": "clients.clientprofile",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-02-03T10:30:00Z",
+      "updated_at": "2025-02-03T10:30:00Z",
+      "user": 2,
+      "company": 1,
+      "position": "Directeur des achats",
+      "is_company_admin": true
+    }
+  },
+  {
+    "model": "clients.clientprofile",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-02-10T09:00:00Z",
+      "updated_at": "2025-02-10T09:00:00Z",
+      "user": 3,
+      "company": 1,
+      "position": "Cheffe de projet",
+      "is_company_admin": false
+    }
+  },
+  {
+    "model": "clients.clientprofile",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-06-01T09:30:00Z",
+      "updated_at": "2025-06-01T09:30:00Z",
+      "user": 7,
+      "company": 2,
+      "position": "Gérant",
+      "is_company_admin": true
+    }
+  },
+
+  {
+    "model": "subcontractors.subcontractor",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-15T11:15:00Z",
+      "updated_at": "2025-03-15T11:15:00Z",
+      "company": 3,
+      "worker_count": "6-10",
+      "company_age": "3_10",
+      "accepts_wir": true,
+      "introduction": "Entreprise d'électricité générale active en Suisse italienne depuis 2017, spécialisée dans les installations basse tension et la domotique.",
+      "cover_photo": "",
+      "profile_photo": "",
+      "location": "Lugano, Ticino",
+      "branch": [3],
+      "references": [1, 2]
+    }
+  },
+  {
+    "model": "subcontractors.subcontractor",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-02T08:45:00Z",
+      "updated_at": "2025-04-02T08:45:00Z",
+      "company": 4,
+      "worker_count": "11-25",
+      "company_age": "over_10",
+      "accepts_wir": false,
+      "introduction": "Spécialiste sanitaire et chauffage à Zürich, plus de 15 ans d'expérience sur des chantiers résidentiels et commerciaux.",
+      "cover_photo": "",
+      "profile_photo": "",
+      "location": "Zürich",
+      "branch": [4],
+      "references": [3]
+    }
+  },
+  {
+    "model": "subcontractors.subcontractor",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-05-20T13:00:00Z",
+      "updated_at": "2025-05-20T13:00:00Z",
+      "company": 5,
+      "worker_count": "1-5",
+      "company_age": "3_10",
+      "accepts_wir": true,
+      "introduction": "Toiture et étanchéité, petite équipe réactive basée à Lausanne, intervient dans tout le canton de Vaud.",
+      "cover_photo": "",
+      "profile_photo": "",
+      "location": "Lausanne, Vaud",
+      "branch": [5, 1],
+      "references": [4]
+    }
+  },
+
+  {
+    "model": "subcontractors.subcontractorprofile",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-15T11:15:00Z",
+      "updated_at": "2025-03-15T11:15:00Z",
+      "user": 4,
+      "subcontractor": 1
+    }
+  },
+  {
+    "model": "subcontractors.subcontractorprofile",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-02T08:45:00Z",
+      "updated_at": "2025-04-02T08:45:00Z",
+      "user": 5,
+      "subcontractor": 2
+    }
+  },
+  {
+    "model": "subcontractors.subcontractorprofile",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-05-20T13:00:00Z",
+      "updated_at": "2025-05-20T13:00:00Z",
+      "user": 6,
+      "subcontractor": 3
+    }
+  },
+
+  {
+    "model": "subcontractors.reference",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-20T09:00:00Z",
+      "updated_at": "2025-03-20T09:00:00Z",
+      "title": "Rénovation électrique - Immeuble Via Nassa",
+      "description": "Remise aux normes complète des installations électriques d'un immeuble de 24 appartements.",
+      "start_date": "2024-02-01",
+      "end_date": "2024-07-15"
+    }
+  },
+  {
+    "model": "subcontractors.reference",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-03-25T09:00:00Z",
+      "updated_at": "2025-03-25T09:00:00Z",
+      "title": "Installation domotique - Villa Collina Verde",
+      "description": "Conception et installation d'un système domotique complet (éclairage, stores, chauffage).",
+      "start_date": "2024-09-01",
+      "end_date": "2024-11-30"
+    }
+  },
+  {
+    "model": "subcontractors.reference",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-10T09:00:00Z",
+      "updated_at": "2025-04-10T09:00:00Z",
+      "title": "Rénovation sanitaire - Résidence Seefeld",
+      "description": "Remplacement complet des installations sanitaires et de chauffage pour 18 logements.",
+      "start_date": "2024-03-01",
+      "end_date": "2024-08-20"
+    }
+  },
+  {
+    "model": "subcontractors.reference",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-05-25T09:00:00Z",
+      "updated_at": "2025-05-25T09:00:00Z",
+      "title": "Réfection de toiture - Ferme rénovée à Cully",
+      "description": "Démontage et pose d'une nouvelle toiture en tuiles avec isolation renforcée.",
+      "start_date": "2024-05-10",
+      "end_date": "2024-06-28"
+    }
+  },
+
+  {
+    "model": "subcontractors.referenceimage",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-20T09:05:00Z",
+      "updated_at": "2025-03-20T09:05:00Z",
+      "reference": 1,
+      "image": "references/images/via_nassa_1.jpg",
+      "description": "Tableau électrique principal après rénovation."
+    }
+  },
+  {
+    "model": "subcontractors.referenceimage",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-10T09:05:00Z",
+      "updated_at": "2025-04-10T09:05:00Z",
+      "reference": 3,
+      "image": "references/images/seefeld_1.jpg",
+      "description": "Salle de bains rénovée, vue d'ensemble."
+    }
+  },
+  {
+    "model": "subcontractors.referenceimage",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-05-25T09:05:00Z",
+      "updated_at": "2025-05-25T09:05:00Z",
+      "reference": 4,
+      "image": "references/images/cully_toiture_1.jpg",
+      "description": "Toiture terminée, vue depuis la cour."
+    }
+  },
+
+  {
+    "model": "documents.proofdocument",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-16T10:00:00Z",
+      "updated_at": "2025-03-16T10:00:00Z",
+      "subcontractor": 1,
+      "kind": "insurance",
+      "file": "proof_documents/electrorossi_assurance_rc.pdf",
+      "valid_until": "2026-12-31",
+      "status": "valid"
+    }
+  },
+  {
+    "model": "documents.proofdocument",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-03-16T10:05:00Z",
+      "updated_at": "2025-03-16T10:05:00Z",
+      "subcontractor": 1,
+      "kind": "license",
+      "file": "proof_documents/electrorossi_licence_electricien.pdf",
+      "valid_until": "2027-03-01",
+      "status": "valid"
+    }
+  },
+  {
+    "model": "documents.proofdocument",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-03T10:00:00Z",
+      "updated_at": "2025-04-03T10:00:00Z",
+      "subcontractor": 2,
+      "kind": "insurance",
+      "file": "proof_documents/muller_assurance_rc.pdf",
+      "valid_until": "2026-01-15",
+      "status": "expired"
+    }
+  },
+  {
+    "model": "documents.proofdocument",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-05-21T10:00:00Z",
+      "updated_at": "2025-05-21T10:00:00Z",
+      "subcontractor": 3,
+      "kind": "vat",
+      "file": "proof_documents/fontana_attestation_tva.pdf",
+      "valid_until": null,
+      "status": "review"
+    }
+  },
+
+  {
+    "model": "subscriptions.subscription",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-15T11:20:00Z",
+      "updated_at": "2025-03-15T11:20:00Z",
+      "subcontractor": 1,
+      "package": "pro",
+      "status": "active",
+      "current_period_end": "2026-09-15T00:00:00Z"
+    }
+  },
+  {
+    "model": "subscriptions.subscription",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-02T08:50:00Z",
+      "updated_at": "2025-04-02T08:50:00Z",
+      "subcontractor": 2,
+      "package": "premium",
+      "status": "active",
+      "current_period_end": "2026-12-02T00:00:00Z"
+    }
+  },
+  {
+    "model": "subscriptions.subscription",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-05-20T13:05:00Z",
+      "updated_at": "2025-05-20T13:05:00Z",
+      "subcontractor": 3,
+      "package": "basic",
+      "status": "trialing",
+      "current_period_end": "2026-07-20T00:00:00Z"
+    }
+  },
+
+  {
+    "model": "verification.verificationreview",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-03-18T09:00:00Z",
+      "updated_at": "2025-03-18T09:00:00Z",
+      "subcontractor": 1,
+      "status": "approved",
+      "reason": "Documents conformes, dossier complet.",
+      "reviewed_by": 1,
+      "reviewed_at": "2025-03-18T09:00:00Z"
+    }
+  },
+  {
+    "model": "verification.verificationreview",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-05T09:00:00Z",
+      "updated_at": "2025-04-05T09:00:00Z",
+      "subcontractor": 2,
+      "status": "rejected",
+      "reason": "Attestation d'assurance RC expirée, merci de fournir un document à jour.",
+      "reviewed_by": 1,
+      "reviewed_at": "2025-04-05T09:00:00Z"
+    }
+  },
+  {
+    "model": "verification.verificationreview",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-05-22T09:00:00Z",
+      "updated_at": "2025-05-22T09:00:00Z",
+      "subcontractor": 3,
+      "status": "pending",
+      "reason": "",
+      "reviewed_by": null,
+      "reviewed_at": null
+    }
+  },
+
+  {
+    "model": "tenders.branch",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-15T08:00:00Z",
+      "updated_at": "2025-01-15T08:00:00Z",
+      "name": "Gros œuvre",
+      "is_active": true,
+      "parent": null
+    }
+  },
+  {
+    "model": "tenders.branch",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-15T08:00:00Z",
+      "updated_at": "2025-01-15T08:00:00Z",
+      "name": "Second œuvre",
+      "is_active": true,
+      "parent": null
+    }
+  },
+  {
+    "model": "tenders.branch",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-01-15T08:05:00Z",
+      "updated_at": "2025-01-15T08:05:00Z",
+      "name": "Électricité",
+      "is_active": true,
+      "parent": 2
+    }
+  },
+  {
+    "model": "tenders.branch",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-01-15T08:05:00Z",
+      "updated_at": "2025-01-15T08:05:00Z",
+      "name": "Sanitaire / Chauffage",
+      "is_active": true,
+      "parent": 2
+    }
+  },
+  {
+    "model": "tenders.branch",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-01-15T08:05:00Z",
+      "updated_at": "2025-01-15T08:05:00Z",
+      "name": "Toiture / Étanchéité",
+      "is_active": true,
+      "parent": 1
+    }
+  },
+
+  {
+    "model": "tenders.executiontype",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-15T08:00:00Z",
+      "updated_at": "2025-01-15T08:00:00Z",
+      "name": "Construction neuve",
+      "is_active": true
+    }
+  },
+  {
+    "model": "tenders.executiontype",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-15T08:00:00Z",
+      "updated_at": "2025-01-15T08:00:00Z",
+      "name": "Rénovation",
+      "is_active": true
+    }
+  },
+  {
+    "model": "tenders.executiontype",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-01-15T08:00:00Z",
+      "updated_at": "2025-01-15T08:00:00Z",
+      "name": "Transformation",
+      "is_active": true
+    }
+  },
+
+  {
+    "model": "tenders.tender",
+    "pk": 1,
+    "fields": {
+      "created_at": "2026-04-01T09:00:00Z",
+      "updated_at": "2026-04-01T09:00:00Z",
+      "title": "Rénovation électrique complète - Immeuble locatif Plainpalais",
+      "owner": 1,
+      "created_by": 2,
+      "description": "Recherche d'un électricien qualifié pour la remise aux normes complète d'un immeuble de 30 appartements (tableaux, câblage, éclairage des communs).",
+      "execution_type": [2],
+      "branch": [3],
+      "canton": "GE",
+      "city": "Genève",
+      "zip_code": "1205",
+      "start_date": "2026-08-01",
+      "application_deadline": "2026-07-01",
+      "material_offered": false,
+      "material": "",
+      "project_volume": "CHF 250'000 - 350'000",
+      "procedure": "public",
+      "status": "published"
+    }
+  },
+  {
+    "model": "tenders.tender",
+    "pk": 2,
+    "fields": {
+      "created_at": "2026-04-10T09:00:00Z",
+      "updated_at": "2026-04-10T09:00:00Z",
+      "title": "Installation sanitaire et chauffage - Résidence Borer Park",
+      "owner": 2,
+      "created_by": 7,
+      "description": "Appel d'offres pour la fourniture et la pose des installations sanitaires et de chauffage d'une nouvelle résidence de 40 logements à Bern.",
+      "execution_type": [1],
+      "branch": [4],
+      "canton": "BE",
+      "city": "Bern",
+      "zip_code": "3007",
+      "start_date": "2026-09-15",
+      "application_deadline": "2026-08-01",
+      "material_offered": true,
+      "material": "Matériel sanitaire fourni par le maître d'ouvrage",
+      "project_volume": "CHF 500'000 - 750'000",
+      "procedure": "public",
+      "status": "published"
+    }
+  },
+  {
+    "model": "tenders.tender",
+    "pk": 3,
+    "fields": {
+      "created_at": "2026-05-05T09:00:00Z",
+      "updated_at": "2026-05-05T09:00:00Z",
+      "title": "Réfection de toiture - Bâtiment administratif Rue du Rhône",
+      "owner": 1,
+      "created_by": 3,
+      "description": "Remplacement de la couverture et amélioration de l'isolation thermique d'un bâtiment administratif de 4 étages.",
+      "execution_type": [2],
+      "branch": [5],
+      "canton": "GE",
+      "city": "Genève",
+      "zip_code": "1204",
+      "start_date": "2026-07-20",
+      "application_deadline": "2026-06-25",
+      "material_offered": false,
+      "material": "",
+      "project_volume": "CHF 120'000 - 180'000",
+      "procedure": "by_invitation",
+      "status": "published"
+    }
+  },
+  {
+    "model": "tenders.tender",
+    "pk": 4,
+    "fields": {
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-03-15T09:00:00Z",
+      "title": "Mise aux normes électriques - Parking souterrain Cornavin",
+      "owner": 1,
+      "created_by": 2,
+      "description": "Mise en conformité de l'installation électrique et de l'éclairage du parking souterrain (180 places).",
+      "execution_type": [3],
+      "branch": [3],
+      "canton": "GE",
+      "city": "Genève",
+      "zip_code": "1201",
+      "start_date": "2026-04-01",
+      "application_deadline": "2026-03-01",
+      "material_offered": false,
+      "material": "",
+      "project_volume": "CHF 90'000 - 110'000",
+      "procedure": "public",
+      "status": "awarded"
+    }
+  },
+  {
+    "model": "tenders.tender",
+    "pk": 5,
+    "fields": {
+      "created_at": "2026-06-01T09:00:00Z",
+      "updated_at": "2026-06-01T09:00:00Z",
+      "title": "Construction neuve - Lotissement Les Tilleuls (gros œuvre)",
+      "owner": 2,
+      "created_by": 7,
+      "description": "Recherche d'entreprises de gros œuvre pour la construction d'un lotissement de 6 villas mitoyennes.",
+      "execution_type": [1],
+      "branch": [1],
+      "canton": "BE",
+      "city": "Köniz",
+      "zip_code": "3098",
+      "start_date": "2026-10-01",
+      "application_deadline": null,
+      "material_offered": false,
+      "material": "",
+      "project_volume": "CHF 1'200'000 - 1'500'000",
+      "procedure": "public",
+      "status": "draft"
+    }
+  },
+
+  {
+    "model": "tenders.tenderattachment",
+    "pk": 1,
+    "fields": {
+      "created_at": "2026-04-01T09:10:00Z",
+      "updated_at": "2026-04-01T09:10:00Z",
+      "tender": 1,
+      "file": "tenders/plainpalais_plans_electriques.pdf",
+      "label": "Plans électriques existants"
+    }
+  },
+  {
+    "model": "tenders.tenderattachment",
+    "pk": 2,
+    "fields": {
+      "created_at": "2026-04-01T09:12:00Z",
+      "updated_at": "2026-04-01T09:12:00Z",
+      "tender": 1,
+      "file": "tenders/plainpalais_cahier_des_charges.pdf",
+      "label": "Cahier des charges"
+    }
+  },
+  {
+    "model": "tenders.tenderattachment",
+    "pk": 3,
+    "fields": {
+      "created_at": "2026-04-10T09:10:00Z",
+      "updated_at": "2026-04-10T09:10:00Z",
+      "tender": 2,
+      "file": "tenders/borer_park_plans_sanitaires.pdf",
+      "label": "Plans sanitaires"
+    }
+  },
+  {
+    "model": "tenders.tenderattachment",
+    "pk": 4,
+    "fields": {
+      "created_at": "2026-05-05T09:10:00Z",
+      "updated_at": "2026-05-05T09:10:00Z",
+      "tender": 3,
+      "file": "tenders/rhone_toiture_releve.pdf",
+      "label": "Relevé de toiture existante"
+    }
+  },
+
+  {
+    "model": "applications.application",
+    "pk": 1,
+    "fields": {
+      "created_at": "2026-04-15T10:00:00Z",
+      "updated_at": "2026-04-20T15:30:00Z",
+      "tender": 1,
+      "subcontractor": 1,
+      "cover_letter": "Notre équipe a déjà réalisé plusieurs rénovations électriques d'immeubles similaires à Genève. Nous serions ravis de vous accompagner sur ce projet.",
+      "quote_file": "application_quotes/electrorossi_devis_plainpalais.pdf",
+      "quote_amount": "289500.00",
+      "status": "accepted",
+      "decided_by": 2,
+      "decided_at": "2026-04-20T15:30:00Z"
+    }
+  },
+  {
+    "model": "applications.application",
+    "pk": 2,
+    "fields": {
+      "created_at": "2026-04-12T08:30:00Z",
+      "updated_at": "2026-04-12T08:30:00Z",
+      "tender": 2,
+      "subcontractor": 2,
+      "cover_letter": "Forts de 15 ans d'expérience en sanitaire et chauffage, nous proposons une offre clé en main incluant la coordination avec les autres corps de métier.",
+      "quote_file": "application_quotes/muller_devis_borer_park.pdf",
+      "quote_amount": "612000.00",
+      "status": "pending",
+      "decided_by": null,
+      "decided_at": null
+    }
+  },
+  {
+    "model": "applications.application",
+    "pk": 3,
+    "fields": {
+      "created_at": "2026-05-10T11:00:00Z",
+      "updated_at": "2026-05-18T09:00:00Z",
+      "tender": 3,
+      "subcontractor": 3,
+      "cover_letter": "Notre entreprise est spécialisée dans la réfection de toitures de bâtiments administratifs et peut démarrer dès le mois de juillet.",
+      "quote_file": "application_quotes/fontana_devis_rhone_toiture.pdf",
+      "quote_amount": "151200.00",
+      "status": "rejected",
+      "decided_by": 3,
+      "decided_at": "2026-05-18T09:00:00Z"
+    }
+  },
+  {
+    "model": "applications.application",
+    "pk": 4,
+    "fields": {
+      "created_at": "2026-04-18T14:00:00Z",
+      "updated_at": "2026-04-18T14:00:00Z",
+      "tender": 1,
+      "subcontractor": 2,
+      "cover_letter": "Bien que principalement actifs dans le sanitaire, nous disposons d'une équipe d'électriciens qualifiés disponible pour ce chantier.",
+      "quote_file": "",
+      "quote_amount": "305000.00",
+      "status": "rejected",
+      "decided_by": 2,
+      "decided_at": "2026-04-20T15:35:00Z"
+    }
+  },
+
+  {
+    "model": "applications.favoritesubcontractor",
+    "pk": 1,
+    "fields": {
+      "created_at": "2026-04-21T08:00:00Z",
+      "updated_at": "2026-04-21T08:00:00Z",
+      "company": 1,
+      "subcontractor": 1
+    }
+  },
+  {
+    "model": "applications.favoritesubcontractor",
+    "pk": 2,
+    "fields": {
+      "created_at": "2026-05-02T08:00:00Z",
+      "updated_at": "2026-05-02T08:00:00Z",
+      "company": 1,
+      "subcontractor": 3
+    }
+  },
+  {
+    "model": "applications.favoritesubcontractor",
+    "pk": 3,
+    "fields": {
+      "created_at": "2026-05-15T08:00:00Z",
+      "updated_at": "2026-05-15T08:00:00Z",
+      "company": 2,
+      "subcontractor": 2
+    }
+  },
+
+  {
+    "model": "ratings.rating",
+    "pk": 1,
+    "fields": {
+      "created_at": "2026-05-01T09:00:00Z",
+      "updated_at": "2026-05-01T09:00:00Z",
+      "subcontractor": 1,
+      "company": 1,
+      "created_by": 2,
+      "tender": 4,
+      "score": 5,
+      "comment": "Travail soigné, délais respectés et excellente communication tout au long du chantier. Nous recommandons vivement.",
+      "status": "published"
+    }
+  },
+  {
+    "model": "ratings.rating",
+    "pk": 2,
+    "fields": {
+      "created_at": "2026-05-12T09:00:00Z",
+      "updated_at": "2026-05-12T09:00:00Z",
+      "subcontractor": 2,
+      "company": 2,
+      "created_by": 7,
+      "tender": null,
+      "score": 4,
+      "comment": "Bonne prestation globale, quelques retards mineurs sur la livraison du matériel mais qualité d'exécution au rendez-vous.",
+      "status": "published"
+    }
+  },
+  {
+    "model": "ratings.rating",
+    "pk": 3,
+    "fields": {
+      "created_at": "2026-06-02T09:00:00Z",
+      "updated_at": "2026-06-02T09:00:00Z",
+      "subcontractor": 3,
+      "company": 1,
+      "created_by": 3,
+      "tender": null,
+      "score": 3,
+      "comment": "Prestation correcte dans l'ensemble, en attente de la finition de quelques détails avant une évaluation définitive.",
+      "status": "pending"
+    }
+  }
+]

@@ -11,9 +11,12 @@ from apps.core.mixins import (
 )
 
 from django.views.generic import TemplateView
+
+from apps.companies.models import SwissCanton
+
 from .filters import TenderFilter
 from .forms import TenderForm
-from .models import Tender
+from .models import Tender, TenderStatus
 from .tables import TenderTable
 
 
@@ -28,21 +31,17 @@ class TenderListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # tenders = self.filterset_class(self.request.GET, queryset=self.model.objects.select_related("owner").prefetch_related("execution_type", "branch").all())
-        # context["filter"] = tenders
-        # context["table"] = self.table_class(tenders.qs)
-        tenders = Tender.objects.select_related("owner").prefetch_related("execution_type", "branch").all()
-        context["tenders"] = tenders
-        print("this is tender list view \n \n ")
-        for tender in context["tenders"]:
-            print("Tender:------------------->>> ", tender.title, " - ", tender.owner)
+        queryset = (
+            Tender.objects.select_related("owner")
+            .prefetch_related("execution_type", "branch")
+            .all()
+        )
+        tender_filter = self.filterset_class(self.request.GET, queryset=queryset)
+        context["filter"] = tender_filter
+        context["tenders"] = tender_filter.qs
+        context["cantons"] = SwissCanton.choices
+        context["statuses"] = TenderStatus.choices
         return context
-    # def get_queryset(self):
-    #     return (
-    #         Tender.objects.select_related("owner")
-    #         .prefetch_related("execution_type", "branch")
-    #         .all()
-    #     )
 
 
 class TenderManageView(BreadcrumbMixin, BaseManageHtmxPageFormView):
