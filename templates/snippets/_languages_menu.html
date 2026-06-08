@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load static %}
+{% load change_lang %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info for LANGUAGE_CODE as lang %}
+{% get_language_info_list for LANGUAGES as languages %}
+
+<div id="languagesMenu" class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
+    <a href="#" class="menu-link px-5">
+        <span class="menu-icon">
+            <img class="rounded-1" src="{% get_lang_icon lang.code %}" alt="" />
+        </span>
+        <span class="menu-title position-relative">{% translate "Language" %} 
+        <span class="fs-8 rounded text-capitalize bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">{{lang.name_local}}
+        {% comment %} <img class="w-15px h-15px rounded-1 ms-2" src="assets/media/flags/united-states.svg" alt="" /></span></span> {% endcomment %}
+    </a>
+    <!--begin::Menu sub-->
+    <div class="menu-sub menu-sub-dropdown w-175px py-4">
+        {% for language in languages %}
+            {% if language != lang %}
+                <div class="menu-item px-3 text-capitalize">
+                    <a class="menu-link d-flex px-5" href="{% url 'core:set_language' language.code %}">
+                    <span class="symbol symbol-20px me-4">
+                        <img class="rounded-1" src="{% get_lang_icon language.code %}" alt="" />
+                    </span>{{language.name_local}}</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

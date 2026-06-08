@@ -1,0 +1,53 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load custom_filters %}
+{% load permissions_tags %}
+
+<div class="ms-2" x-data="{ action: 'uPrice' }">
+	<a href="#" class="btn btn-info d-flex align-items-center gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+		<i class="ki-outline ki-setting-4 fs-2x"></i>
+		{% translate 'Actions' %}
+	</a>
+	<div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px p-0" data-kt-menu="true" id="kt_menu_633f0992a4adf">
+		<div class="border-bottom px-4 py-3 bg-light d-flex justify-content-between align-items-center">
+            {% if model|can_delete:user %}
+                <span class="fw-semibold text-danger">{% translate "Delete selected" %}</span>
+                <button 
+                    type="button"
+                    class="btn btn-icon btn-light-danger me-2 hover-rotate-start"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#kt_modal"
+                    hx-get="{{ bulk_delete_url }}"
+                    hx-target="#kt_modal_content"
+                    hx-include="[name='selected_rows']"
+                    hx-swap="innerHTML"
+                    title="{% translate 'Delete selected' %}"
+                >
+                    <i class="ki-outline ki-trash fs-2x"></i>
+                </button>
+            {% endif %}
+		</div>
+
+		{% for action in bulk_actions %}
+			<div class="border-bottom px-4 py-3 bg-light d-flex justify-content-between align-items-center ">
+			<span class="fw-semibold text-{{ action.class_color }}">{{ action.label }}</span>
+				<button
+					type="button"
+					class="btn btn-icon btn-light-{{ action.class_color }} me-2 hover-rotate-start"
+					{% if action.modal_action %}
+						data-bs-toggle="modal" 
+						data-bs-target="#kt_modal"
+						hx-target="#kt_modal_content"
+						hx-swap="innerHTML"
+					{% endif %}
+					hx-{{ action.method }}="{{ action.url }}"
+					hx-include="[name='selected_rows']"
+					title="{{ action.label }}"
+				>
+					<i class="{{ action.icon }} fs-2x"></i>
+				</button>
+			</div>
+		{% endfor %}
+	</div>
+</div>

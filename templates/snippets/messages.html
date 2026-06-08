@@ -1,0 +1,42 @@
+{% load i18n %}
+
+
+
+
+{% if messages %}
+	{% for message in messages %}
+		<div class="toast-container position-fixed top-0 end-0 p-4" style="z-index: 1055;">
+			<div class="toast show bg-{{message.tags}}" data-bs-autohide="false" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 300px; min-height: 100px; z-index: 1055;">
+				<div class="toast-header mystyle" style="font-size: 1.25rem; padding: 1rem;">
+					<i class="ki-solid ki-abstract-9 fs-3x me-2 text-{{message.tags}}"></i>
+					<strong class="me-auto text-capitalize">{{message.tags}}</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+				<div class="toast-body" style="font-size: 1.125rem; padding: 1rem;">
+					{{message}}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+
+
+
+
+
+<div data-toast-container class="toast-container position-fixed top-0 end-0 p-4" style="z-index: 1055;">
+    <div data-toast-template class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 300px; min-height: 100px; z-index: 1055;">
+        <div data-toast-header class="toast-header" style="font-size: 1.25rem; padding: 1rem;">
+            <i class="ki-solid ki-abstract-9 fs-3x me-2"></i>
+            <strong data-toast-tags class="me-auto text-capitalize"></strong>
+            <small class="text-muted">{{message.tags}}</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div data-toast-body class="toast-body" style="font-size: 1.125rem; padding: 1rem;"></div>
+    </div>
+</div>
+
+
+
+
+

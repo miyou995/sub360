@@ -66,7 +66,7 @@ class Tender(CRUDUrlMixin, TimestampedModel):
     """
 
     title = models.CharField(_("Titre"), max_length=255)
-    
+
     owner = models.ForeignKey(
         "companies.Company",
         on_delete=models.PROTECT,
@@ -129,7 +129,13 @@ class Tender(CRUDUrlMixin, TimestampedModel):
 
     def __str__(self):
         return self.title
+    
+    def get_created_at_since(self):
+        """Returns a human-friendly string representing the time since creation."""
+        from django.utils.timesince import timesince
 
+        return timesince(self.created_at)
+      
 
 class TenderAttachment(TimestampedModel):
     """A file attached to a tender (plans, specifications, ...)."""

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+
+
+
+{% block content %}
+    {% include 'snippets/_breadcrumb.html' %}
+
+    <h1 class="text-center my-4 pb-3" >
+        {% if form.instance.id %}
+            {% translate "Edit" %} {{ page_title }}
+            <span class="badge bg-secondary align-middle ms-2" style="font-size: 0.8em;">
+                #{{ form.instance.id }}
+            </span>
+        {% else %}
+            {% translate "Add" %} {{ page_title }}
+        {% endif %}
+    </h1>
+
+
+    <div class="modal-body scroll-y mx-5 mx-xl-5">
+        <form method="post"
+            action="{% if form.instance.id %}{{ update_url }}{% else %}{{ create_url }}{% endif %}"
+            {{ form.attrs }}
+            enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger d-flex align-items-center p-4 mb-4">
+                <i class="ki-solid ki-shield-cross fs-2hx text-danger me-4"></i>
+                <div class="d-flex flex-column">
+                    {% for error in form.non_field_errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% include 'forms/grid-form.html' with margin_class="mb-4" %}
+
+            {% include "forms/_formset.html" with
+                formset=formsets.bills_formset
+                title=_('Bills')
+                add_label=_('Add Bill Item')
+                add_btn_class='btn-light-info'
+                container_id='bills-container'
+                row_class='variant-row'
+                template_id='empty-variant-form'
+                empty_text=_('No variants added yet.')
+                %}
+
+            <div class="modal-footer flex-center pb-0  pb-3">
+                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">{% translate 'Close' %}</button>
+                {% if form.instance.id %}
+                <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#delete_modal"
+                    hx-get="{{ form.instance.get_delete_url }}" hx-target="#delete_modal_body" hx-swap="innerHTML">
+                    {% translate 'Delete' %}
+                </button>
+                {% endif %}
+                {% include 'snippets/_submit_button.html' %}
+            </div>
+        </form>
+        {% if form.instance.id %}
+        <form action="{{ form.instance.get_delete_url }}" method="post" id="deleteSlideForm">
+            {% csrf_token %}
+        </form>
+        {% endif %}
+    </div>
+
+{% endblock content %}
+

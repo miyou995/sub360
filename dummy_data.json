@@ -3,10 +3,10 @@
     "model": "users.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$600000$dummysalt$dummyhash=",
+      "password": "admin",
       "last_login": null,
       "is_superuser": true,
-      "email": "admin@sub360.ch",
+      "email": "admin@admin.com",
       "first_name": "Alice",
       "last_name": "Admin",
       "phone": "+41 79 100 00 01",
