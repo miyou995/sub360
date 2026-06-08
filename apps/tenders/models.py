@@ -66,6 +66,7 @@ class Tender(CRUDUrlMixin, TimestampedModel):
     """
 
     title = models.CharField(_("Titre"), max_length=255)
+    
     owner = models.ForeignKey(
         "companies.Company",
         on_delete=models.PROTECT,

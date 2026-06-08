@@ -48,7 +48,7 @@ class TenderListView(TemplateView):
 class TenderManageView(BreadcrumbMixin, BaseManageHtmxPageFormView):
     model = Tender
     form_class = TenderForm
-    template_name = "tender_form.html"
+    # template_name = "tender_form.html"
     success_message = _("Appel d'offres enregistré avec succès.")
 
 

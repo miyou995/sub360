@@ -1,0 +1,384 @@
+[
+    {
+        "model": "tenders.executiontype",
+        "pk": 1,
+        "fields": {
+            "name": "Nouvelle construction",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 2,
+        "fields": {
+            "name": "Rénovation",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 3,
+        "fields": {
+            "name": "Transformation",
+            "is_active": true
+        }
+    },
+    {
+        "model": "tenders.executiontype",
+        "pk": 4,
+        "fields": {
+            "name": "Entretien",
+            "is_active": true
+        }
+    },
+
+    {
+        "model": "tenders.branch",
+        "pk": 1,
+        "fields": {
+            "name": "Construction",
+            "is_active": true,
+            "parent": null
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 2,
+        "fields": {
+            "name": "Maçonnerie",
+            "is_active": true,
+            "parent": 1
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 3,
+        "fields": {
+            "name": "Électricité",
+            "is_active": true,
+            "parent": 1
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 4,
+        "fields": {
+            "name": "Plomberie",
+            "is_active": true,
+            "parent": 1
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 5,
+        "fields": {
+            "name": "Charpente",
+            "is_active": true,
+            "parent": 1
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 6,
+        "fields": {
+            "name": "Couverture - Étanchéité",
+            "is_active": true,
+            "parent": 1
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 7,
+        "fields": {
+            "name": "Finitions",
+            "is_active": true,
+            "parent": null
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 8,
+        "fields": {
+            "name": "Peinture",
+            "is_active": true,
+            "parent": 7
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 9,
+        "fields": {
+            "name": "Carrelage",
+            "is_active": true,
+            "parent": 7
+        }
+    },
+    {
+        "model": "tenders.branch",
+        "pk": 10,
+        "fields": {
+            "name": "Menuiserie",
+            "is_active": true,
+            "parent": 7
+        }
+    },
+
+    {
+        "model": "tenders.tender",
+        "pk": 1,
+        "fields": {
+            "title": "Construction d'un immeuble résidentiel de 24 logements",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Recherche sous-traitants pour les travaux de gros œuvre : maçonnerie, coffrage et électricité. Chantier situé en zone urbaine avec accès restreint, planning serré sur 14 mois.",
+            "canton": "VD",
+            "city": "Lausanne",
+            "zip_code": "1000",
+            "start_date": "2026-07-01",
+            "application_deadline": "2026-06-30",
+            "material_offered": true,
+            "material": "Béton, armatures et coffrage fournis par le maître d'ouvrage",
+            "project_volume": "2 500 000 CHF",
+            "procedure": "public",
+            "status": "published",
+            "execution_type": [1],
+            "branch": [2, 3]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 2,
+        "fields": {
+            "title": "Rénovation énergétique d'un bâtiment administratif",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Travaux de rénovation intérieure, mise aux normes des installations sanitaires et remplacement de la plomberie sur 4 étages. Occupation partielle du bâtiment durant les travaux.",
+            "canton": "GE",
+            "city": "Genève",
+            "zip_code": "1200",
+            "start_date": "2026-08-15",
+            "application_deadline": "2026-07-20",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "850 000 CHF",
+            "procedure": "by_invitation",
+            "status": "published",
+            "execution_type": [2],
+            "branch": [4]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 3,
+        "fields": {
+            "title": "Extension d'un centre logistique",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Construction d'un hall logistique de 3 500 m² avec charpente métallique, couverture isolée et installation électrique industrielle. Coordination avec l'exploitation existante requise.",
+            "canton": "ZH",
+            "city": "Zürich",
+            "zip_code": "8005",
+            "start_date": "2026-09-01",
+            "application_deadline": "2026-07-31",
+            "material_offered": true,
+            "material": "Charpente métallique et bardage fournis",
+            "project_volume": "4 200 000 CHF",
+            "procedure": "public",
+            "status": "published",
+            "execution_type": [1, 3],
+            "branch": [5, 6, 3]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 4,
+        "fields": {
+            "title": "Rénovation des façades d'une copropriété",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Rénovation complète des façades : étanchéité, isolation périphérique et peinture. Travaux en hauteur nécessitant un échafaudage sur rue passante.",
+            "canton": "FR",
+            "city": "Fribourg",
+            "zip_code": "1700",
+            "start_date": "2026-06-22",
+            "application_deadline": "2026-06-10",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "320 000 CHF",
+            "procedure": "public",
+            "status": "closed",
+            "execution_type": [2],
+            "branch": [6, 8]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 5,
+        "fields": {
+            "title": "Construction d'une villa individuelle clé en main",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Recherche d'équipes pour finitions intérieures : menuiserie, carrelage et peinture sur une villa de 220 m² actuellement au stade du second œuvre.",
+            "canton": "VS",
+            "city": "Sion",
+            "zip_code": "1950",
+            "start_date": "2026-10-05",
+            "application_deadline": "2026-09-15",
+            "material_offered": true,
+            "material": "Matériaux de finition fournis selon descriptif",
+            "project_volume": "180 000 CHF",
+            "procedure": "by_invitation",
+            "status": "draft",
+            "execution_type": [1],
+            "branch": [9, 10, 8]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 6,
+        "fields": {
+            "title": "Transformation d'une grange en espace commercial",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Transformation et mise aux normes d'une grange agricole en local commercial : charpente, étanchéité, électricité et plomberie. Permis de construire obtenu.",
+            "canton": "BE",
+            "city": "Thoune",
+            "zip_code": "3600",
+            "start_date": "2026-08-01",
+            "application_deadline": "2026-07-05",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "610 000 CHF",
+            "procedure": "public",
+            "status": "published",
+            "execution_type": [3],
+            "branch": [5, 4, 3]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 7,
+        "fields": {
+            "title": "Entretien annuel des installations sanitaires d'un site industriel",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Contrat d'entretien préventif et correctif des installations de plomberie sur un site industriel multi-bâtiments. Intervention sur appel avec délai garanti de 48h.",
+            "canton": "TI",
+            "city": "Lugano",
+            "zip_code": "6900",
+            "start_date": "2026-07-15",
+            "application_deadline": "2026-06-25",
+            "material_offered": false,
+            "material": "",
+            "project_volume": "95 000 CHF / an",
+            "procedure": "by_invitation",
+            "status": "awarded",
+            "execution_type": [4],
+            "branch": [4]
+        }
+    },
+    {
+        "model": "tenders.tender",
+        "pk": 8,
+        "fields": {
+            "title": "Construction d'un complexe scolaire",
+            "owner": 1,
+            "created_by": 1,
+            "description": "Appel d'offres pour le gros œuvre et les corps de métier secondaires d'un complexe scolaire de trois bâtiments, incluant une salle de sport. Chantier en plusieurs lots.",
+            "canton": "NE",
+            "city": "Neuchâtel",
+            "zip_code": "2000",
+            "start_date": "2027-01-12",
+            "application_deadline": "2026-09-30",
+            "material_offered": true,
+            "material": "Béton, acier d'armature et menuiseries extérieures fournis",
+            "project_volume": "7 800 000 CHF",
+            "procedure": "public",
+            "status": "draft",
+            "execution_type": [1],
+            "branch": [2, 3, 4, 5, 6]
+        }
+    },
+
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 1,
+        "fields": {
+            "tender": 1,
+            "file": "tenders/plan_immeuble_lausanne.pdf",
+            "label": "Plans architecte"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 2,
+        "fields": {
+            "tender": 1,
+            "file": "tenders/cahier_charges_lausanne.pdf",
+            "label": "Cahier des charges"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 3,
+        "fields": {
+            "tender": 2,
+            "file": "tenders/dossier_renovation_geneve.pdf",
+            "label": "Dossier de rénovation"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 4,
+        "fields": {
+            "tender": 3,
+            "file": "tenders/plan_hall_logistique_zurich.pdf",
+            "label": "Plans du hall logistique"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 5,
+        "fields": {
+            "tender": 3,
+            "file": "tenders/devis_estimatif_zurich.xlsx",
+            "label": "Devis estimatif"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 6,
+        "fields": {
+            "tender": 4,
+            "file": "tenders/rapport_diagnostic_facades_fribourg.pdf",
+            "label": "Rapport de diagnostic des façades"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 7,
+        "fields": {
+            "tender": 5,
+            "file": "tenders/descriptif_finitions_sion.pdf",
+            "label": "Descriptif des finitions"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 8,
+        "fields": {
+            "tender": 6,
+            "file": "tenders/permis_construire_thoune.pdf",
+            "label": "Permis de construire"
+        }
+    },
+    {
+        "model": "tenders.tenderattachment",
+        "pk": 9,
+        "fields": {
+            "tender": 8,
+            "file": "tenders/lots_complexe_scolaire_neuchatel.pdf",
+            "label": "Découpage des lots"
+        }
+    }
+]
