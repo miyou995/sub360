@@ -14,7 +14,7 @@ class Command(BaseCommand):
         self.create_superuser()
 
         # self.load_demo_fixture("locations.json", "core")
-        # self.load_fixture("apps/projects/fixtures/branches.json")
+        self.load_fixture("dummy_data.json")
         # self.load_fixture("apps/projects/fixtures/execution_types.json")
         self.stdout.write(self.style.SUCCESS("Project Inited completed successfully!"))
 
