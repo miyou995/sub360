@@ -1,0 +1,279 @@
+{% load custom_filters %}
+
+<div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
+	data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px"
+	data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+	<div class="app-sidebar-wrapper">
+		<div id="kt_app_sidebar_wrapper" class="hover-scroll-y my-5 my-lg-2 mx-4 text-capitalize" data-kt-scroll="true"
+			data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto"
+			data-kt-scroll-dependencies="#kt_app_header" data-kt-scroll-wrappers="#kt_app_sidebar_wrapper"
+			data-kt-scroll-offset="5px">
+			<div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false"
+				class="app-sidebar-menu-primary menu menu-column menu-rounded menu-sub-indention menu-state-bullet-primary px-3 mb-5 ">
+
+				<div class="menu-item">
+					<a href="{% url 'core:index' %}" class="menu-link ">
+						<span class="menu-icon">
+							<i class="ki-outline ki-home-2 fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Accueil" %}</span>
+					</a>
+				</div>
+				{% if perms.finance.view_billpayment 
+					or perms.finance.view_staffpayment 
+					or perms.finance.view_misctransaction 
+					or perms.finance.view_ledgerentry 
+				%}
+					<div class="menu-item">
+						<a href="{% url 'finance:list_ledgerentry' %}" class="menu-link">
+							<span class="menu-icon">
+								<i class="ki-outline ki-briefcase fs-1"></i>
+							</span>
+							<span class="menu-title">{% translate "Transactions" %}</span>
+						</a>
+					</div>
+				{% endif %}
+
+
+				{% if perms.appointment.view_appointment %}
+				<div class="menu-item">
+					<a href="{% url 'appointment:list_appointment' %}" class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-watch fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Rendez-vous" %}</span>
+					</a>
+				</div>
+				{% endif %}
+
+				{% if perms.crm.view_company %}
+				<div class="menu-item">
+					<a href="{% url 'crm:list_company' %}" class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-briefcase fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Sociétés" %}</span>
+					</a>
+				</div>
+				{% endif %}
+
+
+				{% if perms.crm.view_contact %}
+				<div class="menu-item">
+					<a href="{% url 'crm:list_contact' %}" class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-user fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Contacts" %}</span>
+					</a>
+				</div>
+				{% endif %}
+
+				{% if perms.leads.view_b2blead %}
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-focus fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Opportunités" %}</span>
+						<span class="menu-arrow"></span>
+					</span>
+					<div class="menu-sub menu-sub-accordion">
+						<div class="menu-item">	
+							<a class="menu-link" href="{% url 'leads:list_lead' %}">
+								<span class="menu-bullet">
+									<span class="bullet bullet-dot"></span>
+								</span>
+								<span class="menu-title">{% translate "Tous" %}</span>
+							</a>
+						</div>
+						
+						{% get_list_of_states as lead_states %}
+						{% for state in lead_states %}
+							<div class="menu-item">
+								<a class="menu-link" href="{% url 'leads:state_b2b_lead_list' state.pk %}">
+									<span class="menu-bullet">
+										<span class="bullet bullet-dot"></span>
+									</span>
+									<span class="menu-title">{{ state.name }}</span>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+
+
+
+				{% comment %} {% if perms.finance.view_billpayment or perms.finance.view_staffpayment or
+				perms.finance.view_misctransaction or perms.finance.view_ledgerentry %}
+				<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+					<span class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-wallet fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Finance" %}</span>
+						<span class="menu-arrow"></span>
+					</span>
+					<div class="menu-sub menu-sub-accordion">
+						{% if perms.finance.view_billpayment %}
+						<div class="menu-item">
+							<a class="menu-link" href="{% url 'finance:list_billpayment' %}">
+								<span class="menu-bullet">
+									<span class="bullet bullet-dot"></span>
+								</span>
+								<span class="menu-title">{% translate "Entrées Clients" %}</span>
+							</a>
+						</div>
+						{% endif %}
+
+						{% if perms.finance.view_staffpayment %}
+						<div class="menu-item">
+							<a class="menu-link" href="{% url 'finance:list_staffpayment' %}">
+								<span class="menu-bullet">
+									<span class="bullet bullet-dot"></span>
+								</span>
+								<span class="menu-title">{% translate "Sorties Personnels" %}</span>
+							</a>
+						</div>
+						{% endif %}
+						{% if perms.finance.view_misctransaction %}
+						<div class="menu-item">
+							<a class="menu-link" href="{% url 'finance:list_misctransaction' %}">
+								<span class="menu-bullet">
+									<span class="bullet bullet-dot"></span>
+								</span>
+								<span class="menu-title">{% translate "Autres Transactions" %}</span>
+							</a>
+						</div>
+						{% endif %}
+						{% if perms.finance.view_ledgerentry %}
+						<div class="menu-item">
+							<a class="menu-link" href="{% url 'finance:list_ledgerentry' %}">
+								<span class="menu-bullet">
+									<span class="bullet bullet-dot"></span>
+								</span>
+								<span class="menu-title">{% translate "livre des comptes" %}</span>
+							</a>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+				{% endif %} {% endcomment %}
+
+				{% if perms.recurrent.view_recurrent %}
+					<div class="menu-item">
+						<a href="{% url 'recurrent:recurrent_list' %}" class="menu-link">
+							<span class="menu-icon">
+								<i class="ki-outline ki-dollar fs-1"></i>
+							</span>
+							<span class="menu-title">{% translate "Récurrents" %}</span>
+						</a>
+					</div>
+				{% endif %}
+
+				{% if perms.billing.view_bill %}
+					<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<span class="menu-link">
+							<span class="menu-icon">
+								<i class="ki-outline ki-bill fs-1"></i>
+							</span>
+							<span class="menu-title">{% translate "Facturation" %}</span>
+							<span class="menu-arrow"></span>
+						</span>
+						<div class="menu-sub menu-sub-accordion">
+							{% get_list_of_bill_types as bill_types %}
+							{% for bill_type in bill_types %}
+								<div class="menu-item">
+									<a class="menu-link" href="{% url 'billing:list_bill' bill_type.slug %}">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">{{ bill_type.label }}</span>
+									</a>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+							
+				<div class="menu-item ">
+					<a href="{% url 'subscription:upgrade' %}" class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-tag fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Mettre à jour" %}</span>
+					</a>
+				</div>
+
+				{% if perms.finance.can_view_statistique %}
+				<div class="menu-item ">
+					<a href="{% url 'core:statistics' %}" class="menu-link">
+						<span class="menu-icon">
+							<i class="ki-outline ki-graph-3 fs-1"></i>
+						</span>
+						<span class="menu-title">{% translate "Statistiques" %}</span>
+					</a>
+				</div>
+				{% endif %}
+
+
+				{% if   perms.auth.view_group or perms.business.view_store or perms.business.view_legalentity or
+						perms.users.view_user or perms.core.view_leadsource or perms.billing.view_account_type or
+					    perms.core.view_leadsource or perms.core.view_tax or perms.core.view_potential or 
+					    perms.statistics.view_formation or  perms.tags.view_tags or
+				        perms.crm.view_activitysector or perms.leads.view_state or perms.billing.view_billtypeconfig or 
+						perms.subscription.view_plan or  perms.core.view_leadsheet or perms.finance.view_account %}
+					<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+						<span class="menu-link">
+							<span class="menu-icon">
+								<i class="ki-outline ki-setting-2 fs-1"></i>
+							</span>
+							<span class="menu-title">{% translate "Paramètres" %}</span>
+							<span class="menu-arrow"></span>
+						</span>
+						<div class="menu-sub menu-sub-accordion">
+							{% if perms.users.view_user %}
+							<div class="menu-item ">
+								<a href="{% url 'users:list_user' %}" class="menu-link">
+									<span class="menu-bullet">
+										<span class="bullet bullet-dot"></span>
+									</span>
+									<span class="menu-title">{% translate "Utilisateurs" %}</span>
+								</a>
+							</div>
+							{% endif %}
+
+							{% if perms.auth.view_group %}
+							<div class="menu-item ">
+								<a href="{% url 'users:grouplist' %}" class="menu-link">
+									<span class="menu-bullet">
+										<span class="bullet bullet-dot"></span>
+									</span>
+									<span class="menu-title">{% translate "Roles & Permissions" %}</span>
+
+								</a>
+							</div>
+							{% endif %}
+
+							{% if perms.finance.view_account or  perms.tags.view_tags or perms.core.view_leadsource or
+							perms.core.view_tax or perms.core.view_potential or perms.core.view_leadsheet or
+							perms.crm.activitysector  or perms.leads.view_state or perms.billing.view_billtypeconfig or
+							perms.subscription.view_plan or perms.business.view_store or perms.business.view_legalentity %}
+								<div class="menu-item">
+									<a class="menu-link" href="{% url 'core:configuration' %}">
+										<span class="menu-bullet">
+											<span class="bullet bullet-dot"></span>
+										</span>
+										<span class="menu-title">{% translate "Configuration" %}</span>
+										{% comment %} inclus les modules les salles wilays communes ...etc {% endcomment %}
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
