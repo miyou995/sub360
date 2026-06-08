@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block page_title %}{% translate "Appels d'offres" %}{% endblock %}
+{% comment %} {% block page_title %}{% translate "Appels d'offres" %}{% endblock %} {% endcomment %}
 
 {% block extra_css %}
 <style>
@@ -67,7 +67,7 @@
             </p>
         </div>
         <a href="{% url 'tenders:create_tender' %}"
-           class="btn btn-primary btn-lg flex-shrink-0">
+           class="btn btn-success btn-lg flex-shrink-0">
             <i class="ki-duotone ki-plus fs-2"></i>{% translate "Publier un appel d'offres" %}
         </a>
     </div>
@@ -116,20 +116,11 @@
                     {# Main content #}
                     <div class="flex-grow-1">
                         <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-2">
-                            <a href="{{ tender.get_update_url }}"
-                               class="tender-title text-gray-900 fw-bold fs-4 stretched-link"
-                               data-bs-toggle="modal" data-bs-target="#kt_modal">
+                            <a href="{% url 'tenders:detail_tender' tender.pk %}"
+                               class="tender-title text-gray-900 fw-bold fs-4 stretched-link">
                                 {{ tender.title }}
                             </a>
-                            {% if tender.status == 'draft' %}
-                                <span class="badge badge-light-secondary flex-shrink-0">{{ tender.get_status_display }}</span>
-                            {% elif tender.status == 'published' %}
-                                <span class="badge badge-light-success flex-shrink-0">{{ tender.get_status_display }}</span>
-                            {% elif tender.status == 'closed' %}
-                                <span class="badge badge-light-warning flex-shrink-0">{{ tender.get_status_display }}</span>
-                            {% elif tender.status == 'awarded' %}
-                                <span class="badge badge-light-primary flex-shrink-0">{{ tender.get_status_display }}</span>
-                            {% endif %}
+                            <span class="badge badge-light-success flex-shrink-0"> {% translate "il y a" %} {{ tender.get_created_at_since }}</span>
                         </div>
 
                         {# Meta line : owner • location • deadline #}

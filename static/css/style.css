@@ -1,0 +1,327 @@
+
+:root {
+    --bs-table-bg-type: #c9c9c9bf;
+    --bs-app-header-height: 90px;
+
+    /* ── Primary → Sub360 Dark Blue ── */
+    --bs-primary: #1F2A4A;
+    --bs-primary-rgb: 31, 42, 74;
+    --bs-primary-active: #077989;
+    --bs-primary-light: #CDDCD5;
+    --bs-primary-inverse: #ffffff;
+    --bs-primary-clarity: rgba(31, 42, 74, 0.2);
+    --bs-primary-text-emphasis: #252A34;
+    --bs-primary-bg-subtle: #CDDCD5;
+    --bs-primary-border-subtle: #B8D2C6;
+    --bs-text-primary: #1F2A4A;
+    --bs-link-color: #1F2A4A;
+    --bs-link-color-rgb: 31, 42, 74;
+    --bs-link-hover-color: #077989;
+    --bs-link-hover-color-rgb: 7, 121, 137;
+    --bs-focus-ring-color: rgba(31, 42, 74, 0.25);
+
+    /* ── Success → Sub360 Teal ── */
+    --bs-success: #077989;
+    --bs-success-rgb: 7, 121, 137;
+    --bs-success-active: #1F2A4A;
+    --bs-success-light: #CDDCD5;
+    --bs-success-inverse: #ffffff;
+    --bs-success-clarity: rgba(7, 121, 137, 0.2);
+    --bs-success-text-emphasis: #252A34;
+    --bs-success-bg-subtle: #B8D2C6;
+    --bs-success-border-subtle: #A7BBB3;
+    --bs-text-success: #077989;
+
+    /* ── Component tokens ── */
+    --bs-component-active-color: #ffffff;
+    --bs-component-active-bg: #1F2A4A;
+    --bs-component-hover-color: #1F2A4A;
+    --bs-component-hover-bg: #F9F9F9;
+    --bs-component-checked-color: #ffffff;
+    --bs-component-checked-bg: #1F2A4A;
+
+    /* ── Menu tokens ── */
+    --bs-menu-link-color-hover: #1F2A4A;
+    --bs-menu-link-color-show: #1F2A4A;
+    --bs-menu-link-color-here: #1F2A4A;
+    --bs-menu-link-color-active: #1F2A4A;
+
+    /* ── Misc tokens ── */
+    --bs-ribbon-label-bg: #1F2A4A;
+    --bs-ribbon-label-border-color: #077989;
+    --bs-scrolltop-bg-color: #1F2A4A;
+    --bs-scrolltop-bg-color-hover: #077989;
+    --bs-scrolltop-icon-color: #ffffff;
+    --bs-scrolltop-icon-color-hover: #ffffff;
+}
+
+[data-bs-theme="dark"] {
+    /* ── Primary → Sub360 Dark Blue (dark) ── */
+    --bs-primary: #B8D2C6;
+    --bs-primary-rgb: 184, 210, 198;
+    --bs-primary-active: #077989;
+    --bs-primary-light: #1F2A4A;
+    --bs-primary-inverse: #ffffff;
+    --bs-primary-clarity: rgba(184, 210, 198, 0.25);
+    --bs-primary-text-emphasis: #CDDCD5;
+    --bs-primary-bg-subtle: #252A34;
+    --bs-primary-border-subtle: #077989;
+    --bs-text-primary: #B8D2C6;
+    --bs-link-color: #B8D2C6;
+    --bs-link-color-rgb: 184, 210, 198;
+    --bs-link-hover-color: #CDDCD5;
+    --bs-link-hover-color-rgb: 205, 220, 213;
+    --bs-focus-ring-color: rgba(184, 210, 198, 0.25);
+
+    /* ── Success → Sub360 Teal (dark) ── */
+    --bs-success: #077989;
+    --bs-success-rgb: 7, 121, 137;
+    --bs-success-active: #CDDCD5;
+    --bs-success-light: #252A34;
+    --bs-success-inverse: #ffffff;
+    --bs-success-clarity: rgba(7, 121, 137, 0.2);
+    --bs-success-text-emphasis: #B8D2C6;
+    --bs-success-bg-subtle: #1F2A4A;
+    --bs-success-border-subtle: #077989;
+    --bs-text-success: #077989;
+
+    /* ── Component tokens ── */
+    --bs-component-active-color: #ffffff;
+    --bs-component-active-bg: #B8D2C6;
+    --bs-component-hover-color: #B8D2C6;
+    --bs-component-hover-bg: #1B1C22;
+    --bs-component-checked-color: #ffffff;
+    --bs-component-checked-bg: #B8D2C6;
+
+    /* ── Menu tokens ── */
+    --bs-menu-link-color-hover: #B8D2C6;
+    --bs-menu-link-color-show: #B8D2C6;
+    --bs-menu-link-color-here: #B8D2C6;
+    --bs-menu-link-color-active: #B8D2C6;
+
+    /* ── Misc tokens ── */
+    --bs-ribbon-label-bg: #B8D2C6;
+    --bs-ribbon-label-border-color: #077989;
+    --bs-scrolltop-bg-color: #B8D2C6;
+    --bs-scrolltop-bg-color-hover: #077989;
+    --bs-scrolltop-icon-color: #1F2A4A;
+    --bs-scrolltop-icon-color-hover: #1F2A4A;
+}
+.card .card-body {
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x)!important;
+}
+.table > :not(caption) > * > * {
+    padding: 0.3rem;
+}
+
+.table-container{
+    min-height: 300px;
+}
+ .custom-text {
+    text-align: center;
+    font-weight: bold;
+  }
+
+
+  .salary-display {
+    background-color: #ca4230;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.salary-display i {
+    font-size: 1.5rem;
+}
+
+.salary-display span {
+    font-size: 1rem;
+}
+
+.salary-display .fw-bold {
+    font-size: 1.2rem;
+}
+
+.selected-event {
+    background-color: #f74d0a !important; /* Highlight color */
+    border-color: #21011a !important; /* Border color */
+    border-radius: 5px;
+    
+    border-style: solid;
+    border-width: 5px;
+}
+  
+
+.htmx-indicator{
+    opacity:0;
+    display: none;
+    transition: opacity 700ms ease-in;
+}
+.htmx-request .htmx-indicator{
+    opacity:1;
+    display: block;
+}
+.htmx-request.htmx-indicator{
+    display: block;
+    opacity:1;
+}
+
+
+
+
+.menu-link:hover {
+    color: var(--bs-primary); /* Your brand color */
+    /* background-color: #2c7bcb; */
+    text-decoration: none;
+}
+.menu-item.here > .menu-link {
+    color: #ffffff;
+    background-color: var(--bs-primary); /* Your brand color */
+}
+
+.select-all-container {
+    margin-bottom: 10px; /* Space between "Select All" and other checkboxes */
+    margin-left: -15px; /* Adjust this value to move "Select All" to the left */
+    display: block; /* Makes "Select All" appear as a block element */
+}
+
+.permissions-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.permissions-container label {
+    margin-right: 10px; /* Adjust spacing between permission checkboxes */
+    margin-bottom: 5px;  /* Adjust vertical spacing */
+}
+
+.color-container {
+    background: linear-gradient(135deg, #1F2A4A, #077989);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    color: #fff;
+}
+
+.total-container {
+    background: linear-gradient(135deg, #077989, #B8D2C6);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    color: #1F2A4A;
+}
+
+.total-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.icon {
+    font-size: 2rem;
+    margin-right: 10px;
+    color: #ffdd57;
+}
+
+.total-amount {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+
+
+
+.page-item {
+    cursor:pointer;
+    color: #000000;
+}
+.page-link {
+    color: #000000;
+}
+
+
+
+.bg-success {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+.bg-info {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+
+
+
+
+.status-active {
+    background-color: #0ead69; /* Custom green */
+    color: white; /* Adjust text color if needed */
+}
+
+.status-pending {
+    background-color: #ff9f1c; /* Custom yellow */
+    color: #212529; /* Adjust text color for readability */
+}
+
+.status-suspended {
+    background-color: #bf4342; /* Custom red */
+    color: white;
+}
+
+.status-completed {
+    background-color: #577399; /* Custom blue */
+    color: white;
+}
+
+.no-overflow-x .table-responsive {
+    overflow-x: unset!important;
+}
+
+.vertical-align-middle {
+    vertical-align: middle;
+}
+
+@media (min-width: 992px) {
+  .aside-enabled.aside-fixed.header-fixed .header {
+    left: 0 !important;
+  }
+
+}
+.nav-item {
+    cursor: pointer;
+}
+
+.nav-item .nav-link.active i, .nav-item .nav-link:hover i{
+    color: inherit !important;
+} 
+
+/* ── Quill widget: prevent ql-container's height:100% from resolving against
+   an ancestor with an explicit height (e.g. a modal body), which would cause
+   the editor to balloon and visually overlap sibling fields in a formset row. ── */
+.quill-editor-container {
+    height: auto !important;
+    min-height: 120px;
+}
+.quill-editor-container .ql-container {
+    height: auto !important;
+    min-height: 80px;
+}
+.quill-editor-container .ql-editor {
+    height: auto !important;
+    min-height: 80px;
+}
+
+
+
+.dropdown-menu .dropdown-item { cursor: pointer; }

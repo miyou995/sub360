@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+{% load static %}
+{% load i18n %}
+
+<div id="toolBar" class="card shadow-sm mb-4" hx-swap-oob="true">
+    <div class="card-body p-4">
+        <div class="w-100 d-flex  align-items-center flex-wrap gap-3">
+            <form
+                id="filterForm"
+                class="flex-grow-1 d-flex justify-content-between"
+                hx-get="{{table.url}}{% querystring %}" 
+                hx-target="{{ table.target|default:'div.table-container' }}" 
+                hx-swap="innerHTML" 
+                hx-trigger="submit, keyup delay:900ms from:.search-box"
+            >
+                <div  class="position-relative search-box flex-grow-1">
+                    <span class="position-absolute top-50 translate-middle-y ms-4">
+                        <i class="ki-outline ki-magnifier fs-2x"></i>
+                    </span> 
+                    {% render_field filter.form.query class="form-control form-control-solid w-250px ps-14"  autofocus="autofocus" placeholder="Recherche..." %}
+                </div>
+                <div class="d-flex gap-3">
+                    {% include "snippets/_filters.html" %}
+                </div>
+            </form>
+            {% if not is_ledger_url %}
+                {% include 'snippets/_actions_menu.html' with action_url=users_actions_url %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
