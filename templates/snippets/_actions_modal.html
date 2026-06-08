@@ -1,0 +1,35 @@
+{% load custom_filters %}
+<div class="modal-header border-bottom pb-3">
+    <h3 class="modal-title fw-bold text-dark">{{title}}</h3>
+    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <i class="ki-outline ki-shield-tick fs-3x text-success"></i>
+    </div>
+</div>
+
+<div class="modal-body py-4">
+    <form hx-post="{{action_url}}" method="post" id="stateForm">
+        {% csrf_token %}
+		{% include 'forms/grid-form.html' with margin_class="mb-4" form=action_form %}
+		<ul>
+			{% for row in selected_rows %}
+				<li>
+					<strong>ID:</strong> {{row.id}} - <strong>{% translate "Title" %}:</strong> {{row}} 
+					<input type="hidden" name="selected_rows" value={{row.pk}}>
+				</li>
+			{% endfor %}
+		</ul>
+    </form>
+</div>
+
+<div class="modal-footer border-top pt-3">
+    <button type="button" class="btn btn-sm btn-light-danger" data-bs-dismiss="modal">
+        <i class="ki-outline ki-arrow-left fs-2 "></i>
+        {% translate "Annuler" %}
+    </button>
+    {% csrf_token %}
+    <button type="submit" form="stateForm" class="btn btn-sm btn-light-success">
+        <i class="ki-outline ki-check fs-2 me-2"></i>
+        {% translate "Changer" %}
+    </button>
+</div>
+ 

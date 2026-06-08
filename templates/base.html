@@ -9,53 +9,38 @@
     {% block page_head %}
     <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'fonts/inter.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+    
     {% block extra_css %}{% endblock %}
     {% endblock page_head %}
     {% htmx_script %}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body id="kt_body" class="header-tabs-enabled header-menu-enabled">
-    <script>
-        var defaultThemeMode = "light";
-        var themeMode;
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-            } else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
-            }
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-            document.documentElement.setAttribute("data-bs-theme", themeMode);
-        }
-    </script>
-
-    <div class="d-flex flex-column flex-root">
-        <div class="page d-flex flex-row flex-column-fluid">
-            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-
-                {% block header %}
-                    {% include 'header.html' %}
-                {% endblock header %}
-
-                <div id="kt_content_container" class="container-xxl d-flex flex-column-fluid">
-                    <div class="content d-flex flex-row flex-row-fluid" id="kt_content">
-                        <div class="d-flex flex-column flex-row-fluid">
-                            <div class="d-flex flex-stack flex-wrap gap-2 mt-n1 mb-6" id="kt_toolbar">
-                                <div class="page-title d-flex flex-column align-items-start me-3 py-2 py-lg-0 gap-2">
-                                    <h1 class="d-flex text-gray-900 fw-bold m-0 fs-3">
-                                        {% block page_title %}{% endblock %}
-                                    </h1>
-                                    {% block breadcrumb %}{% endblock %}
-                                </div>
-                                <div class="d-flex align-items-center py-2">
-                                    {% block toolbar_actions %}{% endblock %}
-                                </div>
+<body id="kt_body" class="app-default">
+    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            {% include "navbar.html" %}
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div class="app-toolbar py-3 py-lg-6">
+                            <div class="app-container container-xxl d-flex flex-stack">
+                                <h1 class="page-heading text-dark fw-bold fs-3 my-0">
+                                    {% block page_title %}{% endblock %}
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="app-content flex-column-fluid">
+                            <div class="app-container container-xxl">
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags|default:'info' }} d-flex align-items-center p-4 mb-4">
+                                            <span>{{ message }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% block app %}{% block content %}{% endblock %}{% endblock %}
                             </div>
                             {% if messages %}
                                 {% for message in messages %}
@@ -99,6 +84,10 @@
 
     <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'js/scripts.bundle.js' %}"></script>
+    <script src="{% static 'js/octopus.js' %}" defer></script>
+    <script src="{% static 'js/toast.js' %}" defer></script>
+    <script src="{% static 'js/formset.js' %}" defer></script>
+    
     {% block extra_js %}{% endblock %}
 
     <script>

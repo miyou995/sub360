@@ -1,0 +1,24 @@
+
+{% load i18n %}
+<div class="d-flex align-items-center gap-3 flex-wrap mb-0">
+	<a href="#" class="btn btn-light-primary d-flex align-items-center gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+			<i class="ki-outline ki-filter-search fs-2x"></i>
+			{% translate 'Filters' %}
+		</a>
+	<div id="filter_menu" class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
+		<div class="px-7 py-5">
+			<div class="fs-4 text-gray-900 fw-bold">{% translate "Filter Options" %}</div>
+		</div>
+		<div class="separator border-gray-200"></div>
+		<div class="px-7 py-5">
+			{% include 'forms/grid-form.html' with margin_class="mb-4" form=filter.form filter_menu="true" %}
+			<div class="d-flex justify-content-end">
+				<button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="false" data-kt-customer-table-filter="reset">{% translate "Reset" %}</button>
+				<button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{% translate "Apply" %}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	
+

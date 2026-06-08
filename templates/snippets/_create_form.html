@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% load custom_filters %}
+{% load permissions_tags %}
+
+
+<div class="modal-header">
+    <h3 class="modal-title">
+        {% if form.instance.id %}
+            {{ form_verbose_name|capfirst }} N° {{ form.instance.id }} — {% translate "Edit" %}
+        {% else %}
+            {% translate "Add" %} {{ form_verbose_name|capfirst }}
+        {% endif %}
+    </h3>
+    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <i class="ki-duotone ki-cross fs-1">
+            <span class="path1"></span>
+            <span class="path2"></span>
+        </i>
+    </div>
+</div>
+
+<div class="modal-body scroll-y mx-5 mx-xl-5">
+    <form hx-post="{% if form.instance.id %}{{ update_url }}{% else %}{{ create_url }}{% endif %}"
+        hx-target="#{{ modal_content_id|default:'kt_modal_content' }}" hx-swap="innerHTML" {{ form.attrs }}
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        {# Stacked modal support: tell the server which modal opened this form so it can close the right one #}
+        <input type="hidden" name="modal_id" value="{{ modal_id|default:'kt_modal' }}">
+
+        {% include 'forms/grid-form.html' with margin_class="mb-4" %}
+
+        {% if formsets %}
+        {% for formset_name, formset in formsets.items %}
+                {% include "forms/_formset.html" with
+                    formset=formset
+                    title=formset_name
+                    add_label=formset_name
+                    description=formset.description
+                    add_btn_class='btn-light-info'
+                    container_id=formset.prefix|add:"_container"
+                    row_class=formset.prefix|add:"-row"
+                    template_id='empty-'|add:formset.prefix|add:'-form'
+                    empty_text=_('No line added yet.')
+                %}
+            {% endfor %}
+        {% endif %}
+
+        <div class="modal-footer flex-center pb-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{% translate 'Close' %}</button>
+            {% if form.instance.id and form.instance|can_delete:user %}
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_modal"
+                    hx-get="{{ form.instance.get_delete_url }}" hx-target="#delete_modal_body" hx-swap="innerHTML">
+                    {% translate 'Delete' %}
+                </button>
+            {% endif %}
+            {% include 'snippets/_submit_button.html' %}
+        </div>
+    </form>
+    {% if form.instance.id %}
+    <form action="{{ form.instance.get_delete_url }}" method="post" id="deleteSlideForm">
+        {% csrf_token %}
+    </form>
+    {% endif %}
+</div>
