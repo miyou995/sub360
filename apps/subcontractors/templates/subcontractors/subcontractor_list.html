@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Sous-traitants" %} · sub360{% endblock %}
+
+{% block page_title %}{% translate "Sous-traitants" %}{% endblock %}
+
+{% block content %}
+<div class="row g-5 g-xl-8">
+    <!--begin::Filter sidebar-->
+    <div class="col-12 col-lg-3">
+        <div class="card card-flush">
+            <div class="card-header pt-6">
+                <div class="card-title d-flex align-items-center gap-2">
+                    <i class="ki-duotone ki-filter fs-2 text-primary">
+                        <span class="path1"></span><span class="path2"></span>
+                    </i>
+                    <h3 class="fw-bold m-0">{% translate "Filtres" %}</h3>
+                </div>
+            </div>
+            <div class="card-body pt-4">
+                <form method="get"
+                      hx-get="{% url 'subcontractors:list_subcontractor' %}"
+                      hx-target="#sc-results"
+                      hx-swap="innerHTML"
+                      hx-push-url="true"
+                      hx-indicator="#sc-loading">
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">{{ filter.form.search.label }}</label>
+                        {{ filter.form.search }}
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">{{ filter.form.branch.label }}</label>
+                        {{ filter.form.branch }}
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">{{ filter.form.worker_count.label }}</label>
+                        {{ filter.form.worker_count }}
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">{{ filter.form.company_age.label }}</label>
+                        {{ filter.form.company_age }}
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">{{ filter.form.has_valid_insurance.label }}</label>
+                        {{ filter.form.has_valid_insurance }}
+                    </div>
+                    <div class="mb-8">
+                        <label class="form-label fw-semibold">{{ filter.form.accepts_wir.label }}</label>
+                        {{ filter.form.accepts_wir }}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="ki-duotone ki-magnifier fs-5">
+                                <span class="path1"></span><span class="path2"></span>
+                            </i>
+                            {% translate "Appliquer" %}
+                        </button>
+                        <a href="{% url 'subcontractors:list_subcontractor' %}"
+                           class="btn btn-light"
+                           hx-get="{% url 'subcontractors:list_subcontractor' %}"
+                           hx-target="#sc-results"
+                           hx-swap="innerHTML"
+                           hx-push-url="true">
+                            {% translate "Réinitialiser" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--end::Filter sidebar-->
+
+    <!--begin::Results-->
+    <div class="col-12 col-lg-9">
+        <div class="card card-flush">
+            <div class="card-header pt-6">
+                <div class="card-title">
+                    <h3 class="fw-bold m-0">{% translate "Liste des sous-traitants" %}</h3>
+                </div>
+                <div class="card-toolbar">
+                    <span id="sc-loading" class="htmx-indicator spinner-border spinner-border-sm text-primary"></span>
+                </div>
+            </div>
+            <div class="card-body pt-2">
+                <div id="sc-results" class="table-responsive">
+                    {% include "subcontractors/_subcontractor_table.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Results-->
+</div>
+{% endblock content %}

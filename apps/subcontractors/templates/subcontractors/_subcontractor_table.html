@@ -1,0 +1,8 @@
+{% load render_table from django_tables2 %}
+{% load i18n %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <span class="text-muted fw-semibold fs-7">
+        {% blocktranslate count counter=total_count %}{{ counter }} sous-traitant{% plural %}{{ counter }} sous-traitants{% endblocktranslate %}
+    </span>
+</div>
+{% render_table table %}

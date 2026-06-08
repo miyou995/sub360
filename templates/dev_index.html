@@ -1,0 +1,131 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sub360 — Dev Index</title>
+    <link rel="shortcut icon" href="{% static 'media/logos/favicon.ico' %}" />
+    <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <style>
+        .dev-card {
+            transition: transform .15s ease, box-shadow .15s ease;
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+        .dev-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.12) !important;
+        }
+        .dev-card .card-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+        .badge-wip {
+            font-size: .65rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body id="kt_body" class="app-default bg-light">
+
+<div class="container py-10">
+
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-8">
+        <div>
+            <h1 class="fw-bold text-dark mb-1">sub<span class="text-primary">360</span></h1>
+            <span class="text-muted fs-6">Dev Navigation Index</span>
+        </div>
+        <div class="d-flex gap-2">
+            {% if request.user.is_authenticated %}
+                <span class="badge badge-light-success fs-7 align-self-center">
+                    {{ request.user.email }}
+                </span>
+                <a href="{% url 'users:logout' %}" class="btn btn-sm btn-light-danger">
+                    Déconnexion
+                </a>
+            {% else %}
+                <a href="{% url 'users:login' %}" class="btn btn-sm btn-primary">
+                    Connexion
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section: Active modules -->
+    <h5 class="text-uppercase text-muted fw-semibold fs-8 mb-3 tracking-wider">Modules actifs</h5>
+    <div class="row g-4 mb-8">
+
+        <div class="col-6 col-md-4 col-lg-3">
+            <a href="{% url 'subcontractors:list_subcontractor' %}" class="card card-flush dev-card p-5">
+                <div class="dev-card card-icon mb-3">🏗️</div>
+                <div class="fw-bold text-dark fs-6">Sous-traitants</div>
+                <div class="text-muted fs-8">Liste & gestion</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3">
+            <a href="{% url 'users:profile' %}" class="card card-flush dev-card p-5">
+                <div class="dev-card card-icon mb-3">👤</div>
+                <div class="fw-bold text-dark fs-6">Mon profil</div>
+                <div class="text-muted fs-8">Paramètres compte</div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Section: Coming soon -->
+    <h5 class="text-uppercase text-muted fw-semibold fs-8 mb-3">Modules en développement</h5>
+    <div class="row g-4 mb-10">
+
+        {% with wip_modules=wip_modules %}
+            {% for mod in wip_modules %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card card-flush dev-card p-5 opacity-75">
+                        <div class="dev-card card-icon mb-3">{{ mod.icon }}</div>
+                        <div class="fw-bold text-dark fs-6">
+                            {{ mod.label }}
+                            <span class="badge badge-light-warning badge-wip ms-1">WIP</span>
+                        </div>
+                        <div class="text-muted fs-8">{{ mod.desc }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+    </div>
+
+    <!-- Section: Auth -->
+    <h5 class="text-uppercase text-muted fw-semibold fs-8 mb-3">Authentification</h5>
+    <div class="row g-4 mb-10">
+
+        <div class="col-6 col-md-4 col-lg-3">
+            <a href="{% url 'users:login' %}" class="card card-flush dev-card p-5">
+                <div class="dev-card card-icon mb-3">🔑</div>
+                <div class="fw-bold text-dark fs-6">Connexion</div>
+                <div class="text-muted fs-8">Page de login</div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3">
+            <a href="{% url 'users:password_change' %}" class="card card-flush dev-card p-5">
+                <div class="dev-card card-icon mb-3">🔒</div>
+                <div class="fw-bold text-dark fs-6">Mot de passe</div>
+                <div class="text-muted fs-8">Changer mot de passe</div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="text-center text-muted fs-8 mt-4">
+        sub360 &mdash; Dev build &mdash; {{ today }}
+    </div>
+
+</div>
+
+<script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+<script src="{% static 'js/scripts.bundle.js' %}"></script>
+</body>
+</html>
