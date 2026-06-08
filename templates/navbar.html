@@ -82,7 +82,7 @@
                         <div class="separator my-2"></div>
 
                         <div class="menu-item px-5">
-                            <a href="{% url 'users:profile' %}" class="menu-link px-5">
+                            <a href="{% url 'users:user_detail' request.user.pk %}" class="menu-link px-5">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-profile-circle fs-3">
                                         <span class="path1"></span><span class="path2"></span><span class="path3"></span>

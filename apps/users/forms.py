@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm as DjangoAuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
+from apps.core.widgets import PasswordMeterWidget
 
 from apps.core.abstract_forms import AbstractModelForm
 
@@ -81,3 +82,39 @@ class ProfileForm(AbstractModelForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", "phone", "language", "avatar"]
+
+
+
+
+
+class ChangePasswordForm(AbstractModelForm):
+	password2 = forms.CharField(
+		label=_('Confirmer le mot de passe'),
+		strip=False,
+		widget=PasswordMeterWidget(
+			attrs={'class': 'form-control', 'autocomplete': 'new-password'}
+		),
+	)
+
+	class Meta:
+		model = User
+		fields = ('password',)
+		labels = {'password': _('Nouveau mot de passe')}
+		widgets = {
+			'password': PasswordMeterWidget(
+				attrs={'class': 'form-control', 'autocomplete': 'new-password'}
+			),
+		}
+
+	def clean(self):
+		cleaned_data = super().clean()
+		password = cleaned_data.get('password')
+		password2 = cleaned_data.get('password2')
+
+		if password and password2:
+			if password != password2:
+				self.add_error(
+					'password2', _('Les mots de passe ne correspondent pas.')
+				)
+		return cleaned_data
+
