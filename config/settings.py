@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "django_tables2",
     "django_filters",
+    "compressor",
     # Project apps
     "apps.core",
     "apps.users",
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
     "apps.newsletter",
     "apps.integrations",
     "apps.statistics",
+    # Development tools
     "debug_toolbar",
     "django_lumen",
     "schematic",
@@ -167,6 +169,13 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "assets"
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # other finders..
+    "compressor.finders.CompressorFinder",
+)
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "static" / "media"
@@ -177,6 +186,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
 
 # Authentication
 AUTH_USER_MODEL = "users.User"

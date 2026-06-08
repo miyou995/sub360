@@ -138,39 +138,6 @@ window.addEventListener('load', () => {
 
 
 
-var start = moment().subtract(29, "days");
-var end = moment();
-
-function cb(start, end) {
-    $("#kt_daterangepicker_4").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
-    // console.log("date changes-----", document.querySelector('input[name="start_date"]').value);
-    document.querySelector('input[name="start_date"]').value = start.format("YYYY-MM-DD");
-    document.querySelector('input[name="end_date"]').value = end.format("YYYY-MM-DD");
-    var chartContainers = document.querySelectorAll('.chart-container');
-
-    // Trigger 'date_changed' event on each chart container
-    chartContainers.forEach(function (el) {
-        htmx.trigger(el, 'date_changed');
-    });
-
-}
-
-$("#kt_daterangepicker_4").daterangepicker({
-    startDate: start,
-    endDate: end,
-    ranges: {
-        "aujourd'hui": [moment(), moment()],
-        "hier": [moment().subtract(1, "days"), moment().subtract(1, "days")],
-        "dernier 7 jours": [moment().subtract(6, "days"), moment()],
-        "dernier 30 jours": [moment().subtract(29, "days"), moment()],
-        "ce mois": [moment().startOf("month"), moment().endOf("month")],
-        "mois dernier": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
-    }
-}, cb);
-
-
-
-
 // function isModalOpen(modalId) {
 //     const modalElm = document.getElementById(modalId);
 //     if (!modalElm) return false;

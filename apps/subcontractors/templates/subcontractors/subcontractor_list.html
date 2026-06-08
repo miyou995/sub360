@@ -27,7 +27,13 @@
                       hx-push-url="true"
                       hx-indicator="#sc-loading">
 
-
+                    <div class="ms-2 w-100px">
+                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                            <option value="1">Guest</option>
+                            <option value="2" selected="selected">Owner</option>
+                            <option value="3">Can Edit</option>
+                        </select>
+                    </div> 
 
                       {% for field in filter.form %}
                         <div class="mb-5">

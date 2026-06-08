@@ -17,8 +17,8 @@
     {% htmx_script %}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body id="kt_body" class="app-default">
-    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+<body id="kt_body" class="app-default" direction="ltr" dir="ltr">
+	<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             {% include "navbar.html" %}
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
@@ -49,7 +49,6 @@
                                     </div>
                                 {% endfor %}
                             {% endif %}
-                            {% block app %}{% block content %}{% endblock %}{% endblock %}
                         </div>
                     </div>
                 </div>
@@ -76,6 +75,7 @@
             <div class="modal-content" id="kt_modal_stacked_2_content"></div>
         </div>
     </div>
+
     <div class="modal fade" id="delete_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-450px">
             <div class="modal-content" id="delete_modal_body"></div>
@@ -84,7 +84,7 @@
 
     <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'js/scripts.bundle.js' %}"></script>
-    <script src="{% static 'js/octopus.js' %}" defer></script>
+    <script defer src="{% static 'js/octopus.js' %}" defer></script>
     <script src="{% static 'js/toast.js' %}" defer></script>
     <script src="{% static 'js/formset.js' %}" defer></script>
     

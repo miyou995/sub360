@@ -5,3 +5,6 @@
 - 7h Database Modeling
 - 3h tenders and client app 
 - 7h pages ( lists and detail pages + CRUD) of tenders and client 
+- 4h Subcontractors app + global configuration and select2 bugfix
+
+
