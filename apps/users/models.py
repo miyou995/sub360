@@ -85,5 +85,5 @@ class User(AbstractBaseUser, PermissionsMixin, CRUDUrlMixin, TimestampedModel):
         return self.get_full_name()
 
     def get_absolute_url(self):
-        return reverse("users:profile")
+        return reverse("users:user_detail", kwargs={"pk": self.pk})
 

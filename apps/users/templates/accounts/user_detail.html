@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Mon profil" %} · sub360{% endblock %}
+{% block page_title %}{% translate "Mon profil" %}{% endblock %}
+
+{% block app %}
+<div class="d-flex flex-column flex-lg-row gap-6">
+
+    {# ── Sidebar : identity card + navigation ── #}
+    <div class="flex-column flex-lg-row-auto w-lg-300px">
+        <div class="card card-flush mb-6" style="position: sticky; top: 20px;">
+            <div class="card-body text-center pt-10">
+                {% if profile_user.avatar %}
+                    <img src="{{ profile_user.avatar.url }}" alt="{{ profile_user.get_full_name }}"
+                         class="rounded-circle mb-4 object-fit-cover" style="width:110px;height:110px;">
+                {% else %}
+                    <div class="symbol symbol-110px symbol-circle mx-auto mb-4">
+                        <span class="symbol-label bg-light-primary text-primary fs-1 fw-bold">
+                            {{ profile_user.get_short_name|slice:":1"|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+                <h2 class="fw-bold mb-1">{{ profile_user.get_full_name|default:profile_user.email }}</h2>
+                {% if role_label %}
+                    <span class="badge badge-light-primary mb-2">{{ role_label }}</span>
+                {% endif %}
+                {% if company %}
+                    <div class="text-gray-600 fs-6 mb-1">
+                        <i class="ki-duotone ki-office-bag fs-5 me-1"><span class="path1"></span><span class="path2"></span></i>
+                        {{ company.name }}
+                    </div>
+                {% endif %}
+                <div class="text-gray-600 fs-7">
+                    <i class="ki-duotone ki-sms fs-6 me-1"><span class="path1"></span><span class="path2"></span></i>
+                    {{ profile_user.email }}
+                </div>
+
+                <div class="separator my-6"></div>
+
+                <div class="d-flex flex-column gap-2">
+                    <a class="btn btn-sm btn-primary"
+                       hx-get="{% url 'users:update_user' profile_user.pk %}"
+                       hx-target="#kt_modal_content"
+                       hx-swap="innerHTML"
+                       data-bs-toggle="modal"
+                       data-bs-target="#kt_modal"
+                    >
+                        <i class="ki-duotone ki-pencil fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
+                        {% translate "Modifier mon profil" %}
+                    </a>
+                    <a  class="btn btn-sm btn-light"
+                        data-bs-toggle="modal"
+                        data-bs-target="#kt_modal"
+                        hx-get="{% url 'users:change_password' profile_user.pk %}"
+                        hx-target="#kt_modal_content"
+                        hx-swap="innerHTML">
+                        <i class="ki-duotone ki-lock-3 fs-4 me-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                        {% translate "Changer le mot de passe" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Navigation #}
+        <div class="card card-flush">
+            <div class="card-body p-3">
+                <ul class="nav nav-pills flex-column fw-semibold gap-1" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active d-flex align-items-center px-4 py-3 rounded"
+                           data-bs-toggle="tab" href="#tab_info" role="tab">
+                            <i class="ki-duotone ki-profile-circle fs-3 me-3"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                            {% translate "Informations" %}
+                        </a>
+                    </li>
+                    {% if company %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center px-4 py-3 rounded"
+                           data-bs-toggle="tab" href="#tab_team" role="tab">
+                            <i class="ki-duotone ki-people fs-3 me-3"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                            {% translate "Équipe" %}
+                            <span class="badge badge-light-primary ms-auto">{{ team|length }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center px-4 py-3 rounded"
+                           data-bs-toggle="tab" href="#tab_projects" role="tab">
+                            <i class="ki-duotone ki-briefcase fs-3 me-3"><span class="path1"></span><span class="path2"></span></i>
+                            {% translate "Projets" %}
+                            <span class="badge badge-light-primary ms-auto">{{ projects|length }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if subcontractor_profile %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center px-4 py-3 rounded"
+                           data-bs-toggle="tab" href="#tab_references" role="tab">
+                            <i class="ki-duotone ki-medal-star fs-3 me-3"><span class="path1"></span><span class="path2"></span></i>
+                            {% translate "Références" %}
+                            <span class="badge badge-light-primary ms-auto">{{ references|length }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {# ── Content ── #}
+    <div class="flex-lg-row-fluid">
+        <div class="tab-content">
+
+            {# Informations #}
+            <div class="tab-pane fade show active" id="tab_info" role="tabpanel">
+                <div class="card card-flush">
+                    <div class="card-header align-items-center">
+                        <h3 class="card-title">{% translate "Informations personnelles" %}</h3>
+                        <div class="card-toolbar">
+                            <a  hx-get="{% url 'users:update_user' profile_user.pk %}"
+                                class="btn btn-sm btn-light-primary"
+                                hx-target="#kt_modal_content"
+                                hx-swap="innerHTML"
+                                data-bs-toggle="modal"
+                                data-bs-target="#kt_modal"
+                                >
+                                <i class="ki-duotone ki-pencil fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
+                                {% translate "Modifier" %}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Nom complet" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.get_full_name|default:"—" }}</div>
+                        </div>
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Email" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">
+                                <a href="mailto:{{ profile_user.email }}" class="text-gray-800 text-hover-primary">{{ profile_user.email }}</a>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Téléphone" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">
+                                {% if profile_user.phone %}
+                                    <a href="tel:{{ profile_user.phone }}" class="text-gray-800 text-hover-primary">{{ profile_user.phone }}</a>
+                                {% else %}—{% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Langue" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.get_language_display }}</div>
+                        </div>
+                        {% if client_profile and client_profile.position %}
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Fonction" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ client_profile.position }}</div>
+                        </div>
+                        {% endif %}
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Membre depuis" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.date_joined|date:"d.m.Y" }}</div>
+                        </div>
+
+                        {% if company %}
+                        <div class="separator my-6"></div>
+                        <h4 class="fw-bold mb-4">{% translate "Entreprise" %}</h4>
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Raison sociale" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ company.name }}</div>
+                        </div>
+                        {% if company.address or company.city %}
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Adresse" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">
+                                {{ company.address }}{% if company.address and company.city %},{% endif %}
+                                {{ company.zip_code }} {{ company.city }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if company.phone %}
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Téléphone entreprise" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ company.phone }}</div>
+                        </div>
+                        {% endif %}
+                        {% if company.website %}
+                        <div class="row mb-5">
+                            <label class="col-lg-4 fw-semibold text-muted">{% translate "Site web" %}</label>
+                            <div class="col-lg-8 fw-bold text-gray-800">
+                                <a href="{{ company.website }}" target="_blank" rel="noopener" class="text-gray-800 text-hover-primary">{{ company.website }}</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+
+                        <div class="separator my-6"></div>
+                        <a class="btn btn-light-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#kt_modal"
+                            hx-get="{% url 'users:change_password' profile_user.pk %}"
+                            hx-target="#kt_modal_content"
+                            hx-swap="innerHTML">
+                            <i class="ki-duotone ki-lock-3 fs-4 me-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                            {% translate "Changer le mot de passe" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% if company %}
+            {# Team #}
+            <div class="tab-pane fade" id="tab_team" role="tabpanel">
+                <div class="card card-flush">
+                    <div class="card-header align-items-center">
+                        <h3 class="card-title">{% translate "Mon équipe" %}</h3>
+                        <div class="card-toolbar">
+                            <span class="text-muted fs-7">{{ company.name }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body pt-3">
+                        {% if team %}
+                            <div class="row g-4">
+                                {% for member in team %}
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center border border-gray-200 border-dashed rounded p-4">
+                                        {% if member.avatar %}
+                                            <div class="symbol symbol-45px symbol-circle me-4">
+                                                <img src="{{ member.avatar.url }}" alt="{{ member.get_full_name }}" />
+                                            </div>
+                                        {% else %}
+                                            <div class="symbol symbol-45px symbol-circle me-4">
+                                                <span class="symbol-label bg-light-info text-info fw-bold">
+                                                    {{ member.get_short_name|slice:":1"|upper }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                        <div class="flex-grow-1">
+                                            <a href="{{ member.get_absolute_url }}" class="fw-bold text-gray-800 text-hover-primary fs-6 d-block">
+                                                {{ member.get_full_name|default:member.email }}
+                                            </a>
+                                            <span class="text-muted fs-7">
+                                                {% if member.client_profile %}
+                                                    {{ member.client_profile.position|default:_("Membre de l'équipe") }}
+                                                    {% if member.client_profile.is_company_admin %}
+                                                        <span class="badge badge-light-primary ms-1">{% translate "Admin" %}</span>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ member.email }}
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-10">
+                                <i class="ki-duotone ki-people fs-3x text-gray-400 mb-4 d-block"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                <div class="text-muted fs-6">{% translate "Vous êtes seul·e dans cette entreprise pour le moment." %}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Projects #}
+            <div class="tab-pane fade" id="tab_projects" role="tabpanel">
+                <div class="card card-flush">
+                    <div class="card-header align-items-center">
+                        <h3 class="card-title">
+                            {% if subcontractor_profile %}{% translate "Mes candidatures" %}{% else %}{% translate "Projets de l'entreprise" %}{% endif %}
+                        </h3>
+                    </div>
+                    <div class="card-body pt-3">
+                        {% if projects %}
+                            <div class="table-responsive">
+                                <table class="table table-row-dashed table-row-gray-200 align-middle gy-4">
+                                    <thead>
+                                        <tr class="text-muted text-uppercase fs-8">
+                                            <th>{% translate "Titre" %}</th>
+                                            <th>{% translate "Lieu" %}</th>
+                                            {% if subcontractor_profile %}
+                                                <th>{% translate "Montant offre" %}</th>
+                                            {% else %}
+                                                <th>{% translate "Début" %}</th>
+                                            {% endif %}
+                                            <th>{% translate "Statut" %}</th>
+                                            <th class="text-end">{% translate "Action" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in projects %}
+                                        {% if subcontractor_profile %}
+                                            {% with tender=item.tender %}
+                                            <tr>
+                                                <td class="fw-bold text-gray-800">{{ tender.title }}</td>
+                                                <td class="text-muted">{{ tender.city }}{% if tender.canton %}, {{ tender.canton }}{% endif %}</td>
+                                                <td class="text-gray-700">{{ item.quote_amount|default:"—" }}</td>
+                                                <td>
+                                                    <span class="badge
+                                                        {% if item.status == 'accepted' %}badge-light-success
+                                                        {% elif item.status == 'rejected' %}badge-light-danger
+                                                        {% else %}badge-light-warning{% endif %}">
+                                                        {{ item.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="{% url 'tenders:detail_tender' tender.pk %}" class="btn btn-sm btn-light-primary">
+                                                        {% translate "Voir" %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endwith %}
+                                        {% else %}
+                                            <tr>
+                                                <td class="fw-bold text-gray-800">{{ item.title }}</td>
+                                                <td class="text-muted">{{ item.city }}{% if item.canton %}, {{ item.canton }}{% endif %}</td>
+                                                <td class="text-gray-700">{{ item.start_date|date:"d.m.Y"|default:"—" }}</td>
+                                                <td>
+                                                    <span class="badge
+                                                        {% if item.status == 'published' %}badge-light-success
+                                                        {% elif item.status == 'awarded' %}badge-light-primary
+                                                        {% elif item.status == 'closed' %}badge-light-danger
+                                                        {% else %}badge-light-secondary{% endif %}">
+                                                        {{ item.get_status_display }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="{% url 'tenders:detail_tender' item.pk %}" class="btn btn-sm btn-light-primary">
+                                                        {% translate "Voir" %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-10">
+                                <i class="ki-duotone ki-briefcase fs-3x text-gray-400 mb-4 d-block"><span class="path1"></span><span class="path2"></span></i>
+                                <div class="text-muted fs-6">
+                                    {% if subcontractor_profile %}
+                                        {% translate "Vous n'avez pas encore postulé à un appel d'offres." %}
+                                    {% else %}
+                                        {% translate "Aucun projet publié pour le moment." %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if subcontractor_profile %}
+            {# References #}
+            <div class="tab-pane fade" id="tab_references" role="tabpanel">
+                <div class="card card-flush">
+                    <div class="card-header align-items-center">
+                        <h3 class="card-title">{% translate "Références" %}</h3>
+                        <div class="card-toolbar">
+                            <span class="text-muted fs-7">{{ subcontractor_profile.subcontractor.company.name }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body pt-3">
+                        {% if references %}
+                            <div class="row g-4">
+                                {% for reference in references %}
+                                <div class="col-md-6">
+                                    <div class="border border-gray-200 border-dashed rounded p-4 h-100">
+                                        {% with first_image=reference.images.first %}
+                                        {% if first_image %}
+                                            <img src="{{ first_image.image.url }}" alt="{{ reference.title }}"
+                                                 class="rounded w-100 mb-3 object-fit-cover" style="height:140px;">
+                                        {% endif %}
+                                        {% endwith %}
+                                        <div class="fw-bold fs-6 text-gray-800">{{ reference.title }}</div>
+                                        {% if reference.start_date or reference.end_date %}
+                                            <div class="text-muted fs-7 mb-2">
+                                                {{ reference.start_date|date:"m.Y"|default:"—" }} – {{ reference.end_date|date:"m.Y"|default:_("en cours") }}
+                                            </div>
+                                        {% endif %}
+                                        {% if reference.description %}
+                                            <p class="text-gray-600 fs-7 mb-0">{{ reference.description|truncatewords:25 }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-10">
+                                <i class="ki-duotone ki-medal-star fs-3x text-gray-400 mb-4 d-block"><span class="path1"></span><span class="path2"></span></i>
+                                <div class="text-muted fs-6">{% translate "Aucune référence ajoutée pour le moment." %}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

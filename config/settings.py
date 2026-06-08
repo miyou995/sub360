@@ -177,7 +177,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Authentication
 AUTH_USER_MODEL = "users.User"
 LOGIN_URL = "users:login"
-LOGIN_REDIRECT_URL = "users:profile"
+LOGIN_REDIRECT_URL = "users:user_detail"
 LOGOUT_REDIRECT_URL = "users:login"
 
 FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"

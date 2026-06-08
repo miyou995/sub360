@@ -32,6 +32,7 @@ class TenderListView(TemplateView):
 
 
 class TenderManageView(BreadcrumbMixin, BaseManageHtmxPageFormView):
+    # template_name = "accounts/profile_form.html"
     model = Tender
     form_class = TenderForm
 

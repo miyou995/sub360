@@ -1,5 +1,5 @@
 # Views for the users app.
-
+import json
 import logging
 
 from django.conf import settings
@@ -29,13 +29,24 @@ from django.contrib.auth.views import (
 from django.contrib.auth.views import (
     PasswordResetView as DjangoPasswordResetView,
 )
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, UpdateView
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django_tables2.export import ExportMixin
+from django.contrib.auth.decorators import login_not_required, permission_required
+from django.shortcuts import get_object_or_404, render
+from .forms import AuthenticationForm, ProfileForm, ChangePasswordForm
+from apps.core.mixins.delete_views import DeleteMixinHTMX
+from apps.core.mixins.form_views import BaseManageHtmxFormView, BaseManageHtmxPageFormView
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
+from apps.core.mixins import BreadcrumbMixin
+from apps.users.filters import UserFilterSet
+from apps.users.tables import UserHTMxTable
 from .forms import AuthenticationForm, ProfileForm
 
 logger = logging.getLogger(__name__)
@@ -99,37 +110,156 @@ class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
 class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
     template_name = "registration/password_reset_complete.html"
 
+# class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
+#     template_name = "registration/password_change_done.html"
 
-class PasswordChangeView(DjangoPasswordChangeView):
-    template_name = "registration/password_change_form.html"
-    success_url = reverse_lazy("users:password_change_done")
+@permission_required('users.change_user', raise_exception=True)
+def change_password(request, pk):
+    context = {}
+    template_name = 'accounts/snippets/change_password.html'
+    user = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+        user_form = ChangePasswordForm(request.POST, instance=user)
+        if user_form.is_valid():
+            cd = user_form.cleaned_data
+            password = cd['password']
+            password2 = cd['password2']
+            if password == password2:
+                user.set_password(password)
+                user.is_active = True
+                user.save()
+                messages.success(request, _('Mot de passe modifié avec succès'))
+                return HttpResponse(
+                    status=200,
+                    headers={
+                        'HX-Trigger': json.dumps(
+                            {
+                                'closeModal': None,
+                                'redirect_to': reverse('users:list_user'),
+                            }
+                        )
+                    },
+                )
+            else:
+                messages.error(request, _('Formulaire invalide'))
+        else:
+            # messages.error(request, _('Formulaire invalide - vérifier les erreurs ci-dessous.'))
+            context['form'] = ChangePasswordForm(data=request.POST or None)
+            context['c_user'] = user
+            return render(
+                request,
+                template_name=template_name,
+                context=context,
+            )
+    else:
+        user_form = ChangePasswordForm()
+    context = {'form': user_form, 'c_user': user}
+    return render(request, template_name, context)
 
 
-class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
-    template_name = "registration/password_change_done.html"
 
 
 # --------------------------------------------------------------------------- #
 # Profile
 # --------------------------------------------------------------------------- #
-class ProfileView(LoginRequiredMixin, DetailView):
+
+
+class UserListView(
+    BreadcrumbMixin, PermissionRequiredMixin, SingleTableMixin, ExportMixin, FilterView
+):
+    permission_required = 'users.view_user'
+    model = User
+    table_class = UserHTMxTable
+    paginate_by = 8
+    filterset_class = UserFilterSet
+
+    def get_queryset(self):
+        queryset = User.objects.limit_user(self.request.user).all()
+        filters = self.filterset_class(self.request.GET, queryset=queryset)
+        return filters.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # context['bulk_delete_url'] = self.model.get_bulk_delete_url()
+        context['model'] = self.model
+        return context
+
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ['tables/table_partial.html']
+        return ['accounts/user_list.html']
+
+
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     context_object_name = "profile_user"
-    template_name = "accounts/profile.html"
+    template_name = "accounts/user_detail.html"
 
     def get_object(self, queryset=None):
         return self.request.user
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.object
 
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+        client_profile = getattr(user, "client_profile", None)
+        subcontractor_profile = getattr(user, "subcontractor_profile", None)
+
+        team = []
+        projects = []
+        references = []
+        company = None
+        role_label = None
+
+        if client_profile:
+            company = client_profile.company
+            role_label = _("Administrateur") if client_profile.is_company_admin else _("Client")
+            team = (
+                User.objects.filter(client_profile__company=company)
+                .exclude(pk=user.pk)
+                .select_related("client_profile")
+            )
+            projects = company.tenders.all()
+        elif subcontractor_profile:
+            subcontractor = subcontractor_profile.subcontractor
+            company = subcontractor.company
+            role_label = _("Sous-traitant")
+            team = (
+                User.objects.filter(subcontractor_profile__subcontractor=subcontractor)
+                .exclude(pk=user.pk)
+                .select_related("subcontractor_profile")
+            )
+            projects = subcontractor.applications.select_related("tender").all()
+            references = subcontractor.references.prefetch_related("images")
+
+        context.update(
+            {
+                "client_profile": client_profile,
+                "subcontractor_profile": subcontractor_profile,
+                "company": company,
+                "role_label": role_label,
+                "team": team,
+                "projects": projects,
+                "references": references,
+            }
+        )
+        return context
+
+
+
+class ProfileUpdateView(BaseManageHtmxFormView):
+    required_permission = "users.change_user"
     model = User
     form_class = ProfileForm
-    template_name = "accounts/profile_form.html"
-    success_url = reverse_lazy("users:profile")
 
-    def get_object(self, queryset=None):
-        return self.request.user
 
-    def form_valid(self, form):
-        messages.success(self.request, _("Profil mis à jour avec succès."))
-        return super().form_valid(form)
+class DeleteUser(DeleteMixinHTMX):
+    permission_required = 'users.delete_user'
+    model = User
+
+
+

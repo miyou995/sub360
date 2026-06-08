@@ -26,7 +26,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-3 mt-5">
-                <a href="{% url 'users:profile' %}" class="btn btn-light">{% translate "Annuler" %}</a>
+                <a href="{% url 'users:user_detail' profile_user.pk %}" class="btn btn-light">{% translate "Annuler" %}</a>
                 <button type="submit" class="btn btn-primary">{% translate "Enregistrer" %}</button>
             </div>
         </form>

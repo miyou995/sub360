@@ -17,6 +17,7 @@ dependencies = [
     "pillow>=12.2.0",
     "psycopg>=3.3.4",
     "python-dotenv>=1.2.2",
+    "tablib>=3.9.0",
     "weasyprint>=69.0",
 ]
 
