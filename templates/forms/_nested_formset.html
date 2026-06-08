@@ -1,0 +1,242 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+{# ═══════════════════════════════════════════════════════════════════════════
+   _nested_formset.html – Reusable card for an inline formset whose rows
+   each contain a nested child formset.
+
+   Context variables (pass with {% include … with … %}):
+     formset           – the outer NestedInlineFormSet instance
+     title             – card heading
+     add_label         – label shown on the "Add" button
+     add_btn_class     – Bootstrap btn class for the "Add" button
+     description       – optional muted text below the heading
+     container_id      – unique HTML id for the formset container div
+     row_class         – CSS class applied to each outer row
+     template_id       – unique HTML id for the outer empty-form <template>
+     nested_prefix     – the nested formset key name (e.g. "values")
+     nested_title      – label shown above the nested section
+     nested_add_label  – label for the nested "Add" button
+     nested_row_class  – CSS class applied to each nested row
+     empty_text        – text shown when the formset is empty
+     card_class        – optional extra card classes
+   ═══════════════════════════════════════════════════════════════════════════ #}
+
+<div class="card card-flush py-4 mb-6 {{ card_class|default:'' }}">
+    {# ── Card header ── #}
+    <div class="card-header">
+        <div class="card-title"><h2>{{ title }}</h2></div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-sm {{ add_btn_class }}" data-formset-add="{{ container_id }}">
+                <i class="ki-outline ki-plus fs-2"></i>{{ add_label }}
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body pt-0">
+        {% if description %}
+            <p class="text-muted fs-7 mb-4">{{ description }}</p>
+        {% endif %}
+
+        {{ formset.management_form }}
+
+        {# ══════════════════════════════════════════════════════════════════
+           OUTER CONTAINER – holds one row per parent form
+           ══════════════════════════════════════════════════════════════════ #}
+        <div id="{{ container_id }}"
+             data-formset
+             data-prefix="{{ formset.prefix }}"
+             data-row-class="{{ row_class }}"
+             data-template="{{ template_id }}">
+
+            {% for form in formset %}
+            <div class="{{ row_class }} border rounded p-3 mb-3">
+                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                {# ── Parent form fields ── #}
+                <div class="d-flex align-items-center gap-3 flex-wrap mb-2">
+                    {% for field in form.visible_fields %}
+                        {% if field.name != 'DELETE' %}
+                            <div class="flex-fill" style="min-width: 110px;">
+                                <label class="form-label fs-7" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.field.widget.input_type == 'select' %}
+                                    {% render_field field class="form-select form-select-sm" %}
+                                {% else %}
+                                    {% render_field field class="form-control form-control-sm" %}
+                                {% endif %}
+                                {% if field.errors %}<div class="text-danger fs-8">{{ field.errors }}</div>{% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <label for="{{ formset.prefix }}-{{ forloop.counter0 }}-DELETE"
+                           class="btn btn-sm btn-icon btn-active-color-primary"
+                           data-kt-element="remove-item">
+                        <input type="checkbox" class="form-check-input mt-1"
+                               name="{{ formset.prefix }}-{{ forloop.counter0 }}-DELETE"
+                               id="{{ formset.prefix }}-{{ forloop.counter0 }}-DELETE">
+                        <i class="ki-outline ki-trash fs-2x text-danger"></i>
+                    </label>
+                </div>
+
+                {# ── Nested child formset ── #}
+                {% with nested=form.nested %}
+                <div class="ms-6 ps-3 border-start border-2 border-primary-subtle">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="fw-semibold text-muted fs-7">{{ nested_title }}</span>
+                        <button type="button"
+                                class="btn btn-sm btn-light-success"
+                                data-formset-add="{{ formset.prefix }}-{{ forloop.counter0 }}-{{ nested_prefix }}-container">
+                            <i class="ki-outline ki-plus fs-5"></i>{{ nested_add_label }}
+                        </button>
+                    </div>
+
+                    {{ nested.management_form }}
+
+                    <div id="{{ formset.prefix }}-{{ forloop.counter0 }}-{{ nested_prefix }}-container"
+                         data-formset
+                         data-prefix="{{ nested.prefix }}"
+                         data-row-class="{{ nested_row_class }}"
+                         data-template="{{ formset.prefix }}-{{ forloop.counter0 }}-{{ nested_prefix }}-empty">
+
+                        {% for nested_form in nested %}
+                        <div class="{{ nested_row_class }} d-flex align-items-center gap-2 flex-wrap mb-1">
+                            {% for hidden in nested_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            {% for field in nested_form.visible_fields %}
+                                {% if field.name != 'DELETE' %}
+                                    <div class="flex-fill" style="min-width: 90px;">
+                                        <label class="form-label fs-8" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.field.widget.input_type == 'select' %}
+                                            {% render_field field class="form-select form-select-sm" %}
+                                        {% else %}
+                                            {% render_field field class="form-control form-control-sm" %}
+                                        {% endif %}
+                                        {% if field.errors %}<div class="text-danger fs-8">{{ field.errors }}</div>{% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="d-none">{{ nested_form.DELETE }}</div>
+                            <button type="button"
+                                    class="btn btn-icon btn-sm btn-light-danger align-self-end mb-1"
+                                    data-formset-remove>
+                                <i class="ki-outline ki-trash fs-3"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {# Template for adding new nested rows #}
+                    <template id="{{ formset.prefix }}-{{ forloop.counter0 }}-{{ nested_prefix }}-empty">
+                        <div class="{{ nested_row_class }} d-flex align-items-center gap-2 flex-wrap mb-1">
+                            {% for hidden in nested.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            {% for field in nested.empty_form.visible_fields %}
+                                {% if field.name != 'DELETE' %}
+                                    <div class="flex-fill" style="min-width: 90px;">
+                                        <label class="form-label fs-8" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.field.widget.input_type == 'select' %}
+                                            {% render_field field class="form-select form-select-sm" %}
+                                        {% else %}
+                                            {% render_field field class="form-control form-control-sm" %}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="d-none">{{ nested.empty_form.DELETE }}</div>
+                            <button type="button"
+                                    class="btn btn-icon btn-sm btn-light-danger align-self-end mb-1"
+                                    data-formset-remove>
+                                <i class="ki-outline ki-trash fs-3"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+                {% endwith %}
+            </div>
+            {% empty %}
+                {% if empty_text %}<p class="text-muted fs-7">{{ empty_text }}</p>{% endif %}
+            {% endfor %}
+        </div>
+
+        {# ══════════════════════════════════════════════════════════════════
+           OUTER TEMPLATE – stamped by formset.js when "Add" is clicked.
+           Uses __prefix__ for the outer index.
+           Nested section uses __nested__ for the inner index (via
+           NestedInlineFormSet._TemplateFormSet).
+           ══════════════════════════════════════════════════════════════════ #}
+        <template id="{{ template_id }}">
+            <div class="{{ row_class }} border rounded p-3 mb-3">
+                {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                <div class="d-flex align-items-center gap-3 flex-wrap mb-2">
+                    {% for field in formset.empty_form.visible_fields %}
+                        {% if field.name != 'DELETE' %}
+                            <div class="flex-fill" style="min-width: 110px;">
+                                <label class="form-label fs-7" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.field.widget.input_type == 'select' %}
+                                    {% render_field field class="form-select form-select-sm" %}
+                                {% else %}
+                                    {% render_field field class="form-control form-control-sm" %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="d-none">{{ formset.empty_form.DELETE }}</div>
+                    <button type="button"
+                            class="btn btn-icon btn-sm btn-light-danger align-self-end mb-1"
+                            data-formset-remove>
+                        <i class="ki-outline ki-trash fs-3"></i>
+                    </button>
+                </div>
+
+                {# ── Nested stub for newly created parent rows ── #}
+                {% with nested=formset.empty_form.nested %}
+                <div class="ms-6 ps-3 border-start border-2 border-primary-subtle">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="fw-semibold text-muted fs-7">{{ nested_title }}</span>
+                        <button type="button"
+                                class="btn btn-sm btn-light-success"
+                                data-formset-add="{{ formset.prefix }}-__prefix__-{{ nested_prefix }}-container">
+                            <i class="ki-outline ki-plus fs-5"></i>{{ nested_add_label }}
+                        </button>
+                    </div>
+
+                    {{ nested.management_form }}
+
+                    <div id="{{ formset.prefix }}-__prefix__-{{ nested_prefix }}-container"
+                         data-formset
+                         data-prefix="{{ nested.prefix }}"
+                         data-row-class="{{ nested_row_class }}"
+                         data-template="{{ formset.prefix }}-__prefix__-{{ nested_prefix }}-empty"
+                         data-placeholder="__nested__">
+                    </div>
+
+                    <template id="{{ formset.prefix }}-__prefix__-{{ nested_prefix }}-empty">
+                        <div class="{{ nested_row_class }} d-flex align-items-center gap-2 flex-wrap mb-1">
+                            {% for hidden in nested.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            {% for field in nested.empty_form.visible_fields %}
+                                {% if field.name != 'DELETE' %}
+                                    <div class="flex-fill" style="min-width: 90px;">
+                                        <label class="form-label fs-8" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.field.widget.input_type == 'select' %}
+                                            {% render_field field class="form-select form-select-sm" %}
+                                        {% else %}
+                                            {% render_field field class="form-control form-control-sm" %}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="d-none">{{ nested.empty_form.DELETE }}</div>
+                            <button type="button"
+                                    class="btn btn-icon btn-sm btn-light-danger align-self-end mb-1"
+                                    data-formset-remove>
+                                <i class="ki-outline ki-trash fs-3"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+                {% endwith %}
+            </div>
+        </template>
+
+    </div>
+</div>

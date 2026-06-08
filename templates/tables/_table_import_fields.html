@@ -1,0 +1,255 @@
+<div class="card">
+    <h5 class="card-title mb-0">
+        <i class="fas fa-file-import me-2 fs-2"></i>
+        {% translate "Guide d'Import" %}
+    </h5>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 22%">{% translate "Nom de la Colonne" %}</th>
+                        <th style="width: 12%">{% translate "Requis" %}</th>
+                        <th style="width: 18%">{% translate "Type de Champ" %}</th>
+                        <th style="width: 38%">{% translate "Format / Valeurs attendues" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for field in import_fields %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-info fs-6">{{ field.name }}</span>
+                            {% if field.verbose_name and field.verbose_name != field.name %}
+                                <br><small class="text-muted">{{ field.verbose_name }}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if field.required %}
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    {% translate "Requis" %}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    {% translate "Optionnel" %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if field.type == "CharField" or field.type == "TextField" %}
+                                <span class="badge bg-info">
+                                    <i class="fas fa-font me-1"></i>
+                                    {% translate "Texte" %}
+                                </span>
+                            {% elif field.type == "IntegerField" or field.type == "BigIntegerField" or field.type == "SmallIntegerField" %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    {% translate "Nombre entier" %}
+                                </span>
+                            {% elif field.type == "DecimalField" or field.type == "FloatField" %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-calculator me-1"></i>
+                                    {% translate "Nombre décimal" %}
+                                </span>
+                            {% elif field.type == "DateField" %}
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {% translate "Date" %}
+                                </span>
+                            {% elif field.type == "DateTimeField" %}
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-clock me-1"></i>
+                                    {% translate "Date et Heure" %}
+                                </span>
+                            {% elif field.type == "BooleanField" %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-toggle-on me-1"></i>
+                                    {% translate "Vrai/Faux" %}
+                                </span>
+                            {% elif field.type == "ForeignKey" %}
+                                <span class="badge bg-purple">
+                                    <i class="fas fa-link me-1"></i>
+                                    {% translate "Relation" %}
+                                </span>
+                            {% elif field.type == "ManyToManyField" %}
+                                <span class="badge bg-purple">
+                                    <i class="fas fa-project-diagram me-1"></i>
+                                    {% translate "Multi-relation" %}
+                                </span>
+                            {% elif field.type == "EmailField" %}
+                                <span class="badge bg-info">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    {% translate "Email" %}
+                                </span>
+                            {% elif field.type == "URLField" %}
+                                <span class="badge bg-info">
+                                    <i class="fas fa-globe me-1"></i>
+                                    {% translate "URL" %}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-light text-dark">
+
+                                   {% translate "Texte" %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if field.choices %}
+                                <div class="choices-container">
+                                    <small class="text-primary fw-bold">{% translate "Valeurs autorisées:" %}</small>
+                                    <div class="mt-1">
+                                        {% for choice in field.choices %}
+                                            <span class="badge bg-light text-dark me-1 mb-1">{{ choice.label }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% elif field.type == "DateField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Format:" %}</span>
+                                    <code class="format-example">YYYY-MM-DD</code>
+                                    <br>
+                                    <small class="text-muted">{% translate "Exemple:" %} <span class="text-dark">2023-12-25</span></small>
+                                </div>
+                            {% elif field.type == "DateTimeField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Format:" %}</span>
+                                    <code class="format-example">YYYY-MM-DD HH:MM:SS</code>
+                                    <br>
+                                    <small class="text-muted">{% translate "Exemple:" %} <span class="text-dark">2023-12-25 14:30:00</span></small>
+                                </div>
+                            {% elif field.type == "BooleanField" %}
+                                <div class="boolean-values">
+                                    <span class="fw-bold text-success">{% translate "Vrai:" %}</span>
+                                    <code>true, 1, yes, on</code>
+                                    <br>
+                                    <span class="fw-bold text-danger">{% translate "Faux:" %}</span>
+                                    <code>false, 0, no, off</code>
+                                </div>
+                            {% elif field.type == "EmailField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Format:" %}</span>
+                                    <code class="format-example">nom@domaine.com</code>
+                                </div>
+                            {% elif field.type == "URLField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Format:" %}</span>
+                                    <code class="format-example">https://www.exemple.com</code>
+                                </div>
+                            {% elif field.type == "ForeignKey" %}
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    {% translate "Utilisez le nom ou l'ID de l'objet lié" %}
+                                </small>
+                            {% elif field.type == "ManyToManyField" %}
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    {% translate "Séparez les valeurs par des virgules" %}
+                                </small>
+                            {% elif field.type == "IntegerField" or field.type == "BigIntegerField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Exemples:" %}</span>
+                                    <code class="format-example">123</code>, <code class="format-example">456</code>
+                                </div>
+                            {% elif field.type == "DecimalField" or field.type == "FloatField" %}
+                                <div>
+                                    <span class="fw-bold">{% translate "Exemples:" %}</span>
+                                    <code class="format-example">123.45</code>, <code class="format-example">67.89</code>
+                                </div>
+                            {% else %}
+                                <small class="text-muted">
+                                    {% translate "Texte libre" %}
+                                </small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    {% if related_fields %}
+                    <tr class="table-section-divider">
+                        <td colspan="4" class="bg-light">
+                            <strong class="text-primary">
+                                <i class="fas fa-link me-2"></i>
+                                {% translate "Champs Relationnels (Optionnels)" %}
+                            </strong>
+                        </td>
+                    </tr>
+                    {% for field in related_fields %}
+                    <tr class="table-light">
+                        <td>
+                            <span class="badge bg-info fs-6">{{ field }}</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary">
+                                <i class="fas fa-times-circle me-1"></i>
+                                {% translate "Optionnel" %}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info">
+                                <i class="fas fa-font me-1"></i>
+                                {% translate "Texte" %}
+                            </span>
+                        </td>
+                        <td>
+                            <small class="text-muted">{% translate "Texte libre ou identifiant de la relation." %}</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </div>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<style>
+    .badge.fs-6 {
+        font-size: 0.875rem !important;
+    }
+    .table-light {
+        background-color: rgba(149, 13, 253, 0.05) !important;
+    }
+    .table-section-divider td {
+        padding: 1rem !important;
+        font-weight: 600;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.025);
+    }
+    .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    .format-example {
+        background-color: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.875em;
+        color: #d63384;
+        font-weight: 500;
+    }
+    .choices-container .badge {
+        font-size: 0.75rem;
+    }
+    .boolean-values code {
+        font-size: 0.75rem;
+        padding: 1px 4px;
+    }
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+    .alert ul li {
+        margin-bottom: 0.25rem;
+    }
+    .table th {
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .fw-bold {
+        font-weight: bold !important;
+    }
+</style>

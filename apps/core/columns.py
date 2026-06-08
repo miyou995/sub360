@@ -280,3 +280,24 @@ class AbonnementValidColumn(tables.TemplateColumn):
         super(AbonnementValidColumn, self).__init__(
             template, verbose_name=_("valide"), orderable=False, *args, **kwargs
         )
+
+
+class InsuranceBadgeColumn(tables.TemplateColumn):
+    """Outlined Metronic badge for the insurance validity of a record.
+
+    Reads ``record.has_valid_insurance`` (typically a queryset annotation) and
+    renders a green "Valide" / red "Non valide" outlined badge.
+    """
+
+    def __init__(self, *args, **kwargs):
+        template = """
+            {% load i18n %}
+            {% if record.has_valid_insurance %}
+                <span class="badge badge-outline badge-success">{% translate "Valide" %}</span>
+            {% else %}
+                <span class="badge badge-outline badge-danger">{% translate "Non valide" %}</span>
+            {% endif %}
+        """
+        super(InsuranceBadgeColumn, self).__init__(
+            template, verbose_name=_("Assurance"), orderable=False, *args, **kwargs
+        )
