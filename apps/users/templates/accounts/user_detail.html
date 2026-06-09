@@ -215,45 +215,27 @@
                     <div class="card-header align-items-center">
                         <h3 class="card-title">{% translate "Mon équipe" %}</h3>
                         <div class="card-toolbar">
-                            <span class="text-muted fs-7">{{ company.name }}</span>
+                           <button 
+                                class="btn btn-primary d-flex align-items-end gap-2 shadow"
+                                data-bs-toggle="modal"
+                                data-bs-target="#kt_modal"
+                                hx-get="{% url 'clients:create_clientprofile' %}"
+                                hx-target="#kt_modal_content"
+                                hx-swap="innerHTML"
+                            >
+                                <i class="ki-duotone ki-plus fs-4"></i>
+                                <span class="fw-semibold">{% trans 'Utilisateur' %}</span>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body pt-3">
                         {% if team %}
-                            <div class="row g-4">
-                                {% for member in team %}
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center border border-gray-200 border-dashed rounded p-4">
-                                        {% if member.avatar %}
-                                            <div class="symbol symbol-45px symbol-circle me-4">
-                                                <img src="{{ member.avatar.url }}" alt="{{ member.get_full_name }}" />
-                                            </div>
-                                        {% else %}
-                                            <div class="symbol symbol-45px symbol-circle me-4">
-                                                <span class="symbol-label bg-light-info text-info fw-bold">
-                                                    {{ member.get_short_name|slice:":1"|upper }}
-                                                </span>
-                                            </div>
-                                        {% endif %}
-                                        <div class="flex-grow-1">
-                                            <a href="{{ member.get_absolute_url }}" class="fw-bold text-gray-800 text-hover-primary fs-6 d-block">
-                                                {{ member.get_full_name|default:member.email }}
-                                            </a>
-                                            <span class="text-muted fs-7">
-                                                {% if member.client_profile %}
-                                                    {{ member.client_profile.position|default:_("Membre de l'équipe") }}
-                                                    {% if member.client_profile.is_company_admin %}
-                                                        <span class="badge badge-light-primary ms-1">{% translate "Admin" %}</span>
-                                                    {% endif %}
-                                                {% else %}
-                                                    {{ member.email }}
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
+                          <div hx-get="{% url 'clients:client_list' %}"
+                                hx-trigger="load"
+                                hx-swap="innerHTML"
+                            >
+
+                          </div>
                         {% else %}
                             <div class="text-center py-10">
                                 <i class="ki-duotone ki-people fs-3x text-gray-400 mb-4 d-block"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>

@@ -20,7 +20,7 @@
     </h1>
 
 
-    <div class="modal-body scroll-y mx-5 mx-xl-5">
+    <div class="modal-body scroll-y mx-5 mx-xl-5 card p-10">
         <form method="post"
             action="{% if form.instance.id %}{{ update_url }}{% else %}{{ create_url }}{% endif %}"
             {{ form.attrs }}
@@ -38,10 +38,11 @@
             </div>
             {% endif %}
 
-            {% include 'forms/grid-form.html' with margin_class="mb-4" %}
+            {% comment %} <div class="card p-10"> {% endcomment %}
+                {% include 'forms/grid-form.html' with margin_class="mb-4" %}
+            {% comment %} </div> {% endcomment %}
 
-            {% include "forms/_formset.html" with
-                formset=formsets.bills_formset
+            {% comment %} {% include "forms/_formset.html" with formset=formsets.bills_formset
                 title=_('Bills')
                 add_label=_('Add Bill Item')
                 add_btn_class='btn-light-info'
@@ -49,7 +50,7 @@
                 row_class='variant-row'
                 template_id='empty-variant-form'
                 empty_text=_('No variants added yet.')
-                %}
+                %} {% endcomment %}
 
             <div class="modal-footer flex-center pb-0  pb-3">
                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">{% translate 'Close' %}</button>
