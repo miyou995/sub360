@@ -1,0 +1,35 @@
+{% load i18n %}
+<div class="row g-4">
+        {% for client in clients %}
+        <div class="col-md-6">
+            <div class="d-flex align-items-center border border-gray-200 border-dashed rounded p-4">
+                {% if client.user.avatar %}
+                    <div class="symbol symbol-45px symbol-circle me-4">
+                        <img src="{{ client.user.avatar.url }}" alt="{{ client.user.get_full_name }}" />
+                    </div>
+                {% else %}
+                    <div class="symbol symbol-45px symbol-circle me-4">
+                        <span class="symbol-label bg-light-info text-info fw-bold">
+                            {{ client.user.get_short_name|slice:":1"|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+                <div class="flex-grow-1">
+                    <a href="{{ client.get_absolute_url }}" class="fw-bold text-gray-800 text-hover-primary fs-6 d-block">
+                        {{ client.user.get_full_name|default:client.user.email }}
+                    </a>
+                    <span class="text-muted fs-7">
+                        {% if client.client_profile %}
+                            {{ client.client_profile.position|default:_("Membre de l'équipe") }}
+                            {% if client.client_profile.is_company_admin %}
+                                <span class="badge badge-light-primary ms-1">{% translate "Admin" %}</span>
+                            {% endif %}
+                        {% else %}
+                            {{ client.email }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>

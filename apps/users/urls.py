@@ -32,11 +32,6 @@ urlpatterns = [
     # Password change (logged in)
     path("users/change_password/<int:pk>/", change_password, name="change_password"),
 
-    # path(
-    #     "password/change/done/",
-    #     PasswordChangeDoneView.as_view(),
-    #     name="password_change_done",
-    # ),
     # Profile
     path("user/list/", UserListView.as_view(), name="list_user"),
     path("user/detail/<int:pk>/", UserDetailView.as_view(), name="user_detail"),

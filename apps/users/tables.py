@@ -46,7 +46,6 @@ class UserHTMxTable(tables.Table):
 			'full_name',
 			'email',
 			'tags',
-			'is_commercial',
 			'is_active',
 			'is_staff',
 			'actions',
