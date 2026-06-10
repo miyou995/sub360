@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="mb-10">
+    <h2 class="fw-bold text-gray-900 mb-2">{% translate "Votre activité" %}</h2>
+    <div class="text-gray-500 fw-semibold fs-6">
+        {% translate "Ces informations aident les clients à vous trouver." %}
+    </div>
+</div>
+
+{% include "components/form_field.html" with field=form.branch %}
+<div class="row">
+    <div class="col-md-6">{% include "components/form_field.html" with field=form.worker_count %}</div>
+    <div class="col-md-6">{% include "components/form_field.html" with field=form.company_age %}</div>
+</div>
+{% include "components/form_field.html" with field=form.accepts_wir %}

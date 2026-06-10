@@ -1,0 +1,67 @@
+{% load i18n %}
+{# Wrapper for the current step: HTMX form + navigation. Swapped into #onboarding_content. #}
+<form id="onboarding_form"
+      class="form"
+      hx-post="{{ request.path }}"
+      hx-target="#onboarding_content"
+      hx-swap="innerHTML"
+      hx-encoding="multipart/form-data"
+      hx-indicator="#onboarding_submit"
+      novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger p-5 mb-8">
+            {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+        </div>
+    {% endif %}
+
+    {% include step_template %}
+
+    <div class="d-flex flex-stack pt-10">
+        <div>
+            {% if step > 1 %}
+                <a href="{% url 'companies:onboarding_subcontractor' step=step|add:'-1' %}"
+                   class="btn btn-light">
+                    <i class="ki-duotone ki-arrow-left fs-3"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Retour" %}
+                </a>
+            {% endif %}
+        </div>
+        <div class="d-flex gap-3">
+            {% if is_last_step %}
+                <a href="{% url 'companies:onboarding_subcontractor_finish' %}" class="btn btn-light-primary">
+                    {% translate "Passer cette étape" %}
+                </a>
+            {% endif %}
+            <button id="onboarding_submit" type="submit" class="btn btn-primary" hx-disable>
+                <span class="indicator-label">
+                    {% if is_last_step %}
+                        {% translate "Terminer" %}
+                    {% else %}
+                        {% translate "Continuer" %}
+                        <i class="ki-duotone ki-arrow-right fs-3 ms-1">
+                            <span class="path1"></span><span class="path2"></span>
+                        </i>
+                    {% endif %}
+                </span>
+                <span class="indicator-progress">
+                    {% translate "Veuillez patienter..." %}
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+            </button>
+        </div>
+    </div>
+</form>
+
+{% if step == 2 %}
+    <script>
+        // Re-init select2 on the branches field (Metronic ships select2 in plugins.bundle.js).
+        // Runs both on full page load and after an HTMX swap of this partial.
+        (function () {
+            if (window.jQuery && jQuery.fn.select2) {
+                jQuery('#onboarding_form [data-control="select2"]').select2();
+            }
+        })();
+    </script>
+{% endif %}

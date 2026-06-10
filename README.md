@@ -10,5 +10,8 @@
 - 7h pages ( lists and detail pages + CRUD) of tenders and client 
 - 2h global configuration and select2 bugfix
 - 5h profile client (  handle client team + CRUD client)
+- 3h Signup + onboarding 
+- 3h client app 
 
+## ---------------- Week 3 / 06 ------------------
 

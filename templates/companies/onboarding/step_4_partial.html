@@ -1,0 +1,82 @@
+{% load i18n %}
+{# On this step the "form" context variable is the ReferenceFormSet. #}
+<div class="mb-10">
+    <h2 class="fw-bold text-gray-900 mb-2">{% translate "Vos références" %}</h2>
+    <div class="text-gray-500 fw-semibold fs-6">
+        {% translate "Ajoutez quelques projets réalisés pour rassurer vos futurs clients (facultatif)." %}
+    </div>
+</div>
+
+{{ form.management_form }}
+{% if form.non_form_errors %}
+    <div class="alert alert-danger p-5 mb-8">
+        {% for error in form.non_form_errors %}<div>{{ error }}</div>{% endfor %}
+    </div>
+{% endif %}
+
+<div id="reference_forms" class="d-flex flex-column gap-6">
+    {% for reference_form in form %}
+        <div class="card card-bordered reference-form">
+            <div class="card-body">
+                {% for hidden in reference_form.hidden_fields %}{{ hidden }}{% endfor %}
+                {% include "components/form_field.html" with field=reference_form.title %}
+                {% include "components/form_field.html" with field=reference_form.description %}
+                <div class="row">
+                    <div class="col-md-6">
+                        {% include "components/form_field.html" with field=reference_form.start_date %}
+                    </div>
+                    <div class="col-md-6">
+                        {% include "components/form_field.html" with field=reference_form.end_date %}
+                    </div>
+                </div>
+                {% if reference_form.instance.pk and form.can_delete %}
+                    <div class="form-check form-check-custom form-check-solid">
+                        {{ reference_form.DELETE }}
+                        <label class="form-check-label text-danger fw-semibold"
+                               for="{{ reference_form.DELETE.id_for_label }}">
+                            {% translate "Supprimer cette référence" %}
+                        </label>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<button type="button" class="btn btn-light-primary mt-6" id="add_reference">
+    <i class="ki-duotone ki-plus fs-3"></i>
+    {% translate "Ajouter une référence" %}
+</button>
+
+{# Hidden blueprint cloned by the "add" button ("template" content is inert and never submitted). #}
+<template id="empty_reference_form">
+    <div class="card card-bordered reference-form">
+        <div class="card-body">
+            {% for hidden in form.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+            {% include "components/form_field.html" with field=form.empty_form.title %}
+            {% include "components/form_field.html" with field=form.empty_form.description %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% include "components/form_field.html" with field=form.empty_form.start_date %}
+                </div>
+                <div class="col-md-6">
+                    {% include "components/form_field.html" with field=form.empty_form.end_date %}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    (function () {
+        var addButton = document.getElementById('add_reference');
+        if (!addButton) return;
+        addButton.addEventListener('click', function () {
+            var totalInput = document.getElementById('id_references-TOTAL_FORMS');
+            var index = parseInt(totalInput.value, 10);
+            var html = document.getElementById('empty_reference_form').innerHTML.replace(/__prefix__/g, index);
+            document.getElementById('reference_forms').insertAdjacentHTML('beforeend', html);
+            totalInput.value = index + 1;
+        });
+    })();
+</script>

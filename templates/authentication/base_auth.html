@@ -1,0 +1,100 @@
+{% load static i18n django_htmx %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}">
+{# Standalone auth/onboarding layout (Metronic 8 / Bootstrap 5).               #}
+{# Adjust the static asset paths below to your Metronic build location.       #}
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% translate "Inscription" %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    {% block page_head %}
+    <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'fonts/inter.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+        {% block extra_css %}{% endblock extra_css %}
+    {% endblock page_head %}
+    <style>
+        /* HTMX loading indicator (Metronic style) */
+        .indicator-progress { display: none; }
+        .htmx-request .indicator-label { display: none; }
+        .htmx-request .indicator-progress { display: inline-block; }
+    </style>
+        {% htmx_script %}
+
+</head>
+<body id="kt_body" class="app-blank">
+<!-- Metronic theme mode (light/dark) -->
+<script>
+    var defaultThemeMode = "light";
+    var themeMode;
+    if (document.documentElement) {
+        if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+            themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+        } else {
+            themeMode = localStorage.getItem("data-bs-theme") !== null
+                ? localStorage.getItem("data-bs-theme") : defaultThemeMode;
+        }
+        if (themeMode === "system") {
+            themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.setAttribute("data-bs-theme", themeMode);
+    }
+</script>
+
+<div class="d-flex flex-column flex-root" id="kt_app_root">
+    <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+
+        <!-- Aside: branding -->
+        <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2"
+             style="background-image: url('{% static 'assets/media/misc/auth-bg.png' %}')">
+            <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
+                <a href="/" class="mb-0 mb-lg-12">
+                    <img alt="Logo" src="{% static 'assets/media/logos/custom-1.png' %}" class="h-60px h-lg-75px"/>
+                </a>
+                <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">
+                    {% block aside_title %}{% translate "Rejoignez la plateforme" %}{% endblock aside_title %}
+                </h1>
+                <div class="d-none d-lg-block text-white fs-base text-center">
+                    {% block aside_text %}
+                        {% translate "La mise en relation entre entreprises et sous-traitants en Suisse." %}
+                    {% endblock aside_text %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="d-flex flex-column flex-lg-row w-lg-50 p-10 order-2 order-lg-1">
+            <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                <div class="{% block content_width %}w-lg-500px{% endblock content_width %} w-100 p-10">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} d-flex align-items-center p-5 mb-8">
+                                <div class="fw-semibold">{{ message }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% block auth_content %}{% endblock auth_content %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
+    <script src="{% static 'js/scripts.bundle.js' %}"></script>
+    <script defer src="{% static 'js/octopus.js' %}" defer></script>
+    <script src="{% static 'js/toast.js' %}" defer></script>
+    <script src="{% static 'js/formset.js' %}" defer></script>
+    
+    {% block extra_js %}{% endblock %}
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+</body>
+</html>
