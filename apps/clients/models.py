@@ -1,18 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from apps.companies.models import Company
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-from django.urls import reverse
 
 
-
-
-
-class ClientProfile(TimestampedModel,CRUDUrlMixin):
+class ClientProfile(TimestampedModel, CRUDUrlMixin):
     """Links a user to a client company. Several profiles can share one company (team)."""
 
     user = models.OneToOneField(
-        "users.User",
+        "authentication.User",
         on_delete=models.CASCADE,
         related_name="client_profile",
         verbose_name=_("Utilisateur"),

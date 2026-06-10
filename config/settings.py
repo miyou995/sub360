@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "compressor",
     # Project apps
     "apps.core",
-    "apps.users",
+    "apps.authentication",
     "apps.companies",
     "apps.clients",
     "apps.subcontractors",
@@ -188,12 +188,8 @@ INTERNAL_IPS = [
 ]
 
 
-
-
-
-
 # Authentication
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "authentication.User"
 LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "users:user_detail"
 LOGOUT_REDIRECT_URL = "users:login"
@@ -201,9 +197,8 @@ LOGOUT_REDIRECT_URL = "users:login"
 FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
 
 
-
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -214,11 +209,19 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = None
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 
 
-
-
 # django-tables2: project-wide default template (HTMX-aware, Metronic-styled).
 # Every table renders through this unless a Table.Meta overrides it explicitly.
 DJANGO_TABLES2_TEMPLATE = "tables/bootstrap_htmx.html"
+
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
+
 try:
     from .local_settings import *
 except ImportError:

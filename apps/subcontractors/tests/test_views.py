@@ -4,12 +4,12 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 
+from apps.authentication.models import User
 from apps.clients.models import ClientProfile
 from apps.companies.models import Company
 from apps.documents.models import DocumentKind, DocumentStatus, ProofDocument
 from apps.subcontractors.models import Subcontractor
 from apps.subscriptions.models import Subscription, SubscriptionStatus
-from apps.users.models import User
 
 pytestmark = pytest.mark.django_db
 

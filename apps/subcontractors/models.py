@@ -86,7 +86,7 @@ class SubcontractorProfile(TimestampedModel):
     """
 
     user = models.OneToOneField(
-        "users.User",
+        "authentication.User",
         on_delete=models.CASCADE,
         related_name="subcontractor_profile",
         verbose_name=_("Utilisateur"),

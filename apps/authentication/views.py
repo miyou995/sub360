@@ -6,16 +6,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.decorators import login_not_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_not_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
-)
-from django.contrib.auth.views import (
-    PasswordChangeDoneView as DjangoPasswordChangeDoneView,
-)
-from django.contrib.auth.views import (
-    PasswordChangeView as DjangoPasswordChangeView,
 )
 from django.contrib.auth.views import (
     PasswordResetCompleteView as DjangoPasswordResetCompleteView,
@@ -29,25 +23,24 @@ from django.contrib.auth.views import (
 from django.contrib.auth.views import (
     PasswordResetView as DjangoPasswordResetView,
 )
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, UpdateView
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django_tables2.export import ExportMixin
-from django.contrib.auth.decorators import login_not_required, permission_required
-from django.shortcuts import get_object_or_404, render
-from .forms import AuthenticationForm, ProfileForm, ChangePasswordForm
-from apps.core.mixins.delete_views import DeleteMixinHTMX
-from apps.core.mixins.form_views import BaseManageHtmxFormView, BaseManageHtmxPageFormView
+from django.views.generic import DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+from django_tables2.export import ExportMixin
+
+from apps.authentication.filters import UserFilterSet
+from apps.authentication.tables import UserHTMxTable
 from apps.core.mixins import BreadcrumbMixin
-from apps.users.filters import UserFilterSet
-from apps.users.tables import UserHTMxTable
-from .forms import AuthenticationForm, ProfileForm
+from apps.core.mixins.delete_views import DeleteMixinHTMX
+from apps.core.mixins.form_views import BaseManageHtmxFormView
+
+from .forms import AuthenticationForm, ChangePasswordForm, ProfileForm
 
 logger = logging.getLogger(__name__)
 
@@ -61,10 +54,12 @@ class LoginView(DjangoLoginView):
     redirect_authenticated_user = True
 
     def form_invalid(self, form):
+        print("form invalid, errors:", form.errors)
         messages.error(self.request, _("Email ou mot de passe incorrect."))
         return self.render_to_response(self.get_context_data(form=form))
 
     def form_valid(self, form):
+        print("form valid, user:", form.get_user())
         auth_login(self.request, form.get_user())
         remember_me = self.request.POST.get("remember_me")
         if remember_me:
@@ -110,43 +105,45 @@ class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
 class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
     template_name = "registration/password_reset_complete.html"
 
+
 # class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
 #     template_name = "registration/password_change_done.html"
 
-@permission_required('users.change_user', raise_exception=True)
+
+@permission_required("users.change_user", raise_exception=True)
 def change_password(request, pk):
     context = {}
-    template_name = 'accounts/snippets/change_password.html'
+    template_name = "accounts/snippets/change_password.html"
     user = get_object_or_404(User, pk=pk)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         user_form = ChangePasswordForm(request.POST, instance=user)
         if user_form.is_valid():
             cd = user_form.cleaned_data
-            password = cd['password']
-            password2 = cd['password2']
+            password = cd["password"]
+            password2 = cd["password2"]
             if password == password2:
                 user.set_password(password)
                 user.is_active = True
                 user.save()
-                messages.success(request, _('Mot de passe modifié avec succès'))
+                messages.success(request, _("Mot de passe modifié avec succès"))
                 return HttpResponse(
                     status=200,
                     headers={
-                        'HX-Trigger': json.dumps(
+                        "HX-Trigger": json.dumps(
                             {
-                                'closeModal': None,
-                                'redirect_to': reverse('users:list_user'),
+                                "closeModal": None,
+                                "redirect_to": reverse("users:list_user"),
                             }
                         )
                     },
                 )
             else:
-                messages.error(request, _('Formulaire invalide'))
+                messages.error(request, _("Formulaire invalide"))
         else:
             # messages.error(request, _('Formulaire invalide - vérifier les erreurs ci-dessous.'))
-            context['form'] = ChangePasswordForm(data=request.POST or None)
-            context['c_user'] = user
+            context["form"] = ChangePasswordForm(data=request.POST or None)
+            context["c_user"] = user
             return render(
                 request,
                 template_name=template_name,
@@ -154,10 +151,8 @@ def change_password(request, pk):
             )
     else:
         user_form = ChangePasswordForm()
-    context = {'form': user_form, 'c_user': user}
+    context = {"form": user_form, "c_user": user}
     return render(request, template_name, context)
-
-
 
 
 # --------------------------------------------------------------------------- #
@@ -168,7 +163,7 @@ def change_password(request, pk):
 class UserListView(
     BreadcrumbMixin, PermissionRequiredMixin, SingleTableMixin, ExportMixin, FilterView
 ):
-    permission_required = 'users.view_user'
+    permission_required = "users.view_user"
     model = User
     table_class = UserHTMxTable
     paginate_by = 8
@@ -183,15 +178,13 @@ class UserListView(
         context = super().get_context_data(**kwargs)
 
         # context['bulk_delete_url'] = self.model.get_bulk_delete_url()
-        context['model'] = self.model
+        context["model"] = self.model
         return context
 
     def get_template_names(self) -> list[str]:
         if self.request.htmx:
-            return ['tables/table_partial.html']
-        return ['accounts/user_list.html']
-
-
+            return ["tables/table_partial.html"]
+        return ["accounts/user_list.html"]
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -217,7 +210,9 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
         if client_profile:
             company = client_profile.company
-            role_label = _("Administrateur") if client_profile.is_company_admin else _("Client")
+            role_label = (
+                _("Administrateur") if client_profile.is_company_admin else _("Client")
+            )
             team = (
                 User.objects.filter(client_profile__company=company)
                 .exclude(pk=user.pk)
@@ -250,7 +245,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-
 class ProfileUpdateView(BaseManageHtmxFormView):
     required_permission = "users.change_user"
     model = User
@@ -258,8 +252,5 @@ class ProfileUpdateView(BaseManageHtmxFormView):
 
 
 class DeleteUser(DeleteMixinHTMX):
-    permission_required = 'users.delete_user'
+    permission_required = "users.delete_user"
     model = User
-
-
-
