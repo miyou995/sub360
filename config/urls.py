@@ -55,7 +55,7 @@ class DevIndexView(TemplateView):
 
 urlpatterns = [
     path("", DevIndexView.as_view(), name="dev_index"),
-    path("accounts/", include("apps.users.urls")),
+    path("accounts/", include("apps.authentication.urls")),
     path("", include("apps.core.urls")),
     path("tenders/", include("apps.tenders.urls")),
     path("applications/", include("apps.applications.urls")),
