@@ -2,6 +2,7 @@
 import json
 import logging
 
+from allauth.account.views import SignupView as AllauthSignupView
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
@@ -29,7 +30,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils import translation
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 from django_tables2.export import ExportMixin
@@ -40,11 +41,58 @@ from apps.core.mixins import BreadcrumbMixin
 from apps.core.mixins.delete_views import DeleteMixinHTMX
 from apps.core.mixins.form_views import BaseManageHtmxFormView
 
-from .forms import AuthenticationForm, ChangePasswordForm, ProfileForm
+from .forms import (
+    AuthenticationForm,
+    ChangePasswordForm,
+    ClientSignupForm,
+    ProfileForm,
+    SubcontractorSignupForm,
+)
 
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("users:login"))
+
+
+class SignupView(BaseManageHtmxFormView):
+    form_class = ProfileForm
+    model = User
+
+
+# ---------------------------------------------------------------------------
+# Public signup views (allauth-based)
+# ---------------------------------------------------------------------------
+
+
+@method_decorator(login_not_required, name="dispatch")
+class SignupChoiceView(TemplateView):
+    """Landing page where the visitor picks Client or Sous-traitant."""
+
+    template_name = "authentication/signup_choice.html"
+
+
+@method_decorator(login_not_required, name="dispatch")
+class ClientSignupView(AllauthSignupView):
+    """Client signup — default allauth redirect (LOGIN_REDIRECT_URL) after success."""
+
+    template_name = "authentication/signup_client.html"
+    form_class = ClientSignupForm
+
+
+@method_decorator(login_not_required, name="dispatch")
+class SubcontractorSignupView(AllauthSignupView):
+    """Subcontractor signup — redirects straight into the onboarding wizard."""
+
+    template_name = "authentication/signup_subcontractor.html"
+    form_class = SubcontractorSignupForm
+
+    def get_success_url(self):
+        return reverse("companies:onboarding_subcontractor", kwargs={"step": 1})
 
 
 @method_decorator(login_not_required, name="dispatch")
@@ -72,11 +120,6 @@ class LoginView(DjangoLoginView):
         response = HttpResponseRedirect(self.get_success_url())
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
         return response
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("users:login"))
 
 
 # --------------------------------------------------------------------------- #
@@ -110,7 +153,7 @@ class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
 #     template_name = "registration/password_change_done.html"
 
 
-@permission_required("users.change_user", raise_exception=True)
+@permission_required("authentication.change_user", raise_exception=True)
 def change_password(request, pk):
     context = {}
     template_name = "accounts/snippets/change_password.html"
@@ -163,7 +206,7 @@ def change_password(request, pk):
 class UserListView(
     BreadcrumbMixin, PermissionRequiredMixin, SingleTableMixin, ExportMixin, FilterView
 ):
-    permission_required = "users.view_user"
+    permission_required = "authentication.view_user"
     model = User
     table_class = UserHTMxTable
     paginate_by = 8
@@ -246,11 +289,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
 
 class ProfileUpdateView(BaseManageHtmxFormView):
-    required_permission = "users.change_user"
+    required_permission = "authentication.change_user"
     model = User
     form_class = ProfileForm
 
 
 class DeleteUser(DeleteMixinHTMX):
-    permission_required = "users.delete_user"
+    permission_required = "authentication.delete_user"
     model = User

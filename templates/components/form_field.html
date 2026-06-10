@@ -1,0 +1,27 @@
+{% comment %}
+Render a single bound form field with Metronic markup.
+Usage:
+    {% include "components/form_field.html" with field=form.email %}
+Optional:
+    wrapper_class — overrides the default "fv-row mb-7"
+{% endcomment %}
+<div class="{{ wrapper_class|default:'fv-row mb-7' }}">
+    {% if field.field.widget.input_type == "checkbox" %}
+        <div class="form-check form-switch form-check-custom form-check-solid">
+            {{ field }}
+            <label class="form-check-label fw-semibold text-gray-700" for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+        </div>
+    {% else %}
+        <label class="form-label fs-6 fw-semibold text-gray-900 {% if field.field.required %}required{% endif %}"
+               for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    {% endif %}
+    {% if field.help_text %}
+        <div class="form-text">{{ field.help_text }}</div>
+    {% endif %}
+    {% for error in field.errors %}
+        <div class="fv-plugins-message-container invalid-feedback d-block">{{ error }}</div>
+    {% endfor %}
+</div>

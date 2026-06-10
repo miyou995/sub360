@@ -1,0 +1,64 @@
+{% extends "authentication/base_auth.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Inscription sous-traitant" %}{% endblock title %}
+
+{% block aside_title %}{% translate "Développez votre activité" %}{% endblock aside_title %}
+{% block aside_text %}
+    {% translate "Créez votre profil, présentez vos références et recevez des appels d'offres." %}
+{% endblock aside_text %}
+
+{% block auth_content %}
+    <form class="form w-100" method="post" action="{% url 'authentication:signup_subcontractor' %}" novalidate>
+        {% csrf_token %}
+
+        <div class="text-center mb-11">
+            <h1 class="text-gray-900 fw-bolder mb-3">{% translate "Inscription sous-traitant" %}</h1>
+            <div class="text-gray-500 fw-semibold fs-6">
+                {% translate "Créez votre compte — vous compléterez votre profil à l'étape suivante." %}
+            </div>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger p-5 mb-8">
+                {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6">{% include "components/form_field.html" with field=form.first_name %}</div>
+            <div class="col-md-6">{% include "components/form_field.html" with field=form.last_name %}</div>
+        </div>
+        {% include "components/form_field.html" with field=form.email %}
+        {% include "components/form_field.html" with field=form.phone %}
+
+        <div class="separator separator-content my-10">
+            <span class="w-250px text-gray-500 fw-semibold fs-7">{% translate "Votre entreprise" %}</span>
+        </div>
+
+        {% include "components/form_field.html" with field=form.company_name %}
+        {% include "components/form_field.html" with field=form.company_uid %}
+
+        <div class="separator separator-content my-10">
+            <span class="w-250px text-gray-500 fw-semibold fs-7">{% translate "Sécurité" %}</span>
+        </div>
+
+        {% include "components/form_field.html" with field=form.password1 %}
+        {% if form.password2 %}
+            {% include "components/form_field.html" with field=form.password2 %}
+        {% endif %}
+
+        <div class="d-grid mb-10">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {% translate "Créer mon compte sous-traitant" %}
+            </button>
+        </div>
+
+        <div class="text-gray-500 text-center fw-semibold">
+            {% translate "Vous êtes un client ?" %}
+            <a href="{% url 'authentication:signup_client' %}" class="link-primary">
+                {% translate "Inscrivez-vous ici" %}
+            </a>
+        </div>
+    </form>
+{% endblock auth_content %}
