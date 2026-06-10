@@ -15,7 +15,11 @@
                     </div>
                 {% endif %}
                 <div class="flex-grow-1">
-                    <a href="{{ client.get_absolute_url }}" class="fw-bold text-gray-800 text-hover-primary fs-6 d-block">
+                    <a href="{{ client.get_absolute_url }}" 
+                    class="fw-bold text-gray-800 text-hover-primary fs-6 d-block"
+                    hx-trigger="revealed"
+                    hx-swap="outerHTML"
+                    >
                         {{ client.user.get_full_name|default:client.user.email }}
                     </a>
                     <span class="text-muted fs-7">

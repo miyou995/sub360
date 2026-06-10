@@ -11,17 +11,17 @@
     <div class="flex-column flex-lg-row-auto w-lg-300px">
         <div class="card card-flush mb-6" style="position: sticky; top: 20px;">
             <div class="card-body text-center pt-10">
-                {% if profile_user.avatar %}
-                    <img src="{{ profile_user.avatar.url }}" alt="{{ profile_user.get_full_name }}"
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="{{ user.get_full_name }}"
                          class="rounded-circle mb-4 object-fit-cover" style="width:110px;height:110px;">
                 {% else %}
                     <div class="symbol symbol-110px symbol-circle mx-auto mb-4">
                         <span class="symbol-label bg-light-primary text-primary fs-1 fw-bold">
-                            {{ profile_user.get_short_name|slice:":1"|upper }}
+                            {{ user.get_short_name|slice:":1"|upper }}
                         </span>
                     </div>
                 {% endif %}
-                <h2 class="fw-bold mb-1">{{ profile_user.get_full_name|default:profile_user.email }}</h2>
+                <h2 class="fw-bold mb-1">{{ user.get_full_name|default:user.email }}</h2>
                 {% if role_label %}
                     <span class="badge badge-light-primary mb-2">{{ role_label }}</span>
                 {% endif %}
@@ -33,14 +33,14 @@
                 {% endif %}
                 <div class="text-gray-600 fs-7">
                     <i class="ki-duotone ki-sms fs-6 me-1"><span class="path1"></span><span class="path2"></span></i>
-                    {{ profile_user.email }}
+                    {{ user.email }}
                 </div>
 
                 <div class="separator my-6"></div>
 
                 <div class="d-flex flex-column gap-2">
                     <a class="btn btn-sm btn-primary"
-                       hx-get="{% url 'users:update_user' profile_user.pk %}"
+                       hx-get="{% url 'authentication:update_user' user.pk %}"
                        hx-target="#kt_modal_content"
                        hx-swap="innerHTML"
                        data-bs-toggle="modal"
@@ -52,7 +52,7 @@
                     <a  class="btn btn-sm btn-light"
                         data-bs-toggle="modal"
                         data-bs-target="#kt_modal"
-                        hx-get="{% url 'users:change_password' profile_user.pk %}"
+                        hx-get="{% url 'authentication:change_password' user.pk %}"
                         hx-target="#kt_modal_content"
                         hx-swap="innerHTML">
                         <i class="ki-duotone ki-lock-3 fs-4 me-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
@@ -116,7 +116,7 @@
                     <div class="card-header align-items-center">
                         <h3 class="card-title">{% translate "Informations personnelles" %}</h3>
                         <div class="card-toolbar">
-                            <a  hx-get="{% url 'users:update_user' profile_user.pk %}"
+                            <a  hx-get="{% url 'authentication:update_user' user.pk %}"
                                 class="btn btn-sm btn-light-primary"
                                 hx-target="#kt_modal_content"
                                 hx-swap="innerHTML"
@@ -131,25 +131,25 @@
                     <div class="card-body">
                         <div class="row mb-5">
                             <label class="col-lg-4 fw-semibold text-muted">{% translate "Nom complet" %}</label>
-                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.get_full_name|default:"—" }}</div>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ user.get_full_name|default:"—" }}</div>
                         </div>
                         <div class="row mb-5">
                             <label class="col-lg-4 fw-semibold text-muted">{% translate "Email" %}</label>
                             <div class="col-lg-8 fw-bold text-gray-800">
-                                <a href="mailto:{{ profile_user.email }}" class="text-gray-800 text-hover-primary">{{ profile_user.email }}</a>
+                                <a href="mailto:{{ user.email }}" class="text-gray-800 text-hover-primary">{{ user.email }}</a>
                             </div>
                         </div>
                         <div class="row mb-5">
                             <label class="col-lg-4 fw-semibold text-muted">{% translate "Téléphone" %}</label>
                             <div class="col-lg-8 fw-bold text-gray-800">
-                                {% if profile_user.phone %}
-                                    <a href="tel:{{ profile_user.phone }}" class="text-gray-800 text-hover-primary">{{ profile_user.phone }}</a>
+                                {% if user.phone %}
+                                    <a href="tel:{{ user.phone }}" class="text-gray-800 text-hover-primary">{{ user.phone }}</a>
                                 {% else %}—{% endif %}
                             </div>
                         </div>
                         <div class="row mb-5">
                             <label class="col-lg-4 fw-semibold text-muted">{% translate "Langue" %}</label>
-                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.get_language_display }}</div>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ user.get_language_display }}</div>
                         </div>
                         {% if client_profile and client_profile.position %}
                         <div class="row mb-5">
@@ -159,7 +159,7 @@
                         {% endif %}
                         <div class="row mb-5">
                             <label class="col-lg-4 fw-semibold text-muted">{% translate "Membre depuis" %}</label>
-                            <div class="col-lg-8 fw-bold text-gray-800">{{ profile_user.date_joined|date:"d.m.Y" }}</div>
+                            <div class="col-lg-8 fw-bold text-gray-800">{{ user.date_joined|date:"d.m.Y" }}</div>
                         </div>
 
                         {% if company %}
@@ -198,7 +198,7 @@
                         <a class="btn btn-light-primary btn-sm"
                             data-bs-toggle="modal"
                             data-bs-target="#kt_modal"
-                            hx-get="{% url 'users:change_password' profile_user.pk %}"
+                            hx-get="{% url 'authentication:change_password' user.pk %}"
                             hx-target="#kt_modal_content"
                             hx-swap="innerHTML">
                             <i class="ki-duotone ki-lock-3 fs-4 me-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>

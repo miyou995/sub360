@@ -17,7 +17,7 @@ from .views import (
     logout_view,
 )
 
-app_name = "users"
+app_name = "authentication"
 
 urlpatterns = [
     # Auth

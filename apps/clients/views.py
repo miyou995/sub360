@@ -1,14 +1,15 @@
 import json
 
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView , DetailView
 
-from apps.clients.forms import ClientProfileCreationForm
+from apps.clients.forms import ClientProfileCreationForm, ClientProfileUpdateForm
 from apps.clients.models import ClientProfile
+from apps.core.mixins.delete_views import DeleteMixinHTMX
 from apps.core.mixins.form_views import BaseManageHtmxFormView
 
 
-class ManageClientProfileHTMX(BaseManageHtmxFormView):
+class CreateClientProfileHTMX(BaseManageHtmxFormView):
     form_class = ClientProfileCreationForm
     model = ClientProfile
 
@@ -25,6 +26,18 @@ class ManageClientProfileHTMX(BaseManageHtmxFormView):
                 )
             },
         )
+    
+class UpdateClientProfileHTMX(CreateClientProfileHTMX):
+    form_class = ClientProfileUpdateForm
+    
+class ClientDeleteView(DeleteMixinHTMX):
+    model = ClientProfile
+ 
+
+class ClientDetailView(DetailView):
+    model = ClientProfile
+    context_object_name = "client"
+    template_name = "client_detail.html"
 
 
 class ClientListView(ListView):
@@ -40,3 +53,6 @@ class ClientListView(ListView):
         context["clients"] = clients
         print("clients\n \n ----->", context["clients"])
         return context
+    
+
+

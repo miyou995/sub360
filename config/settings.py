@@ -193,9 +193,9 @@ INTERNAL_IPS = [
 
 # Authentication
 AUTH_USER_MODEL = "authentication.User"
-LOGIN_URL = "users:login"
-LOGIN_REDIRECT_URL = "users:user_detail"
-LOGOUT_REDIRECT_URL = "users:login"
+LOGIN_URL = "authentication:login"
+# LOGIN_REDIRECT_URL = ("authentication:user_detail")
+LOGOUT_REDIRECT_URL = "authentication:login"
 
 FORM_RENDERER = "apps.core.renderer.CustomFormRenderer"
 
