@@ -235,7 +235,7 @@
 						<div class="menu-sub menu-sub-accordion">
 							{% if perms.users.view_user %}
 							<div class="menu-item ">
-								<a href="{% url 'users:list_user' %}" class="menu-link">
+								<a href="{% url 'authentication:list_user' %}" class="menu-link">
 									<span class="menu-bullet">
 										<span class="bullet bullet-dot"></span>
 									</span>
@@ -246,7 +246,7 @@
 
 							{% if perms.auth.view_group %}
 							<div class="menu-item ">
-								<a href="{% url 'users:grouplist' %}" class="menu-link">
+								<a href="{% url 'authentication:grouplist' %}" class="menu-link">
 									<span class="menu-bullet">
 										<span class="bullet bullet-dot"></span>
 									</span>

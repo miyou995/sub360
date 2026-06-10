@@ -13,7 +13,7 @@
 					class="btn btn-primary d-flex align-items-end gap-2 shadow"
 					data-bs-toggle="modal"
 					data-bs-target="#kt_modal"
-					hx-get="{% url 'users:create_group' %}"
+					hx-get="{% url 'authentication:create_group' %}"
 					hx-target="#kt_modal_content"
 					hx-swap="innerHTML"
 				>
@@ -27,7 +27,7 @@
 
 <div id="contactTable" 
     class="table-responsive table-container"
-    hx-get="{% url 'users:grouplist' %}"
+    hx-get="{% url 'authentication:grouplist' %}"
     hx-trigger="refresh_table from:body"
     hx-swap="innerHTML"
     hx-target="closest .table-responsive"

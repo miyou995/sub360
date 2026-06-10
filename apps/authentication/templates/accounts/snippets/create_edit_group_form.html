@@ -8,9 +8,9 @@
         id="sg_create_store_form"  
         class="form"    
         {% if form.instance.id %}
-             hx-post= "{% url 'users:update_group' form.instance.id %}"
+             hx-post= "{% url 'authentication:update_group' form.instance.id %}"
         {% else %}
-             hx-post= "{% url 'users:create_group' %}"
+             hx-post= "{% url 'authentication:create_group' %}"
         {% endif %}       
         hx-target="#kt_modal_content"
         novalidate

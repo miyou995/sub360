@@ -15,6 +15,15 @@ def get_language_choices():
 
 class UserManager(BaseUserManager):
     """Manager for the email-based custom user model."""
+    def limit_user(self, user):
+
+        if user.is_superuser:
+            return self.all()
+        if user.is_staff and user.has_perm('authentication.view_user'):
+            return self.exclude(is_superuser=True)
+        if self.filter(supervisor=user).exists():
+            return self.filter(supervisor=user)
+        return self.filter(id=user.id)
 
     use_in_migrations = True
 
@@ -85,5 +94,5 @@ class User(AbstractBaseUser, PermissionsMixin, CRUDUrlMixin, TimestampedModel):
         return self.get_full_name()
 
     def get_absolute_url(self):
-        return reverse("users:user_detail", kwargs={"pk": self.pk})
+        return reverse("authentication:user_detail", kwargs={"pk": self.pk})
 

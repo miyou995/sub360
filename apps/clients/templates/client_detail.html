@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+ <div class="tab-pane fade show active" id="tab_info" role="tabpanel">
+    <div class="card card-flush">
+        <div class="card-header align-items-center">
+            <h3 class="card-title">{% translate "Informations personnelles" %}</h3>
+            <div class="card-toolbar">
+                <a  hx-get="{% url 'clients:update_clientprofile' client.pk %}"
+                    class="btn btn-sm btn-light-primary"
+                    hx-target="#kt_modal_content"
+                    hx-swap="innerHTML"
+                    data-bs-toggle="modal"
+                    data-bs-target="#kt_modal"
+                    >
+                    <i class="ki-duotone ki-pencil fs-4 me-1"><span class="path1"></span><span class="path2"></span></i>
+                    {% translate "Modifier" %}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "Nom complet" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">{{ client.user.get_full_name|default:"—" }}</div>
+            </div>
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "Email" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">
+                    <a href="mailto:{{ client.user.email }}" class="text-gray-800 text-hover-primary">{{ client.user.email }}</a>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "Téléphone" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">
+                    {% if client.user.phone %}
+                        <a href="tel:{{ client.user.phone }}" class="text-gray-800 text-hover-primary">{{ client.user.phone }}</a>
+                    {% else %}—{% endif %}
+                </div>
+            </div>
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "Fonction" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">{{ client.position }}</div>
+            </div>
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "is_company_admin" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">{{ client.is_company_admin }}</div>
+            </div>
+            <div class="row mb-5">
+                <label class="col-lg-4 fw-semibold text-muted">{% translate "Membre depuis" %}</label>
+                <div class="col-lg-8 fw-bold text-gray-800">{{ client.user.created_at|date:"d.m.Y" }}</div>
+            </div>
+
+            <div class="separator my-6"></div>
+            <a class="btn btn-light-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#kt_modal"
+                hx-get="{% url 'authentication:change_password' client.user.pk %}"
+                hx-target="#kt_modal_content"
+                hx-swap="innerHTML">
+                <i class="ki-duotone ki-lock-3 fs-4 me-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                {% translate "Changer le mot de passe" %}
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

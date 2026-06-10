@@ -4,7 +4,7 @@
 {% block title %}{% translate "Connexion" %} · sub360{% endblock %}
 
 {% block content %}
-<form class="form w-100" method="post" action="{% url 'users:login' %}">
+<form class="form w-100" method="post" action="{% url 'authentication:login' %}">
     {% csrf_token %}
     <div class="text-center mb-11">
         <h1 class="text-dark fw-bolder mb-3">{% translate "Connexion" %}</h1>
@@ -32,7 +32,7 @@
             <input type="checkbox" id="rememberMe" name="remember_me" class="form-check-input" checked>
             <label class="form-check-label" for="rememberMe">{% translate "Rester connecté" %}</label>
         </div>
-        <a href="{% url 'users:password_reset' %}" class="link-primary">{% translate "Mot de passe oublié ?" %}</a>
+        <a href="{% url 'authentication:password_reset' %}" class="link-primary">{% translate "Mot de passe oublié ?" %}</a>
     </div>
 
     <input type="hidden" name="next" value="{{ next }}">

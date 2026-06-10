@@ -53,6 +53,13 @@ class LoginView(DjangoLoginView):
     form_class = AuthenticationForm
     redirect_authenticated_user = True
 
+    def get_success_url(self):
+        user = self.request.user
+        if not user:
+          messages.error(self.request, _('Email ou mot de passe incorrect.'))
+          return '/'
+        return reverse('authentication:user_detail', kwargs={'pk': user.pk})
+
     def form_invalid(self, form):
         print("form invalid, errors:", form.errors)
         messages.error(self.request, _("Email ou mot de passe incorrect."))
@@ -69,14 +76,17 @@ class LoginView(DjangoLoginView):
 
         user_language = self.request.user.language or "fr"
         translation.activate(user_language)
+        print("this is login>>>>>>>>>>>>> \n \n")
         response = HttpResponseRedirect(self.get_success_url())
+        print("this is login response>>>>>>>>>>>>> \n \n",response)
+
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
         return response
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("users:login"))
+    return HttpResponseRedirect(reverse("authentication:login"))
 
 
 # --------------------------------------------------------------------------- #
@@ -87,7 +97,7 @@ class PasswordResetView(DjangoPasswordResetView):
     template_name = "registration/password_reset_form.html"
     email_template_name = "registration/password_reset_email_custom.html"
     subject_template_name = "registration/password_reset_subject_custom.txt"
-    success_url = reverse_lazy("users:password_reset_done")
+    success_url = reverse_lazy("authentication:password_reset_done")
 
 
 @method_decorator(login_not_required, name="dispatch")
@@ -98,7 +108,7 @@ class PasswordResetDoneView(DjangoPasswordResetDoneView):
 @method_decorator(login_not_required, name="dispatch")
 class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
     template_name = "registration/password_reset_confirm.html"
-    success_url = reverse_lazy("users:password_reset_complete")
+    success_url = reverse_lazy("authentication:password_reset_complete")
 
 
 @method_decorator(login_not_required, name="dispatch")
@@ -133,7 +143,7 @@ def change_password(request, pk):
                         "HX-Trigger": json.dumps(
                             {
                                 "closeModal": None,
-                                "redirect_to": reverse("users:list_user"),
+                                # "redirect_to": reverse("authentication:list_user"),
                             }
                         )
                     },
@@ -189,11 +199,11 @@ class UserListView(
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
-    context_object_name = "profile_user"
+    context_object_name = "user"
     template_name = "accounts/user_detail.html"
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    # def get_object(self, queryset=None):
+    #     return self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

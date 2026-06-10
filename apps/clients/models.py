@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.companies.models import Company
 from apps.core.models import CRUDUrlMixin, TimestampedModel
-
+from django.urls import reverse
 
 class ClientProfile(TimestampedModel, CRUDUrlMixin):
     """Links a user to a client company. Several profiles can share one company (team)."""
@@ -25,8 +25,8 @@ class ClientProfile(TimestampedModel, CRUDUrlMixin):
         _("Administrateur de l'équipe"), default=False
     )
 
-    # def get_absolute_url(self):
-    #     # return reverse('users:detail_user', kwargs={'pk': self.pk})
+    def get_absolute_url(self):
+        return reverse('clients:detail_clientprofile', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = _("Profil client")

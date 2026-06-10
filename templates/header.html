@@ -96,21 +96,21 @@
                             </div>
                             <div class="separator my-2"></div>
                             <div class="menu-item px-5">
-                                <a href="{% url 'users:profile' %}" class="menu-link px-5">
+                                <a href="{% url 'authentication:profile' %}" class="menu-link px-5">
                                     <span class="menu-icon"><i class="ki-outline ki-user fs-2"></i></span>
                                     <span class="menu-title">{% translate "Profil" %}</span>
                                 </a>
                             </div>
                             <div class="separator my-2"></div>
                             <div class="menu-item px-5">
-                                <a href="{% url 'users:logout' %}" class="menu-link px-5">
+                                <a href="{% url 'authentication:logout' %}" class="menu-link px-5">
                                     <span class="menu-icon"><i class="ki-outline ki-exit-right fs-2"></i></span>
                                     <span class="menu-title">{% translate "Déconnexion" %}</span>
                                 </a>
                             </div>
                         </div>
                     {% else %}
-                        <a href="{% url 'users:login' %}" class="btn btn-sm btn-primary">
+                        <a href="{% url 'authentication:login' %}" class="btn btn-sm btn-primary">
                             {% translate "Connexion" %}
                         </a>
                     {% endif %}
