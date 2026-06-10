@@ -1,0 +1,18 @@
+{% load i18n %}
+<div class="mb-10">
+    <h2 class="fw-bold text-gray-900 mb-2">{% translate "Votre entreprise" %}</h2>
+    <div class="text-gray-500 fw-semibold fs-6">
+        {% translate "Où se trouve le siège de" %} {{ subcontractor.company.name }} ?
+    </div>
+</div>
+
+{% include "components/form_field.html" with field=form.address %}
+<div class="row">
+    <div class="col-md-4">{% include "components/form_field.html" with field=form.zip_code %}</div>
+    <div class="col-md-8">{% include "components/form_field.html" with field=form.city %}</div>
+</div>
+{% include "components/form_field.html" with field=form.canton %}
+<div class="row">
+    <div class="col-md-6">{% include "components/form_field.html" with field=form.phone %}</div>
+    <div class="col-md-6">{% include "components/form_field.html" with field=form.website %}</div>
+</div>

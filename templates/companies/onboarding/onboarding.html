@@ -1,0 +1,39 @@
+{% extends "authentication/base_auth.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Configuration de votre profil" %}{% endblock title %}
+{% block content_width %}w-lg-700px{% endblock content_width %}
+
+{% block aside_title %}{% translate "Complétez votre profil" %}{% endblock aside_title %}
+{% block aside_text %}
+    {% translate "Un profil complet reçoit plus d'invitations aux appels d'offres." %}
+{% endblock aside_text %}
+
+{% block auth_content %}
+    <div class="w-100">
+        <!-- Stepper navigation -->
+        <div class="d-flex flex-row flex-wrap gap-6 mb-12 justify-content-center">
+            {% for s in steps %}
+                <div class="d-flex align-items-center {% if s.number > step %}opacity-50{% endif %}">
+                    <div class="btn btn-icon rounded-circle me-3 pe-none
+                                {% if s.number < step %}btn-success{% elif s.number == step %}btn-primary{% else %}btn-light{% endif %}">
+                        {% if s.number < step %}
+                            <i class="ki-duotone ki-check fs-2"></i>
+                        {% else %}
+                            <span class="fw-bold">{{ s.number }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="d-none d-md-block">
+                        <div class="fw-bold text-gray-900 fs-7">{{ s.title }}</div>
+                        <div class="text-gray-500 fs-8">{{ s.description }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Current step (HTMX swap target) -->
+        <div id="onboarding_content">
+            {% include "companies/onboarding/onboarding_step_partial.html" %}
+        </div>
+    </div>
+{% endblock auth_content %}
